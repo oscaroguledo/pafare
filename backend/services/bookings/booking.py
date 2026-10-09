@@ -1,4 +1,6 @@
+import re
 import secrets
+import unicodedata
 from datetime import datetime, timezone
 from typing import Optional
 from uuid import UUID
@@ -17,6 +19,31 @@ from models.bookings.room_type import RoomType
 from schemas.bookings.booking import BookingCreate, BookingUpdate, BookingList
 
 logger = get_structured_logger(__name__)
+
+# Booking codes look like PH-K1G2N9: two letters from the city, a dash, six random characters. The alphabet leaves
+# out O/0 and I/1, so a code read out loud or copied by hand stays unambiguous.
+CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+CODE_SUFFIX_LENGTH = 6
+
+
+def city_prefix(place: Optional[str]) -> str:
+    """Two letters for a place: the initials of its first two words ('Port Harcourt' -> 'PH'), or the first two
+    letters of a single word ('Lagos' -> 'LA'). Accents are dropped ('Sao Paulo' -> 'SP'); 'XX' if there are no letters."""
+    plain = unicodedata.normalize("NFKD", place or "").encode("ascii", "ignore").decode()
+    words = re.findall(r"[A-Za-z]+", plain)
+    if len(words) >= 2:
+        prefix = words[0][0] + words[1][0]
+    elif words:
+        prefix = words[0][:2]
+    else:
+        prefix = ""
+    return prefix.upper().ljust(2, "X")
+
+
+def generate_booking_code(place: Optional[str]) -> str:
+    """A new random code for the city, e.g. 'PH-K1G2N9'. Not checked for uniqueness: BookingService.create does that."""
+    return f"{city_prefix(place)}-{''.join(secrets.choice(CODE_ALPHABET) for _ in range(CODE_SUFFIX_LENGTH))}"
+
 
 # A booking in one of these states holds its room for its dates. Cancelled, no-show and finished stays don't.
 ACTIVE_STATUSES = (BookingStatus.PENDING.value, BookingStatus.CONFIRMED.value, BookingStatus.CHECKED_IN.value)
@@ -65,6 +92,15 @@ class BookingService:
         )).first():
             raise APIException(status_code=409, message="The room is not available for these dates")
 
+        # A code is the city's letters plus six random characters. Draw until it is unused; the unique index on
+        # booking_code is the final guarantee if two bookings ever draw the same code at the same moment.
+        for _ in range(10):
+            booking_code = generate_booking_code(hotel.city or hotel.name)
+            if not (await self.db.execute(select(Booking.id).where(Booking.booking_code == booking_code))).first():
+                break
+        else:
+            raise APIException(status_code=500, message="Could not generate a booking code; please try again")
+
         base_price = room_type.price_per_night * (data.check_out - data.check_in).days
         booking = Booking(
             id=uuid7(),
@@ -80,7 +116,7 @@ class BookingService:
             base_price=base_price,
             discount=0,
             total_price=base_price,
-            booking_code="PF-" + secrets.token_hex(4).upper(),
+            booking_code=booking_code,
             currency=hotel.currency,
         )
         hotel_name, room_number, room_type_name = hotel.name, room.number, room_type.name

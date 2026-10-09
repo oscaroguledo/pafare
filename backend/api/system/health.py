@@ -15,7 +15,7 @@ async def liveness_check():
     return Response.success(data={
         "status": "alive",
         "timestamp": datetime.now().isoformat(),
-        "service": "banwee-api"
+        "service": "pafare-api"
     })
 
 
@@ -28,7 +28,7 @@ async def readiness_check():
     payload = {
         "status": "ready" if is_ready else "not_ready",
         "timestamp": datetime.now().isoformat(),
-        "service": "banwee-api",
+        "service": "pafare-api",
         "database": db_health,
     }
 

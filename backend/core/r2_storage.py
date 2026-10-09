@@ -18,7 +18,7 @@ class R2Storage:
         account_id: str = "",
         access_key_id: str = "",
         secret_access_key: str = "",
-        bucket_name: str = "banwee-products",
+        bucket_name: str = "pafare-files",
         custom_domain: str = "",
     ):
         """Initialize R2 storage client.

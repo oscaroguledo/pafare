@@ -1,0 +1,58 @@
+# Pafare: the API and its PostgreSQL database.
+#   docker compose up --build        start everything (the database is migrated automatically)
+#   docker compose down              stop it (data stays in the pgdata volume)
+#   docker compose down -v           stop it and delete the database
+# Settings come from a .env file next to this one (copy .env.example); every value has a development default.
+name: pafare
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-pafare}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pafare}
+      POSTGRES_DB: ${POSTGRES_DB:-pafare}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"   # reachable from this machine only, for psql or a GUI
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-off job: create/upgrade the tables and the seeded roles and permissions, then exit
+  migrate:
+    build: ./backend
+    image: pafare-api:local
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-pafare}:${POSTGRES_PASSWORD:-pafare}@db:5432/${POSTGRES_DB:-pafare}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build: ./backend
+    image: pafare-api:local
+    restart: unless-stopped
+    environment:
+      ENVIRONMENT: ${ENVIRONMENT:-dev}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-pafare}:${POSTGRES_PASSWORD:-pafare}@db:5432/${POSTGRES_DB:-pafare}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-change-in-production}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
+      REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS:-30}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  pgdata:

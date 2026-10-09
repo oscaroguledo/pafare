@@ -32,7 +32,6 @@ from api import (
     health_router,
 )
 import models
-from core import redis_cache
 import uvicorn
 
 logger = get_structured_logger(__name__)
@@ -72,7 +71,6 @@ async def lifespan(app: FastAPI):
 
     # --- Shutdown ---
     logger.info("Application shutting down...")
-    await redis_cache.close()
 
 
 app = FastAPI(

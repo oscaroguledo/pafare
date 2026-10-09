@@ -15,11 +15,14 @@ if config.config_file_name is not None:
 
 target_metadata = Base.metadata
 
-# Only track our application schemas, not Supabase internals
-APP_SCHEMAS = {'accounts', 'bookings', 'billings', 'public'}
+# Only track our application schemas
+APP_SCHEMAS = {'accounts', 'bookings', 'billings'}
 
 def include_object(object, name, type_, reflected, compare_to):
     if type_ == "table":
+        # alembic_version is Alembic's own bookkeeping table (in public), not part of the models
+        if name == "alembic_version":
+            return False
         schema = getattr(object, "schema", None)
         return schema in APP_SCHEMAS
     return True
@@ -47,7 +50,6 @@ def run_migrations_online() -> None:
     connectable = create_engine(
         get_url(),
         poolclass=pool.NullPool,
-        connect_args={"options": "-csearch_path=accounts,bookings,billings,public"}
     )
 
     with connectable.connect() as connection:

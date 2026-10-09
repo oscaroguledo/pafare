@@ -32,7 +32,7 @@ class Settings:
         [os.getenv("FRONTEND_URL", "http://localhost:5173")]
 
     # Database - PostgreSQL only
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/banwee")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://user:pass@localhost:5432/pafare")
     # Connection pooling
     DB_POOL_SIZE: int = int(os.getenv("DB_POOL_SIZE", "10"))
 
@@ -66,7 +66,7 @@ class Settings:
     # The one currency prices are set, shown, recorded and charged in (ISO 4217).
     STORE_CURRENCY: str = os.getenv("STORE_CURRENCY", "CAD").upper()
     # Seller details printed on invoices; lines separated by "|".
-    STORE_NAME: str = os.getenv("STORE_NAME", "Banwee")
+    STORE_NAME: str = os.getenv("STORE_NAME", "Pafare")
     # Passkeys: the site's domain (no scheme or port) and the web origins allowed to use them.
     WEBAUTHN_RP_ID: str = os.getenv("WEBAUTHN_RP_ID", "localhost")
     WEBAUTHN_ORIGINS: list = [o.strip() for o in os.getenv("WEBAUTHN_ORIGINS", os.getenv("FRONTEND_URL", "http://localhost:5173")).split(",") if o.strip()]
@@ -74,29 +74,27 @@ class Settings:
     STORE_TIMEZONE: str = os.getenv("STORE_TIMEZONE", "America/Toronto")
     STORE_ADDRESS: str = os.getenv("STORE_ADDRESS", "")
     # Shown in emails as the address customers write to.
-    SUPPORT_EMAIL: str = os.getenv("SUPPORT_EMAIL", "support@banwee.com")
+    SUPPORT_EMAIL: str = os.getenv("SUPPORT_EMAIL", "support@pafare.com")
     # Supported account languages: Canadian official + home country languages
     SUPPORTED_LANGUAGES: tuple = (
         "en", "fr", "es", "zh", "zh-Hant", "pa", "ar", "tl", "pt", "hi", "ur", "ru", "uk",
         "de", "tr", "vi", "ja", "ko", "he", "fa", "ps", "ckb", "bn", "ne",
     )
 
-    # Redis (optional) for cached display data such as the home page; empty disables it.
-    REDIS_URL: str = os.getenv("REDIS_URL", "")
 
     # Cloudflare R2 (optional) for product images; empty disables direct uploads.
     R2_ACCOUNT_ID: str = os.getenv("R2_ACCOUNT_ID", "")
     R2_ACCESS_KEY_ID: str = os.getenv("R2_ACCESS_KEY_ID", "")
     R2_SECRET_ACCESS_KEY: str = os.getenv("R2_SECRET_ACCESS_KEY", "")
-    R2_BUCKET_NAME: str = os.getenv("R2_BUCKET_NAME", "banwee-products")
-    R2_CUSTOM_DOMAIN: str = os.getenv("R2_CUSTOM_DOMAIN", "")  # e.g., images.banwee.com; empty uses R2 default
+    R2_BUCKET_NAME: str = os.getenv("R2_BUCKET_NAME", "pafare-files")
+    R2_CUSTOM_DOMAIN: str = os.getenv("R2_CUSTOM_DOMAIN", "")  # e.g., images.pafare.com; empty uses R2 default
 
     STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY", "")
     STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
 
     # Email (optional)
     BREVO_API_KEY: str = os.getenv("BREVO_API_KEY", "")
-    BREVO_FROM_EMAIL: str = os.getenv("BREVO_FROM_EMAIL", "Banwee <noreply@banwee.com>")
+    BREVO_FROM_EMAIL: str = os.getenv("BREVO_FROM_EMAIL", "Pafare <noreply@pafare.com>")
 
     # The store owner's account, created or refreshed on every start (services/accounts/superadmin.py)
     SUPERADMIN_EMAIL: str = os.getenv("SUPERADMIN_EMAIL", "")

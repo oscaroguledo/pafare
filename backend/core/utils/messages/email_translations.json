@@ -13,18 +13,18 @@
     },
     "verification": {
       "subject": "Confirm your email address",
-      "preheader": "One click and your Banwee account is ready.",
+      "preheader": "One click and your Pafare account is ready.",
       "heading": "Confirm your email",
-      "body": "Thanks for creating a Banwee account. Confirm your email address to start shopping.",
+      "body": "Thanks for creating a Pafare account. Confirm your email address to start shopping.",
       "button": "Confirm email",
       "expiry": "This link expires in {duration}.",
       "ignore": "If you didn’t create an account, you can ignore this email."
     },
     "password_reset": {
       "subject": "Reset your password",
-      "preheader": "Choose a new password for your Banwee account.",
+      "preheader": "Choose a new password for your Pafare account.",
       "heading": "Reset your password",
-      "body": "We received a request to reset the password for your Banwee account. Choose a new one with the button below.",
+      "body": "We received a request to reset the password for your Pafare account. Choose a new one with the button below.",
       "button": "Reset password",
       "expiry": "This link expires in {duration}.",
       "ignore": "If you didn’t ask for this, you can ignore this email. Your password won’t change."
@@ -95,18 +95,18 @@
     },
     "verification": {
       "subject": "Confirmez votre adresse courriel",
-      "preheader": "Un clic et votre compte Banwee est prêt.",
+      "preheader": "Un clic et votre compte Pafare est prêt.",
       "heading": "Confirmez votre courriel",
-      "body": "Merci d’avoir créé un compte Banwee. Confirmez votre adresse courriel pour commencer à magasiner.",
+      "body": "Merci d’avoir créé un compte Pafare. Confirmez votre adresse courriel pour commencer à magasiner.",
       "button": "Confirmer mon courriel",
       "expiry": "Ce lien expire dans {duration}.",
       "ignore": "Si vous n’avez pas créé de compte, vous pouvez ignorer ce courriel."
     },
     "password_reset": {
       "subject": "Réinitialisez votre mot de passe",
-      "preheader": "Choisissez un nouveau mot de passe pour votre compte Banwee.",
+      "preheader": "Choisissez un nouveau mot de passe pour votre compte Pafare.",
       "heading": "Réinitialisez votre mot de passe",
-      "body": "Nous avons reçu une demande de réinitialisation du mot de passe de votre compte Banwee. Choisissez-en un nouveau avec le bouton ci-dessous.",
+      "body": "Nous avons reçu une demande de réinitialisation du mot de passe de votre compte Pafare. Choisissez-en un nouveau avec le bouton ci-dessous.",
       "button": "Réinitialiser le mot de passe",
       "expiry": "Ce lien expire dans {duration}.",
       "ignore": "Si vous n’avez rien demandé, vous pouvez ignorer ce courriel. Votre mot de passe ne changera pas."
@@ -177,18 +177,18 @@
     },
     "verification": {
       "subject": "Confirma tu correo electrónico",
-      "preheader": "Un clic y tu cuenta de Banwee estará lista.",
+      "preheader": "Un clic y tu cuenta de Pafare estará lista.",
       "heading": "Confirma tu correo",
-      "body": "Gracias por crear una cuenta en Banwee. Confirma tu correo electrónico para empezar a comprar.",
+      "body": "Gracias por crear una cuenta en Pafare. Confirma tu correo electrónico para empezar a comprar.",
       "button": "Confirmar correo",
       "expiry": "Este enlace vence en {duration}.",
       "ignore": "Si no creaste una cuenta, puedes ignorar este correo."
     },
     "password_reset": {
       "subject": "Restablece tu contraseña",
-      "preheader": "Elige una nueva contraseña para tu cuenta de Banwee.",
+      "preheader": "Elige una nueva contraseña para tu cuenta de Pafare.",
       "heading": "Restablece tu contraseña",
-      "body": "Recibimos una solicitud para restablecer la contraseña de tu cuenta de Banwee. Elige una nueva con el botón de abajo.",
+      "body": "Recibimos una solicitud para restablecer la contraseña de tu cuenta de Pafare. Elige una nueva con el botón de abajo.",
       "button": "Restablecer contraseña",
       "expiry": "Este enlace vence en {duration}.",
       "ignore": "Si no lo solicitaste, puedes ignorar este correo. Tu contraseña no cambiará."
@@ -259,18 +259,18 @@
     },
     "verification": {
       "subject": "请确认您的电子邮箱",
-      "preheader": "只需一步，您的 Banwee 账户即可使用。",
+      "preheader": "只需一步，您的 Pafare 账户即可使用。",
       "heading": "确认您的邮箱",
-      "body": "感谢您注册 Banwee 账户。请确认您的电子邮箱地址，即可开始购物。",
+      "body": "感谢您注册 Pafare 账户。请确认您的电子邮箱地址，即可开始购物。",
       "button": "确认邮箱",
       "expiry": "此链接将在 {duration}后失效。",
       "ignore": "如果您没有注册账户，请忽略此邮件。"
     },
     "password_reset": {
       "subject": "重置您的密码",
-      "preheader": "为您的 Banwee 账户设置新密码。",
+      "preheader": "为您的 Pafare 账户设置新密码。",
       "heading": "重置您的密码",
-      "body": "我们收到了重置您 Banwee 账户密码的请求。请点击下方按钮设置新密码。",
+      "body": "我们收到了重置您 Pafare 账户密码的请求。请点击下方按钮设置新密码。",
       "button": "重置密码",
       "expiry": "此链接将在 {duration}后失效。",
       "ignore": "如果这不是您本人的请求，请忽略此邮件，您的密码不会改变。"
@@ -341,18 +341,18 @@
     },
     "verification": {
       "subject": "請確認您的電子郵件",
-      "preheader": "只需一步，您的 Banwee 帳戶即可使用。",
+      "preheader": "只需一步，您的 Pafare 帳戶即可使用。",
       "heading": "確認您的電子郵件",
-      "body": "感謝您註冊 Banwee 帳戶。請確認您的電子郵件地址，即可開始購物。",
+      "body": "感謝您註冊 Pafare 帳戶。請確認您的電子郵件地址，即可開始購物。",
       "button": "確認電子郵件",
       "expiry": "此連結將在 {duration}後失效。",
       "ignore": "如果您沒有註冊帳戶，請忽略此郵件。"
     },
     "password_reset": {
       "subject": "重置您的密碼",
-      "preheader": "為您的 Banwee 帳戶設定新密碼。",
+      "preheader": "為您的 Pafare 帳戶設定新密碼。",
       "heading": "重置您的密碼",
-      "body": "我們收到了重置您 Banwee 帳戶密碼的請求。請點選下方按鈕設定新密碼。",
+      "body": "我們收到了重置您 Pafare 帳戶密碼的請求。請點選下方按鈕設定新密碼。",
       "button": "重置密碼",
       "expiry": "此連結將在 {duration}後失效。",
       "ignore": "如果這不是您本人的請求，請忽略此郵件，您的密碼不會改變。"
@@ -423,18 +423,18 @@
     },
     "verification": {
       "subject": "ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
-      "preheader": "ਇੱਕ ਕਲਿੱਕ ਅਤੇ ਤੁਹਾਡਾ Banwee ਖਾਤਾ ਤਿਆਰ ਹੈ।",
+      "preheader": "ਇੱਕ ਕਲਿੱਕ ਅਤੇ ਤੁਹਾਡਾ Pafare ਖਾਤਾ ਤਿਆਰ ਹੈ।",
       "heading": "ਆਪਣੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
-      "body": "Banwee ਖਾਤਾ ਬਣਾਉਣ ਲਈ ਧੰਨਵਾਦ। ਖਰੀਦਦਾਰੀ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।",
+      "body": "Pafare ਖਾਤਾ ਬਣਾਉਣ ਲਈ ਧੰਨਵਾਦ। ਖਰੀਦਦਾਰੀ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।",
       "button": "ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
       "expiry": "ਇਹ ਲਿੰਕ {duration} ਵਿੱਚ ਖਤਮ ਹੋ ਜਾਵੇਗਾ।",
       "ignore": "ਜੇ ਤੁਸੀਂ ਖਾਤਾ ਨਹੀਂ ਬਣਾਇਆ, ਤਾਂ ਇਸ ਈਮੇਲ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰ ਸਕਦੇ ਹੋ।"
     },
     "password_reset": {
       "subject": "ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
-      "preheader": "ਆਪਣੇ Banwee ਖਾਤੇ ਲਈ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ।",
+      "preheader": "ਆਪਣੇ Pafare ਖਾਤੇ ਲਈ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ।",
       "heading": "ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
-      "body": "ਸਾਨੂੰ ਤੁਹਾਡੇ Banwee ਖਾਤੇ ਦਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਬੇਨਤੀ ਮਿਲੀ ਹੈ। ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ਨਾਲ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ।",
+      "body": "ਸਾਨੂੰ ਤੁਹਾਡੇ Pafare ਖਾਤੇ ਦਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਬੇਨਤੀ ਮਿਲੀ ਹੈ। ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ਨਾਲ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ।",
       "button": "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
       "expiry": "ਇਹ ਲਿੰਕ {duration} ਵਿੱਚ ਖਤਮ ਹੋ ਜਾਵੇਗਾ।",
       "ignore": "ਜੇ ਤੁਸੀਂ ਇਹ ਬੇਨਤੀ ਨਹੀਂ ਕੀਤੀ, ਤਾਂ ਇਸ ਈਮੇਲ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰੋ। ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਨਹੀਂ ਬਦਲੇਗਾ।"
@@ -505,18 +505,18 @@
     },
     "verification": {
       "subject": "أكّد عنوان بريدك الإلكتروني",
-      "preheader": "نقرة واحدة ويصبح حسابك في Banwee جاهزًا.",
+      "preheader": "نقرة واحدة ويصبح حسابك في Pafare جاهزًا.",
       "heading": "أكّد بريدك الإلكتروني",
-      "body": "شكرًا لإنشائك حسابًا في Banwee. أكّد عنوان بريدك الإلكتروني لتبدأ التسوق.",
+      "body": "شكرًا لإنشائك حسابًا في Pafare. أكّد عنوان بريدك الإلكتروني لتبدأ التسوق.",
       "button": "تأكيد البريد الإلكتروني",
       "expiry": "تنتهي صلاحية هذا الرابط خلال {duration}.",
       "ignore": "إذا لم تُنشئ حسابًا، يمكنك تجاهل هذه الرسالة."
     },
     "password_reset": {
       "subject": "إعادة تعيين كلمة المرور",
-      "preheader": "اختر كلمة مرور جديدة لحسابك في Banwee.",
+      "preheader": "اختر كلمة مرور جديدة لحسابك في Pafare.",
       "heading": "إعادة تعيين كلمة المرور",
-      "body": "تلقّينا طلبًا لإعادة تعيين كلمة مرور حسابك في Banwee. اختر كلمة مرور جديدة عبر الزر أدناه.",
+      "body": "تلقّينا طلبًا لإعادة تعيين كلمة مرور حسابك في Pafare. اختر كلمة مرور جديدة عبر الزر أدناه.",
       "button": "إعادة تعيين كلمة المرور",
       "expiry": "تنتهي صلاحية هذا الرابط خلال {duration}.",
       "ignore": "إذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة ولن تتغير كلمة مرورك."
@@ -587,18 +587,18 @@
     },
     "verification": {
       "subject": "Kumpirmahin ang iyong email address",
-      "preheader": "Isang click lang at handa na ang Banwee account mo.",
+      "preheader": "Isang click lang at handa na ang Pafare account mo.",
       "heading": "Kumpirmahin ang iyong email",
-      "body": "Salamat sa paggawa ng Banwee account. Kumpirmahin ang iyong email address para makapagsimulang mamili.",
+      "body": "Salamat sa paggawa ng Pafare account. Kumpirmahin ang iyong email address para makapagsimulang mamili.",
       "button": "Kumpirmahin ang email",
       "expiry": "Mag-e-expire ang link na ito sa loob ng {duration}.",
       "ignore": "Kung hindi ka gumawa ng account, puwede mong balewalain ang email na ito."
     },
     "password_reset": {
       "subject": "I-reset ang iyong password",
-      "preheader": "Pumili ng bagong password para sa iyong Banwee account.",
+      "preheader": "Pumili ng bagong password para sa iyong Pafare account.",
       "heading": "I-reset ang iyong password",
-      "body": "May natanggap kaming kahilingan na i-reset ang password ng iyong Banwee account. Pumili ng bago gamit ang button sa ibaba.",
+      "body": "May natanggap kaming kahilingan na i-reset ang password ng iyong Pafare account. Pumili ng bago gamit ang button sa ibaba.",
       "button": "I-reset ang password",
       "expiry": "Mag-e-expire ang link na ito sa loob ng {duration}.",
       "ignore": "Kung hindi mo ito hiniling, puwede mong balewalain ang email na ito. Hindi magbabago ang password mo."
@@ -669,18 +669,18 @@
     },
     "verification": {
       "subject": "Confirme seu endereço de e-mail",
-      "preheader": "Um clique e sua conta Banwee está pronta.",
+      "preheader": "Um clique e sua conta Pafare está pronta.",
       "heading": "Confirme seu e-mail",
-      "body": "Obrigado por criar uma conta na Banwee. Confirme seu endereço de e-mail para começar a comprar.",
+      "body": "Obrigado por criar uma conta na Pafare. Confirme seu endereço de e-mail para começar a comprar.",
       "button": "Confirmar e-mail",
       "expiry": "Este link expira em {duration}.",
       "ignore": "Se você não criou uma conta, pode ignorar este e-mail."
     },
     "password_reset": {
       "subject": "Redefina sua senha",
-      "preheader": "Escolha uma nova senha para sua conta Banwee.",
+      "preheader": "Escolha uma nova senha para sua conta Pafare.",
       "heading": "Redefina sua senha",
-      "body": "Recebemos um pedido para redefinir a senha da sua conta Banwee. Escolha uma nova no botão abaixo.",
+      "body": "Recebemos um pedido para redefinir a senha da sua conta Pafare. Escolha uma nova no botão abaixo.",
       "button": "Redefinir senha",
       "expiry": "Este link expira em {duration}.",
       "ignore": "Se você não pediu isso, pode ignorar este e-mail. Sua senha não será alterada."
@@ -751,18 +751,18 @@
     },
     "verification": {
       "subject": "अपने ईमेल पते की पुष्टि करें",
-      "preheader": "एक क्लिक और आपका Banwee खाता तैयार है।",
+      "preheader": "एक क्लिक और आपका Pafare खाता तैयार है।",
       "heading": "अपने ईमेल की पुष्टि करें",
-      "body": "Banwee खाता बनाने के लिए धन्यवाद। खरीदारी शुरू करने के लिए अपने ईमेल पते की पुष्टि करें।",
+      "body": "Pafare खाता बनाने के लिए धन्यवाद। खरीदारी शुरू करने के लिए अपने ईमेल पते की पुष्टि करें।",
       "button": "ईमेल की पुष्टि करें",
       "expiry": "यह लिंक {duration} में समाप्त हो जाएगा।",
       "ignore": "अगर आपने खाता नहीं बनाया है, तो इस ईमेल को अनदेखा करें।"
     },
     "password_reset": {
       "subject": "अपना पासवर्ड रीसेट करें",
-      "preheader": "अपने Banwee खाते के लिए नया पासवर्ड चुनें।",
+      "preheader": "अपने Pafare खाते के लिए नया पासवर्ड चुनें।",
       "heading": "अपना पासवर्ड रीसेट करें",
-      "body": "हमें आपके Banwee खाते का पासवर्ड रीसेट करने का अनुरोध मिला है। नीचे दिए बटन से नया पासवर्ड चुनें।",
+      "body": "हमें आपके Pafare खाते का पासवर्ड रीसेट करने का अनुरोध मिला है। नीचे दिए बटन से नया पासवर्ड चुनें।",
       "button": "पासवर्ड रीसेट करें",
       "expiry": "यह लिंक {duration} में समाप्त हो जाएगा।",
       "ignore": "अगर आपने यह अनुरोध नहीं किया, तो इस ईमेल को अनदेखा करें। आपका पासवर्ड नहीं बदलेगा।"
@@ -833,18 +833,18 @@
     },
     "verification": {
       "subject": "اپنے ای میل پتے کی تصدیق کریں",
-      "preheader": "ایک کلک اور آپ کا Banwee اکاؤنٹ تیار ہے۔",
+      "preheader": "ایک کلک اور آپ کا Pafare اکاؤنٹ تیار ہے۔",
       "heading": "اپنی ای میل کی تصدیق کریں",
-      "body": "Banwee اکاؤنٹ بنانے کا شکریہ۔ خریداری شروع کرنے کے لیے اپنے ای میل پتے کی تصدیق کریں۔",
+      "body": "Pafare اکاؤنٹ بنانے کا شکریہ۔ خریداری شروع کرنے کے لیے اپنے ای میل پتے کی تصدیق کریں۔",
       "button": "ای میل کی تصدیق کریں",
       "expiry": "یہ لنک {duration} میں ختم ہو جائے گا۔",
       "ignore": "اگر آپ نے اکاؤنٹ نہیں بنایا تو اس ای میل کو نظر انداز کر دیں۔"
     },
     "password_reset": {
       "subject": "اپنا پاس ورڈ ری سیٹ کریں",
-      "preheader": "اپنے Banwee اکاؤنٹ کے لیے نیا پاس ورڈ منتخب کریں۔",
+      "preheader": "اپنے Pafare اکاؤنٹ کے لیے نیا پاس ورڈ منتخب کریں۔",
       "heading": "اپنا پاس ورڈ ری سیٹ کریں",
-      "body": "ہمیں آپ کے Banwee اکاؤنٹ کا پاس ورڈ ری سیٹ کرنے کی درخواست ملی ہے۔ نیچے دیے گئے بٹن سے نیا پاس ورڈ منتخب کریں۔",
+      "body": "ہمیں آپ کے Pafare اکاؤنٹ کا پاس ورڈ ری سیٹ کرنے کی درخواست ملی ہے۔ نیچے دیے گئے بٹن سے نیا پاس ورڈ منتخب کریں۔",
       "button": "پاس ورڈ ری سیٹ کریں",
       "expiry": "یہ لنک {duration} میں ختم ہو جائے گا۔",
       "ignore": "اگر آپ نے یہ درخواست نہیں کی تو اس ای میل کو نظر انداز کر دیں۔ آپ کا پاس ورڈ نہیں بدلے گا۔"
@@ -915,18 +915,18 @@
     },
     "verification": {
       "subject": "Подтвердите адрес электронной почты",
-      "preheader": "Один клик — и ваш аккаунт Banwee готов.",
+      "preheader": "Один клик — и ваш аккаунт Pafare готов.",
       "heading": "Подтвердите почту",
-      "body": "Спасибо, что создали аккаунт Banwee. Подтвердите адрес электронной почты, чтобы начать покупки.",
+      "body": "Спасибо, что создали аккаунт Pafare. Подтвердите адрес электронной почты, чтобы начать покупки.",
       "button": "Подтвердить почту",
       "expiry": "Ссылка действительна {duration}.",
       "ignore": "Если вы не создавали аккаунт, просто проигнорируйте это письмо."
     },
     "password_reset": {
       "subject": "Сброс пароля",
-      "preheader": "Придумайте новый пароль для аккаунта Banwee.",
+      "preheader": "Придумайте новый пароль для аккаунта Pafare.",
       "heading": "Сброс пароля",
-      "body": "Мы получили запрос на сброс пароля от вашего аккаунта Banwee. Задайте новый пароль с помощью кнопки ниже.",
+      "body": "Мы получили запрос на сброс пароля от вашего аккаунта Pafare. Задайте новый пароль с помощью кнопки ниже.",
       "button": "Сбросить пароль",
       "expiry": "Ссылка действительна {duration}.",
       "ignore": "Если вы этого не запрашивали, проигнорируйте письмо. Ваш пароль не изменится."
@@ -997,18 +997,18 @@
     },
     "verification": {
       "subject": "Підтвердьте адресу електронної пошти",
-      "preheader": "Один клік — і ваш обліковий запис Banwee готовий.",
+      "preheader": "Один клік — і ваш обліковий запис Pafare готовий.",
       "heading": "Підтвердьте пошту",
-      "body": "Дякуємо, що створили обліковий запис Banwee. Підтвердьте адресу електронної пошти, щоб почати покупки.",
+      "body": "Дякуємо, що створили обліковий запис Pafare. Підтвердьте адресу електронної пошти, щоб почати покупки.",
       "button": "Підтвердити пошту",
       "expiry": "Посилання дійсне {duration}.",
       "ignore": "Якщо ви не створювали обліковий запис, просто проігноруйте цей лист."
     },
     "password_reset": {
       "subject": "Скидання пароля",
-      "preheader": "Створіть новий пароль для облікового запису Banwee.",
+      "preheader": "Створіть новий пароль для облікового запису Pafare.",
       "heading": "Скидання пароля",
-      "body": "Ми отримали запит на скидання пароля до вашого облікового запису Banwee. Задайте новий пароль кнопкою нижче.",
+      "body": "Ми отримали запит на скидання пароля до вашого облікового запису Pafare. Задайте новий пароль кнопкою нижче.",
       "button": "Скинути пароль",
       "expiry": "Посилання дійсне {duration}.",
       "ignore": "Якщо ви цього не запитували, проігноруйте лист. Ваш пароль не зміниться."
@@ -1079,18 +1079,18 @@
     },
     "verification": {
       "subject": "Bestätige deine E-Mail-Adresse",
-      "preheader": "Ein Klick, und dein Banwee-Konto ist bereit.",
+      "preheader": "Ein Klick, und dein Pafare-Konto ist bereit.",
       "heading": "Bestätige deine E-Mail",
-      "body": "Danke, dass du ein Banwee-Konto erstellt hast. Bestätige deine E-Mail-Adresse, um mit dem Einkaufen zu beginnen.",
+      "body": "Danke, dass du ein Pafare-Konto erstellt hast. Bestätige deine E-Mail-Adresse, um mit dem Einkaufen zu beginnen.",
       "button": "E-Mail bestätigen",
       "expiry": "Dieser Link läuft in {duration} ab.",
       "ignore": "Wenn du kein Konto erstellt hast, kannst du diese E-Mail ignorieren."
     },
     "password_reset": {
       "subject": "Setze dein Passwort zurück",
-      "preheader": "Wähle ein neues Passwort für dein Banwee-Konto.",
+      "preheader": "Wähle ein neues Passwort für dein Pafare-Konto.",
       "heading": "Passwort zurücksetzen",
-      "body": "Wir haben eine Anfrage erhalten, das Passwort deines Banwee-Kontos zurückzusetzen. Wähle mit dem Button unten ein neues.",
+      "body": "Wir haben eine Anfrage erhalten, das Passwort deines Pafare-Kontos zurückzusetzen. Wähle mit dem Button unten ein neues.",
       "button": "Passwort zurücksetzen",
       "expiry": "Dieser Link läuft in {duration} ab.",
       "ignore": "Wenn du das nicht angefordert hast, kannst du diese E-Mail ignorieren. Dein Passwort bleibt unverändert."
@@ -1161,18 +1161,18 @@
     },
     "verification": {
       "subject": "E-posta adresinizi onaylayın",
-      "preheader": "Tek tıkla Banwee hesabınız hazır.",
+      "preheader": "Tek tıkla Pafare hesabınız hazır.",
       "heading": "E-postanızı onaylayın",
-      "body": "Banwee hesabı oluşturduğunuz için teşekkürler. Alışverişe başlamak için e-posta adresinizi onaylayın.",
+      "body": "Pafare hesabı oluşturduğunuz için teşekkürler. Alışverişe başlamak için e-posta adresinizi onaylayın.",
       "button": "E-postayı onayla",
       "expiry": "Bu bağlantının süresi {duration} içinde dolar.",
       "ignore": "Hesap oluşturmadıysanız bu e-postayı yok sayabilirsiniz."
     },
     "password_reset": {
       "subject": "Şifrenizi sıfırlayın",
-      "preheader": "Banwee hesabınız için yeni bir şifre belirleyin.",
+      "preheader": "Pafare hesabınız için yeni bir şifre belirleyin.",
       "heading": "Şifrenizi sıfırlayın",
-      "body": "Banwee hesabınızın şifresini sıfırlama talebi aldık. Aşağıdaki düğmeyle yeni bir şifre belirleyin.",
+      "body": "Pafare hesabınızın şifresini sıfırlama talebi aldık. Aşağıdaki düğmeyle yeni bir şifre belirleyin.",
       "button": "Şifreyi sıfırla",
       "expiry": "Bu bağlantının süresi {duration} içinde dolar.",
       "ignore": "Bunu siz istemediyseniz bu e-postayı yok sayabilirsiniz. Şifreniz değişmez."
@@ -1243,18 +1243,18 @@
     },
     "verification": {
       "subject": "Xác nhận địa chỉ email của bạn",
-      "preheader": "Chỉ một cú nhấp là tài khoản Banwee của bạn sẵn sàng.",
+      "preheader": "Chỉ một cú nhấp là tài khoản Pafare của bạn sẵn sàng.",
       "heading": "Xác nhận email của bạn",
-      "body": "Cảm ơn bạn đã tạo tài khoản Banwee. Hãy xác nhận địa chỉ email để bắt đầu mua sắm.",
+      "body": "Cảm ơn bạn đã tạo tài khoản Pafare. Hãy xác nhận địa chỉ email để bắt đầu mua sắm.",
       "button": "Xác nhận email",
       "expiry": "Liên kết này hết hạn sau {duration}.",
       "ignore": "Nếu bạn không tạo tài khoản, bạn có thể bỏ qua email này."
     },
     "password_reset": {
       "subject": "Đặt lại mật khẩu",
-      "preheader": "Chọn mật khẩu mới cho tài khoản Banwee của bạn.",
+      "preheader": "Chọn mật khẩu mới cho tài khoản Pafare của bạn.",
       "heading": "Đặt lại mật khẩu",
-      "body": "Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản Banwee của bạn. Hãy chọn mật khẩu mới bằng nút bên dưới.",
+      "body": "Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản Pafare của bạn. Hãy chọn mật khẩu mới bằng nút bên dưới.",
       "button": "Đặt lại mật khẩu",
       "expiry": "Liên kết này hết hạn sau {duration}.",
       "ignore": "Nếu bạn không yêu cầu, bạn có thể bỏ qua email này. Mật khẩu của bạn sẽ không thay đổi."
@@ -1325,18 +1325,18 @@
     },
     "verification": {
       "subject": "メールアドレスの確認",
-      "preheader": "ワンクリックで Banwee アカウントが使えるようになります。",
+      "preheader": "ワンクリックで Pafare アカウントが使えるようになります。",
       "heading": "メールアドレスを確認してください",
-      "body": "Banwee アカウントを作成いただきありがとうございます。メールアドレスを確認して、お買い物を始めましょう。",
+      "body": "Pafare アカウントを作成いただきありがとうございます。メールアドレスを確認して、お買い物を始めましょう。",
       "button": "メールアドレスを確認",
       "expiry": "このリンクの有効期限は {duration}です。",
       "ignore": "アカウントを作成した覚えがない場合は、このメールを無視してください。"
     },
     "password_reset": {
       "subject": "パスワードの再設定",
-      "preheader": "Banwee アカウントの新しいパスワードを設定してください。",
+      "preheader": "Pafare アカウントの新しいパスワードを設定してください。",
       "heading": "パスワードを再設定",
-      "body": "Banwee アカウントのパスワード再設定のリクエストを受け付けました。下のボタンから新しいパスワードを設定してください。",
+      "body": "Pafare アカウントのパスワード再設定のリクエストを受け付けました。下のボタンから新しいパスワードを設定してください。",
       "button": "パスワードを再設定",
       "expiry": "このリンクの有効期限は {duration}です。",
       "ignore": "お心当たりがない場合は、このメールを無視してください。パスワードは変更されません。"
@@ -1407,18 +1407,18 @@
     },
     "verification": {
       "subject": "이메일 주소를 확인해 주세요",
-      "preheader": "클릭 한 번이면 Banwee 계정이 준비됩니다.",
+      "preheader": "클릭 한 번이면 Pafare 계정이 준비됩니다.",
       "heading": "이메일을 확인해 주세요",
-      "body": "Banwee 계정을 만들어 주셔서 감사합니다. 이메일 주소를 확인하고 쇼핑을 시작하세요.",
+      "body": "Pafare 계정을 만들어 주셔서 감사합니다. 이메일 주소를 확인하고 쇼핑을 시작하세요.",
       "button": "이메일 확인",
       "expiry": "이 링크는 {duration} 후에 만료됩니다.",
       "ignore": "계정을 만들지 않으셨다면 이 이메일을 무시하셔도 됩니다."
     },
     "password_reset": {
       "subject": "비밀번호를 재설정하세요",
-      "preheader": "Banwee 계정의 새 비밀번호를 설정하세요.",
+      "preheader": "Pafare 계정의 새 비밀번호를 설정하세요.",
       "heading": "비밀번호 재설정",
-      "body": "Banwee 계정의 비밀번호 재설정 요청을 받았습니다. 아래 버튼으로 새 비밀번호를 설정하세요.",
+      "body": "Pafare 계정의 비밀번호 재설정 요청을 받았습니다. 아래 버튼으로 새 비밀번호를 설정하세요.",
       "button": "비밀번호 재설정",
       "expiry": "이 링크는 {duration} 후에 만료됩니다.",
       "ignore": "요청하지 않으셨다면 이 이메일을 무시하셔도 됩니다. 비밀번호는 변경되지 않습니다."
@@ -1489,18 +1489,18 @@
     },
     "verification": {
       "subject": "אשרו את כתובת האימייל שלכם",
-      "preheader": "לחיצה אחת והחשבון שלכם ב־Banwee מוכן.",
+      "preheader": "לחיצה אחת והחשבון שלכם ב־Pafare מוכן.",
       "heading": "אשרו את האימייל שלכם",
-      "body": "תודה שפתחתם חשבון ב־Banwee. אשרו את כתובת האימייל כדי להתחיל לקנות.",
+      "body": "תודה שפתחתם חשבון ב־Pafare. אשרו את כתובת האימייל כדי להתחיל לקנות.",
       "button": "אישור האימייל",
       "expiry": "תוקף הקישור יפוג בעוד {duration}.",
       "ignore": "אם לא פתחתם חשבון, אפשר להתעלם מהאימייל הזה."
     },
     "password_reset": {
       "subject": "איפוס הסיסמה",
-      "preheader": "בחרו סיסמה חדשה לחשבון שלכם ב־Banwee.",
+      "preheader": "בחרו סיסמה חדשה לחשבון שלכם ב־Pafare.",
       "heading": "איפוס הסיסמה",
-      "body": "קיבלנו בקשה לאפס את הסיסמה של החשבון שלכם ב־Banwee. בחרו סיסמה חדשה בכפתור שלמטה.",
+      "body": "קיבלנו בקשה לאפס את הסיסמה של החשבון שלכם ב־Pafare. בחרו סיסמה חדשה בכפתור שלמטה.",
       "button": "איפוס סיסמה",
       "expiry": "תוקף הקישור יפוג בעוד {duration}.",
       "ignore": "אם לא ביקשתם זאת, אפשר להתעלם מהאימייל. הסיסמה שלכם לא תשתנה."
@@ -1571,18 +1571,18 @@
     },
     "verification": {
       "subject": "نشانی ایمیلتان را تأیید کنید",
-      "preheader": "با یک کلیک حساب Banwee شما آماده است.",
+      "preheader": "با یک کلیک حساب Pafare شما آماده است.",
       "heading": "ایمیلتان را تأیید کنید",
-      "body": "از ساخت حساب Banwee سپاسگزاریم. برای شروع خرید، نشانی ایمیلتان را تأیید کنید.",
+      "body": "از ساخت حساب Pafare سپاسگزاریم. برای شروع خرید، نشانی ایمیلتان را تأیید کنید.",
       "button": "تأیید ایمیل",
       "expiry": "این پیوند تا {duration} دیگر منقضی می‌شود.",
       "ignore": "اگر حسابی نساخته‌اید، می‌توانید این ایمیل را نادیده بگیرید."
     },
     "password_reset": {
       "subject": "بازنشانی رمز عبور",
-      "preheader": "برای حساب Banwee خود رمز عبور تازه‌ای انتخاب کنید.",
+      "preheader": "برای حساب Pafare خود رمز عبور تازه‌ای انتخاب کنید.",
       "heading": "بازنشانی رمز عبور",
-      "body": "درخواستی برای بازنشانی رمز عبور حساب Banwee شما دریافت کردیم. با دکمهٔ زیر رمز تازه‌ای انتخاب کنید.",
+      "body": "درخواستی برای بازنشانی رمز عبور حساب Pafare شما دریافت کردیم. با دکمهٔ زیر رمز تازه‌ای انتخاب کنید.",
       "button": "بازنشانی رمز عبور",
       "expiry": "این پیوند تا {duration} دیگر منقضی می‌شود.",
       "ignore": "اگر شما درخواست نکرده‌اید، این ایمیل را نادیده بگیرید. رمز عبورتان تغییر نمی‌کند."
@@ -1653,18 +1653,18 @@
     },
     "verification": {
       "subject": "خپل برېښنالیک تایید کړئ",
-      "preheader": "یو کلیک او ستاسو د Banwee حساب چمتو دی.",
+      "preheader": "یو کلیک او ستاسو د Pafare حساب چمتو دی.",
       "heading": "خپل برېښنالیک تایید کړئ",
-      "body": "د Banwee حساب جوړولو مننه. د پېرود پیل لپاره خپل برېښنالیک تایید کړئ.",
+      "body": "د Pafare حساب جوړولو مننه. د پېرود پیل لپاره خپل برېښنالیک تایید کړئ.",
       "button": "برېښنالیک تایید کړئ",
       "expiry": "دا لینک په {duration} کې پای ته رسېږي.",
       "ignore": "که تاسو حساب نه دی جوړ کړی، دا برېښنالیک له پامه وغورځوئ."
     },
     "password_reset": {
       "subject": "خپل پټنوم بیا تنظیم کړئ",
-      "preheader": "د خپل Banwee حساب لپاره نوی پټنوم وټاکئ.",
+      "preheader": "د خپل Pafare حساب لپاره نوی پټنوم وټاکئ.",
       "heading": "خپل پټنوم بیا تنظیم کړئ",
-      "body": "موږ ستاسو د Banwee حساب د پټنوم د بیا تنظیمولو غوښتنه ترلاسه کړه. د لاندې تڼۍ په مرسته نوی پټنوم وټاکئ.",
+      "body": "موږ ستاسو د Pafare حساب د پټنوم د بیا تنظیمولو غوښتنه ترلاسه کړه. د لاندې تڼۍ په مرسته نوی پټنوم وټاکئ.",
       "button": "پټنوم بیا تنظیم کړئ",
       "expiry": "دا لینک په {duration} کې پای ته رسېږي.",
       "ignore": "که تاسو دا غوښتنه نه ده کړې، دا برېښنالیک له پامه وغورځوئ. ستاسو پټنوم نه بدلېږي."
@@ -1735,18 +1735,18 @@
     },
     "verification": {
       "subject": "ناونیشانی ئیمەیڵەکەت پشتڕاست بکەرەوە",
-      "preheader": "تەنها یەک کرتە و هەژماری Banwee ـەکەت ئامادەیە.",
+      "preheader": "تەنها یەک کرتە و هەژماری Pafare ـەکەت ئامادەیە.",
       "heading": "ئیمەیڵەکەت پشتڕاست بکەرەوە",
-      "body": "سوپاس بۆ دروستکردنی هەژمار لە Banwee. بۆ دەستپێکردنی کڕین ناونیشانی ئیمەیڵەکەت پشتڕاست بکەرەوە.",
+      "body": "سوپاس بۆ دروستکردنی هەژمار لە Pafare. بۆ دەستپێکردنی کڕین ناونیشانی ئیمەیڵەکەت پشتڕاست بکەرەوە.",
       "button": "ئیمەیڵ پشتڕاست بکەرەوە",
       "expiry": "ئەم بەستەرە لە ماوەی {duration} بەسەر دەچێت.",
       "ignore": "ئەگەر هەژمارت دروست نەکردووە، دەتوانیت ئەم ئیمەیڵە فەرامۆش بکەیت."
     },
     "password_reset": {
       "subject": "وشەی نهێنییەکەت ڕێکبخەرەوە",
-      "preheader": "وشەیەکی نهێنی نوێ بۆ هەژماری Banwee ـەکەت هەڵبژێرە.",
+      "preheader": "وشەیەکی نهێنی نوێ بۆ هەژماری Pafare ـەکەت هەڵبژێرە.",
       "heading": "وشەی نهێنییەکەت ڕێکبخەرەوە",
-      "body": "داوایەکمان پێگەیشت بۆ ڕێکخستنەوەی وشەی نهێنی هەژماری Banwee ـەکەت. بە دوگمەی خوارەوە وشەیەکی نوێ هەڵبژێرە.",
+      "body": "داوایەکمان پێگەیشت بۆ ڕێکخستنەوەی وشەی نهێنی هەژماری Pafare ـەکەت. بە دوگمەی خوارەوە وشەیەکی نوێ هەڵبژێرە.",
       "button": "ڕێکخستنەوەی وشەی نهێنی",
       "expiry": "ئەم بەستەرە لە ماوەی {duration} بەسەر دەچێت.",
       "ignore": "ئەگەر تۆ داوات نەکردووە، ئەم ئیمەیڵە فەرامۆش بکە. وشەی نهێنییەکەت ناگۆڕێت."
@@ -1817,18 +1817,18 @@
     },
     "verification": {
       "subject": "আপনার ইমেইল ঠিকানা নিশ্চিত করুন",
-      "preheader": "একটি ক্লিকেই আপনার Banwee অ্যাকাউন্ট প্রস্তুত।",
+      "preheader": "একটি ক্লিকেই আপনার Pafare অ্যাকাউন্ট প্রস্তুত।",
       "heading": "আপনার ইমেইল নিশ্চিত করুন",
-      "body": "Banwee অ্যাকাউন্ট তৈরি করার জন্য ধন্যবাদ। কেনাকাটা শুরু করতে আপনার ইমেইল ঠিকানা নিশ্চিত করুন।",
+      "body": "Pafare অ্যাকাউন্ট তৈরি করার জন্য ধন্যবাদ। কেনাকাটা শুরু করতে আপনার ইমেইল ঠিকানা নিশ্চিত করুন।",
       "button": "ইমেইল নিশ্চিত করুন",
       "expiry": "এই লিংকের মেয়াদ {duration} পর শেষ হবে।",
       "ignore": "আপনি অ্যাকাউন্ট তৈরি না করে থাকলে এই ইমেইলটি উপেক্ষা করুন।"
     },
     "password_reset": {
       "subject": "আপনার পাসওয়ার্ড রিসেট করুন",
-      "preheader": "আপনার Banwee অ্যাকাউন্টের জন্য নতুন পাসওয়ার্ড বেছে নিন।",
+      "preheader": "আপনার Pafare অ্যাকাউন্টের জন্য নতুন পাসওয়ার্ড বেছে নিন।",
       "heading": "আপনার পাসওয়ার্ড রিসেট করুন",
-      "body": "আপনার Banwee অ্যাকাউন্টের পাসওয়ার্ড রিসেটের অনুরোধ পেয়েছি। নিচের বোতাম দিয়ে নতুন পাসওয়ার্ড বেছে নিন।",
+      "body": "আপনার Pafare অ্যাকাউন্টের পাসওয়ার্ড রিসেটের অনুরোধ পেয়েছি। নিচের বোতাম দিয়ে নতুন পাসওয়ার্ড বেছে নিন।",
       "button": "পাসওয়ার্ড রিসেট করুন",
       "expiry": "এই লিংকের মেয়াদ {duration} পর শেষ হবে।",
       "ignore": "আপনি অনুরোধ না করে থাকলে এই ইমেইলটি উপেক্ষা করুন। আপনার পাসওয়ার্ড বদলাবে না।"
@@ -1899,18 +1899,18 @@
     },
     "verification": {
       "subject": "आफ्नो इमेल ठेगाना पुष्टि गर्नुहोस्",
-      "preheader": "एक क्लिकमै तपाईंको Banwee खाता तयार हुन्छ।",
+      "preheader": "एक क्लिकमै तपाईंको Pafare खाता तयार हुन्छ।",
       "heading": "आफ्नो इमेल पुष्टि गर्नुहोस्",
-      "body": "Banwee खाता बनाउनुभएकोमा धन्यवाद। किनमेल सुरु गर्न आफ्नो इमेल ठेगाना पुष्टि गर्नुहोस्।",
+      "body": "Pafare खाता बनाउनुभएकोमा धन्यवाद। किनमेल सुरु गर्न आफ्नो इमेल ठेगाना पुष्टि गर्नुहोस्।",
       "button": "इमेल पुष्टि गर्नुहोस्",
       "expiry": "यो लिंकको म्याद {duration} मा सकिन्छ।",
       "ignore": "तपाईंले खाता बनाउनुभएको छैन भने यो इमेल बेवास्ता गर्नुहोस्।"
     },
     "password_reset": {
       "subject": "आफ्नो पासवर्ड रिसेट गर्नुहोस्",
-      "preheader": "आफ्नो Banwee खाताका लागि नयाँ पासवर्ड छान्नुहोस्।",
+      "preheader": "आफ्नो Pafare खाताका लागि नयाँ पासवर्ड छान्नुहोस्।",
       "heading": "आफ्नो पासवर्ड रिसेट गर्नुहोस्",
-      "body": "हामीले तपाईंको Banwee खाताको पासवर्ड रिसेट गर्ने अनुरोध पायौं। तलको बटनबाट नयाँ पासवर्ड छान्नुहोस्।",
+      "body": "हामीले तपाईंको Pafare खाताको पासवर्ड रिसेट गर्ने अनुरोध पायौं। तलको बटनबाट नयाँ पासवर्ड छान्नुहोस्।",
       "button": "पासवर्ड रिसेट गर्नुहोस्",
       "expiry": "यो लिंकको म्याद {duration} मा सकिन्छ।",
       "ignore": "तपाईंले अनुरोध गर्नुभएको होइन भने यो इमेल बेवास्ता गर्नुहोस्। तपाईंको पासवर्ड बदलिँदैन।"
