@@ -11,7 +11,7 @@ from sqlalchemy import select
 import models  # noqa: F401 (registers every model on Base)
 from core.config import settings
 from core.db import Base, DatabaseManager
-from models.accounts.roles import Role, Permission, Role_Permission
+from models.accounts.role import Role, Permission, Role_Permission
 
 ACTIONS = ("view", "create", "edit", "delete")
 SKIP = {"role_permissions"}  # join tables / internals

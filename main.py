@@ -13,7 +13,6 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from sqlalchemy.exc import SQLAlchemyError
 
 from core.db import db_manager, initialize_db
-from services.accounts.superadmin import ensure_superadmin
 from core.config import settings
 from core.exceptions import (
     APIException,
@@ -24,7 +23,7 @@ from core.exceptions import (
     general_exception_handler
 )
 
-from api import auth_router, oauth_router, user_router, health_router
+from api import auth_router, user_router, role_router, permission_router, health_router
 import models
 from core import redis_cache
 import uvicorn
@@ -62,15 +61,6 @@ async def lifespan(app: FastAPI):
         logger.error(f"Database initialization failed: {e}")
         raise RuntimeError(f"Database initialization failed: {e}")
 
-    # The owner's superadmin account; a weak password stops production from starting
-    try:
-        async with db_manager.get_session_with_retry() as db:
-            await ensure_superadmin(db)
-    except ValueError as e:
-        if settings.ENVIRONMENT.lower() == "production":
-            raise RuntimeError(str(e))
-        logger.warning(f"Superadmin not set up: {e}")
-
     yield
 
     # --- Shutdown ---
@@ -101,8 +91,9 @@ if hasattr(settings, 'ALLOWED_HOSTS'):
 
 v1_router = APIRouter(prefix="/v1", redirect_slashes=False)
 v1_router.include_router(auth_router)
-v1_router.include_router(oauth_router)
 v1_router.include_router(user_router)
+v1_router.include_router(role_router)
+v1_router.include_router(permission_router)
 v1_router.include_router(health_router)
 
 app.include_router(v1_router)
@@ -111,10 +102,10 @@ app.include_router(v1_router)
 @app.get("/")
 async def read_root():
     return {
-        "service": "Banwee API",
+        "service": "Pafare API",
         "status": "Running",
         "version": "1.0.0",
-        "description": "Groceries and essentials from home for newcomers to Canada, delivered to your door.",
+        "description": "Hotel room booking.",
     }
 
 

@@ -24,6 +24,7 @@ class Booking(BaseModel):
     __table_args__ = (
         CheckConstraint('check_out > check_in', name='ck_bookings_dates'),
         CheckConstraint('guests > 0', name='ck_bookings_guests'),
+        CheckConstraint('discount BETWEEN 0 AND 100', name='ck_bookings_discount'),
         {'schema': 'bookings'},
     )
 
@@ -37,7 +38,7 @@ class Booking(BaseModel):
     guests: Mapped[int] = mapped_column(Integer, default=1)
     status: Mapped[BookingStatus] = mapped_column(String(20), default=BookingStatus.PENDING, index=True)
     total_price: Mapped[int] = mapped_column(Integer, default=0)  
-    discount: Mapped[int] = mapped_column(Integer, default=0, max=100)  # in percentage
+    discount: Mapped[int] = mapped_column(Integer, default=0)  # percentage, 0-100 (see ck_bookings_discount)
     base_price: Mapped[int] = mapped_column(Integer, default=0) 
     booking_code: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, unique=True, index=True)
     currency: Mapped[Currency] = mapped_column(String(10), default=Currency.NGN, index=True)

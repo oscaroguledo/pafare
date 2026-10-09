@@ -26,22 +26,21 @@ class User(BaseModel):
 
     firstname: Mapped[str] = mapped_column(String(CHAR_LENGTH))
     middlename: Mapped[Optional[str]] = mapped_column(String(CHAR_LENGTH), nullable=True)
-    lastname: Mapped[str] = mapped_column(String(CHAR_LENGTH), index=True)
-    email: Mapped[str] = mapped_column(String(CHAR_LENGTH), unique=True)
+    lastname: Mapped[str] = mapped_column(String(CHAR_LENGTH))
+    email: Mapped[str] = mapped_column(String(CHAR_LENGTH), unique=True, index=True)
     passwordhash: Mapped[str] = mapped_column(String(CHAR_LENGTH))
 
     account_status: Mapped[AccountStatus] = mapped_column(String(50), default=AccountStatus.ACTIVE, index=True)
-    verified: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
     role_id: Mapped[uuid.UUID] = mapped_column(GUID(), ForeignKey("accounts.roles.id"), index=True)
 
     phone: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, index=True)
     country: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, index=True)
     language: Mapped[str] = mapped_column(String(10), default="en", index=True)
-    timezone: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    timezone: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, index=True)
     avatar_url: Mapped[Optional[str]] = mapped_column(String(500), nullable=True)
-    dob: Mapped[Optional[datetime]] = mapped_column(UTCDateTime(), nullable=True)
-    gender: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
-    last_login: Mapped[Optional[datetime]] = mapped_column(UTCDateTime(), nullable=True, index=True)
+    dob: Mapped[Optional[datetime]] = mapped_column(UTCDateTime(), nullable=True, index=True)
+    gender: Mapped[Optional[str]] = mapped_column(String(20), nullable=True, index=True)
+    last_login: Mapped[Optional[datetime]] = mapped_column(UTCDateTime(), server_default=func.now(), onupdate=func.now(), nullable=True, index=True)
 
 
     @property

@@ -1,1 +1,1 @@
-from .accounts import AuthService, UserService
+from .accounts import UserService, RoleService, PermissionService

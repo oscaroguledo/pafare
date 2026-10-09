@@ -1,280 +1,162 @@
-from fastapi import APIRouter, Depends, status, Query, BackgroundTasks, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from uuid import UUID
 from typing import Optional
-from core.utils.response import Response
-from core.exceptions import APIException
-from core.db import get_db
-from core.logging import get_structured_logger as get_logger
-from services.accounts.user import UserService
-from schemas.accounts.auth import strong_password
-from schemas.accounts.user import Create as UserCreate, Update as UserUpdate, UserRoleUpdate
-from core.dependencies import require_admin, require_auth
-from models.accounts.user import User as AuthUser, UserRole, outranks, get_role_id
+from uuid import UUID
 
-logger = get_logger(__name__)
+from fastapi import APIRouter, BackgroundTasks, Depends, Query, status
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from core.db import get_db
+from core.dependencies import require_permission, require_self_or_permission
+from core.exceptions import APIException
+from core.utils.response import Response
+from models.accounts.user import User, AccountStatus
+from schemas.accounts.user import (
+    UserCreate, UserUpdate, UserList, UserGet, UserResponse, RoleChange, EmailChange,
+)
+from services.accounts.user import UserService
+
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-def _user_payload(user) -> dict:
-    """Admin-facing user shape shared by create, update and role changes."""
-    return {
-        "id": str(user.id),
-        "email": user.email,
-        "firstname": user.firstname,
-        "lastname": user.lastname,
-        "phone": user.phone,
-        "role": user.role.value if hasattr(user.role, "value") else user.role,
-        "account_status": user.account_status,
-        "verified": user.verified,
-        "verified": user.verified,
-        "is_active": user.is_active,
-        "date_of_birth": user.dob.isoformat() if user.dob else None,
-        "gender": user.gender,
-        "country": user.country,
-        "timezone": user.timezone,
-        "created_at": user.created_at.isoformat() if user.created_at else None,
-        "updated_at": user.updated_at.isoformat() if user.updated_at else None,
-    }
-
-
-async def _manageable(db: AsyncSession, current_user: AuthUser, user_id: UUID) -> AuthUser:
-    """The user an admin action targets, when the acting staff member ranks above them.
-    Only a superadmin manages admins, and no one manages a superadmin through the API."""
-    user = await db.get(AuthUser, user_id)
-    if not user:
-        raise APIException(status_code=status.HTTP_404_NOT_FOUND, message="User not found")
-    if not outranks(current_user.role, user.role):
-        raise APIException(status_code=status.HTTP_403_FORBIDDEN, message="You can only manage accounts below your own role")
-    return user
-
-
-def _can_give(current_user: AuthUser, role: UserRole) -> None:
-    """Staff can only give roles below their own: admins are made by a superadmin, superadmins on the server."""
-    if not outranks(current_user.role, role):
-        raise APIException(status_code=status.HTTP_403_FORBIDDEN, message=f"You can't give the {role.value} role")
-
-
-@router.post("/")
-async def create(
+@router.post("/", status_code=status.HTTP_201_CREATED)
+async def create_user(
     payload: UserCreate,
-    background_tasks: BackgroundTasks = None,
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
+    background_tasks: BackgroundTasks,
+    current_user: User = Depends(require_permission("users:create")),
+    db: AsyncSession = Depends(get_db),
 ):
-    """Create a new user (admin only - public signup is POST /v1/auth/register/)."""
-    try:
-        try:
-            strong_password(payload.password)
-        except ValueError as e:
-            raise APIException(status_code=status.HTTP_422_UNPROCESSABLE_CONTENT, message=str(e))
-        _can_give(current_user, payload.role)
-        service = UserService(db)
-        user = await service.create(payload, background_tasks)
-        return Response.success(data=_user_payload(user), message="User created successfully", status_code=status.HTTP_201_CREATED)
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error creating user: {e}")
-        raise APIException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            message=f"Failed to create user: {str(e)}"
-        )
-
-
-@router.get("/{user_id}/")
-async def get(
-    user_id: UUID,
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
-):
-    """Get a user by ID. Admin can get any user, users can only get themselves."""
-    try:
-        # Since require_admin is used, current_user is already admin/manager
-        # Admins/managers can access any user
-        service = UserService(db)
-        user = await service.get(user_id)
-        if not user:
-            raise APIException(
-                status_code=status.HTTP_404_NOT_FOUND, message="User not found")
-        return Response.success(data=user.to_dict(), message="User retrieved successfully")
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error fetching user: {e}")
-        raise APIException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            message=f"Failed to fetch user: {str(e)}"
-        )
+    """Create a user with any role (needs users:create). Public sign-up is POST /auth/register/."""
+    user = await UserService(db).create(payload, background_tasks)
+    return Response.success(
+        data=UserResponse.model_validate(user), message="User created", status_code=status.HTTP_201_CREATED
+    )
 
 
 @router.get("/")
-async def list(
+async def list_users(
     page: int = Query(1, ge=1),
     limit: int = Query(10, ge=1, le=100),
-    role: Optional[str] = Query(None, description="Filter by user role"),
-    q: Optional[str] = Query(None, description="Search query for user name or email"),
-    search: Optional[str] = Query(None),
-    status: Optional[str] = Query(None),
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
+    search: Optional[str] = Query(None, description="Matches first, middle or last name, or email"),
+    role: Optional[str] = Query(None, description="Role name"),
+    account_status: Optional[AccountStatus] = Query(None, alias="status"),
+    country: Optional[str] = Query(None),
+    language: Optional[str] = Query(None),
+    gender: Optional[str] = Query(None),
+    current_user: User = Depends(require_permission("users:view")),
+    db: AsyncSession = Depends(get_db),
 ):
-    """List users with optional filtering and pagination (admin only)."""
-    try:
-        service = UserService(db)
-        result = await service.list(
-            page=page, limit=limit, role=role, query=search or q, status=status
-        )
-        if isinstance(result, dict) and "users" in result and "pagination" in result:
-            return Response.success(data=result.get("users", []), pagination=result.get("pagination"))
-        return Response.success(data=result)
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise APIException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            message=f"Failed to fetch users: {str(e)}"
-        )
+    """List users, newest first (needs users:view)."""
+    filters = UserList(
+        search=search, role_name=role, status=account_status, country=country, language=language, gender=gender
+    )
+    result = await UserService(db).list(filters, page=page, limit=limit)
+    users = [UserResponse.model_validate(user) for user in result["users"]]
+    return Response.success(data=users, pagination=result["pagination"])
+
+
+@router.get("/{user_id}/")
+async def get_user(
+    user_id: UUID,
+    current_user: User = Depends(require_self_or_permission("users:view")),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get a user. You can always read yourself; others need users:view."""
+    user = await UserService(db).get(UserGet(id=user_id))
+    return Response.success(data=UserResponse.model_validate(user))
 
 
 @router.patch("/{user_id}/")
-async def patch(
+async def update_user(
     user_id: UUID,
     payload: UserUpdate,
-    current_user: AuthUser = Depends(require_auth),
-    db: AsyncSession = Depends(get_db)
+    current_user: User = Depends(require_self_or_permission("users:edit")),
+    db: AsyncSession = Depends(get_db),
 ):
-    """Partially update a user. Admin can update any user, users can only update themselves."""
-    try:
-        is_admin = current_user.is_staff
-        # Non-admins may only touch their own record. UserUpdate itself only exposes plain profile fields (role/account_status/is_active/etc. aren't declared on it, so Pydantic already strips them - there's nothing sensitive left to gate).
-        if not is_admin and current_user.id != user_id:
-            raise APIException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                message="You can only update your own user data"
-            )
-        if current_user.id != user_id:
-            await _manageable(db, current_user, user_id)  # e.g. an admin can't change a superadmin's email
-        service = UserService(db)
-        updated_user = await service.update(user_id, payload)
-        if not updated_user:
-            raise APIException(
-                status_code=status.HTTP_404_NOT_FOUND, message="User not found")
-        return Response.success(data=_user_payload(updated_user), message="User updated successfully")
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error updating user: {e}")
-        raise APIException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            message=f"Failed to update user: {str(e)}"
-        )
-
-
-@router.post("/{user_id}/reset-password/")
-async def reset_password(
-    user_id: UUID,
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
-):
-    """Send password reset email to user (admin only)."""
-    try:
-        await _manageable(db, current_user, user_id)
-        service = UserService(db)
-        result = await service.reset_password(user_id)
-        return Response.success(data=result, message="Password reset email sent")
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise APIException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, message=f"Failed to reset password: {str(e)}")
-
-
-@router.post("/{user_id}/deactivate/")
-async def deactivate(
-    user_id: UUID,
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
-):
-    """Deactivate user account (admin only); admins can't lock themselves out."""
-    try:
-        if current_user.id == user_id:
-            raise APIException(status_code=status.HTTP_400_BAD_REQUEST, message="You can't deactivate your own account")
-        await _manageable(db, current_user, user_id)
-        service = UserService(db)
-        result = await service.deactivate(user_id)
-        return Response.success(data=result, message="User deactivated")
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise APIException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, message=f"Failed to deactivate user: {str(e)}")
-
-
-@router.post("/{user_id}/activate/")
-async def activate(
-    user_id: UUID,
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
-):
-    """Activate user account (admin only)."""
-    try:
-        await _manageable(db, current_user, user_id)
-        service = UserService(db)
-        result = await service.activate(user_id)
-        return Response.success(data=result, message="User activated")
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise APIException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, message=f"Failed to activate user: {str(e)}")
-
-
-@router.put("/{user_id}/verify/")
-async def verify(
-    user_id: UUID,
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
-):
-    """Verify user account (admin only)."""
-    try:
-        await _manageable(db, current_user, user_id)
-        service = UserService(db)
-        result = await service.verify_user_account(user_id)
-        return Response.success(data=result, message="User verified")
-    except APIException:
-        raise
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise APIException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, message=f"Failed to verify user: {str(e)}")
+    """Update profile fields. You can always edit yourself; others need users:edit."""
+    user = await UserService(db).update(user_id, payload)
+    return Response.success(data=UserResponse.model_validate(user), message="User updated")
 
 
 @router.put("/{user_id}/role/")
-async def update_role(
+async def change_role(
     user_id: UUID,
-    payload: UserRoleUpdate,
-    current_user: AuthUser = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
+    payload: RoleChange,
+    current_user: User = Depends(require_permission("roles:edit")),
+    db: AsyncSession = Depends(get_db),
 ):
-    """Change a user's role. Staff can only change accounts below their own role, to roles below their own:
-    a superadmin makes and removes admins, and nobody changes their own role."""
+    """Give a user a different role (needs roles:edit). Nobody changes their own role."""
     if user_id == current_user.id:
-        raise APIException(status_code=status.HTTP_400_BAD_REQUEST, message="You can't change your own role")
-    user = await _manageable(db, current_user, user_id)
-    _can_give(current_user, payload.role)
-    user.role_id = await get_role_id(db, payload.role)
-    await db.commit()
-    await db.refresh(user)
-    return Response.success(data=_user_payload(user), message="Role updated")
+        raise APIException(status_code=400, message="You can't change your own role")
+    user = await UserService(db).change_role(user_id, payload.role_id)
+    return Response.success(data=UserResponse.model_validate(user), message="Role updated")
+
+
+@router.put("/{user_id}/email/")
+async def change_email(
+    user_id: UUID,
+    payload: EmailChange,
+    background_tasks: BackgroundTasks,
+    current_user: User = Depends(require_permission("users:edit")),
+    db: AsyncSession = Depends(get_db),
+):
+    """Change a user's email (needs users:edit). The new address must be verified again."""
+    user = await UserService(db).change_email(user_id, payload.new_email, background_tasks)
+    return Response.success(data=UserResponse.model_validate(user), message="Email updated; verification needed")
+
+
+@router.post("/{user_id}/reset-password/")
+async def reset_user_password(
+    user_id: UUID,
+    current_user: User = Depends(require_permission("users:edit")),
+    db: AsyncSession = Depends(get_db),
+):
+    """Send a user a password-reset link (needs users:edit)."""
+    await UserService(db).reset_password(user_id)
+    return Response.success(message="Password reset link sent")
+
+
+@router.post("/{user_id}/deactivate/")
+async def deactivate_user(
+    user_id: UUID,
+    current_user: User = Depends(require_permission("users:edit")),
+    db: AsyncSession = Depends(get_db),
+):
+    """Deactivate an account (needs users:edit). You can't deactivate yourself."""
+    if user_id == current_user.id:
+        raise APIException(status_code=400, message="You can't deactivate your own account")
+    await UserService(db).deactivate(user_id)
+    return Response.success(message="User deactivated")
+
+
+@router.post("/{user_id}/activate/")
+async def activate_user(
+    user_id: UUID,
+    current_user: User = Depends(require_permission("users:edit")),
+    db: AsyncSession = Depends(get_db),
+):
+    """Activate an account (needs users:edit)."""
+    await UserService(db).activate(user_id)
+    return Response.success(message="User activated")
+
+
+@router.post("/{user_id}/suspend/")
+async def suspend_user(
+    user_id: UUID,
+    current_user: User = Depends(require_permission("users:edit")),
+    db: AsyncSession = Depends(get_db),
+):
+    """Suspend an account (needs users:edit). You can't suspend yourself."""
+    if user_id == current_user.id:
+        raise APIException(status_code=400, message="You can't suspend your own account")
+    await UserService(db).suspend(user_id)
+    return Response.success(message="User suspended")
+
+
+@router.post("/{user_id}/unsuspend/")
+async def unsuspend_user(
+    user_id: UUID,
+    current_user: User = Depends(require_permission("users:edit")),
+    db: AsyncSession = Depends(get_db),
+):
+    """Lift a suspension (needs users:edit). The account becomes active again."""
+    await UserService(db).unsuspend(user_id)
+    return Response.success(message="User unsuspended")

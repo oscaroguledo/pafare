@@ -1,2 +1,2 @@
 from .user import User
-from .roles import Role, Permission, Role_Permission
+from .role import Role, Permission, Role_Permission

@@ -1,19 +1,20 @@
+
 from fastapi import BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func, text, or_
-from sqlalchemy.orm import selectinload
-from typing import List, Optional, Dict, Any
+from sqlalchemy import select, func, or_, and_
+from sqlalchemy.exc import IntegrityError
+from typing import Dict
 from uuid import UUID
+from datetime import datetime, timezone
 from core.utils.uuid_utils import uuid7
-from models.accounts.user import User, Role, AccountStatus, get_role_id
+from models.accounts.user import User, AccountStatus
+from models.accounts.role import Role
 from core.exceptions import APIException
-from schemas.accounts.user import Create as UserCreate
-from services.accounts.email import queue, send_verification, send_password_reset
-from core.utils.messages.email import email_language
-from datetime import datetime, timedelta, timezone
-import secrets
-from core.utils.encryption import PasswordManager
+from schemas.accounts.user import UserCreate, UserGet, UserList, UserLogin, UserUpdate
 from core.logging import get_structured_logger
+from core.config import settings
+from core.utils.encryption import PasswordManager, JWTManager, TokenError
+from services.accounts.role import RoleService
 
 logger = get_structured_logger(__name__)
 
@@ -22,438 +23,384 @@ class UserService:
     def __init__(self, db: AsyncSession):
         self.db = db
         self.password_manager = PasswordManager()
-        
-        # Search configuration
-        self.similarity_threshold = 0.3
-        self.weights = {
-            "exact": 1.0,
-            "prefix": 0.8,
-            "fuzzy": 0.5
-        }
+        self.jwt_manager = JWTManager()
+        self.role_service = RoleService(db)  # Assuming you have a RoleService to fetch role_id by name
+
 
     async def create(self, user_data: UserCreate, background_tasks: BackgroundTasks) -> User:
-        """Create a new user with verification email"""
-        passwordhash = self.password_manager.hash_password(
-            user_data.password)
-        verification_token = secrets.token_urlsafe(32)
-        token_expiration = datetime.now(timezone.utc) + timedelta(hours=24)  # Token valid for 24 hours
-
+        """Create a new user with verification email.
+        Raises 400 if the role is missing or unknown, 409 if the email is already registered."""
+        if not user_data.role_name:
+            raise APIException(status_code=400, message="role_name is required")
+        role = await self.role_service.get_by_name(user_data.role_name)
+        if not role:
+            raise APIException(status_code=400, message=f"Role '{user_data.role_name}' not found")
+        email = user_data.email.lower()
+        if (await self.db.execute(select(User.id).where(User.email == email))).first():
+            raise APIException(status_code=409, message="A user with this email already exists")
+        passwordhash = self.password_manager.hash_password(user_data.password)
         new_user = User(
             id=uuid7(),
-            email=user_data.email,
-            firstname=user_data.firstname,
-            lastname=user_data.lastname,
+            email=email,
+            firstname=user_data.firstname.lower() if user_data.firstname else "",
+            middlename=user_data.middlename.lower() if user_data.middlename else "",
+            lastname=user_data.lastname.lower() if user_data.lastname else "",
             passwordhash=passwordhash,
-            role_id=await get_role_id(self.db, user_data.role),
-            phone=getattr(user_data, "phone", None),
-            verification_token=verification_token,
-            token_expiration=token_expiration,
-            language=email_language(getattr(user_data, "language", None)),
+            account_status=user_data.account_status,
+            phone=user_data.phone,
+            role_id=role.id,
+            language=user_data.language,
+            timezone=user_data.timezone,
+            country=user_data.country,
+            avatar_url=user_data.avatar_url,
+            dob=user_data.dob,
+            gender=user_data.gender,
         )
         self.db.add(new_user)
-        await self.db.commit()
+        try:
+            await self.db.commit()
+        except IntegrityError:
+            # Two sign-ups for the same email raced past the check above; the unique constraint caught it
+            await self.db.rollback()
+            raise APIException(status_code=409, message="A user with this email already exists")
         await self.db.refresh(new_user)
 
-        queue(background_tasks, send_verification, new_user.email, new_user.firstname, verification_token, new_user.language)
+        # Stateless link token: signed and expiring, so no token column is needed
+        verification_token = self.jwt_manager.create_verification_token({"sub": str(new_user.id), "email": new_user.email})
+        # queue(background_tasks, send_verification, new_user.email, new_user.firstname, verification_token, new_user.language)
+        if settings.ENVIRONMENT.lower() != "production":
+            logger.info(f"[dev] Verification link for {new_user.email}: /v1/auth/verify-email/?token={verification_token}")
 
+        new_user.role_name = role.name
         return new_user
 
-    async def verify(self, token: str, background_tasks: Optional[BackgroundTasks] = None):
-        """Verify user email with token and send welcome email."""
-        
+    async def login(self, user_login: UserLogin) -> Dict[str, str]:
+        """Check the email and password and return a stateless access/refresh token pair.
+        Raises 401 for an unknown email or wrong password, 403 if the account is suspended or not yet verified."""
         result = await self.db.execute(
-            select(User).where(User.verification_token == token)
+            select(User).where(User.email == user_login.email.lower())
         )
         user = result.scalar_one_or_none()
 
-        if not user:
-            logger.warning(f"Email verification failed: No user found with token {token[:20]}...")
-            raise APIException(
-                status_code=400,
-                message="Invalid or expired verification token",
-            )
-
-        if user.token_expiration < datetime.now(timezone.utc):
-            logger.warning(f"Email verification failed: Token expired for user {user.email}. Token expired: {user.token_expiration}")
-            raise APIException(
-                status_code=400,
-                message="Invalid or expired verification token",
-            )
-
-        user.verified = True
-        user.verification_token = None
-        user.token_expiration = None
+        # One message for an unknown email and a wrong password, so nothing leaks
+        if not user or not self.password_manager.verify_password(user_login.password, user.passwordhash):
+            raise APIException(status_code=401, message="Invalid credentials")
+        # Past this point the password was right, so it is safe to say why the login is refused
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account suspended. Contact support.")
+        if user.account_status == AccountStatus.INACTIVE:
+            raise APIException(status_code=403, message="Account not active. Verify your email first.")
+        role = await self.role_service.get_by_id(user.role_id)
+        if not role:
+            raise APIException(status_code=500, message="User has no valid role")
+        user.last_login = datetime.now(timezone.utc)
         await self.db.commit()
 
-        # User verification complete - no welcome email needed
+        return self.jwt_manager.create_token_pair({
+            "sub": str(user.id),
+            "email": user.email,
+            "account_status": user.account_status,
+            "role": role.name,
+        })
 
-    async def list(self, page: int = 1, limit: int = 10, role: Optional[str] = None, query: Optional[str] = None, status: Optional[str] = None) -> dict:
-        """Get paginated list of users with order count"""
-        offset = (page - 1) * limit
+    async def verify(self, token: str, background_tasks: BackgroundTasks) -> bool:
+        """Mark the user's email verified from a verification-link token.
+        If the link has expired, a fresh one is sent to the same address, and a 400 says so.
+        Raises 400 if the token is invalid, of the wrong type, or no longer matches the user."""
+        try:
+            payload = self.jwt_manager.decode(token, JWTManager.VERIFICATION)
+        except TokenError as e:
+            if not e.expired:
+                logger.warning(f"Email verification failed: {e}")
+                raise APIException(status_code=400, message="Invalid or expired verification token")
+            # Expired but correctly signed: read who it was for and send them a new link
+            payload = self.jwt_manager.decode(token, JWTManager.VERIFICATION, verify_exp=False)
+            user = (await self.db.execute(select(User).where(User.id == payload["sub"]))).scalar_one_or_none()
+            
+            if user and user.email == payload.get("email") and user.account_status == AccountStatus.INACTIVE:
+                verification_token = self.jwt_manager.create_verification_token({"sub": str(user.id), "email": user.email})
+                # queue(background_tasks, send_verification, user.email, user.firstname, verification_token, user.language)
+                raise APIException(status_code=400, message="This verification link has expired. A new one has been sent to your email.")
+            
+            raise APIException(status_code=400, message="Invalid or expired verification token")
 
-        # Build base query with order count using SQL aggregation
-        base_query = (
-            select(
-                User,
-                func.count(Order.id).label('order_count')
-            )
-            .outerjoin(Order, User.id == Order.user_id)
-            .group_by(User.id)
-        )
+        user = (await self.db.execute(select(User).where(User.id == payload["sub"]))).scalar_one_or_none()
+        # The token was issued for this address; refuse it if the email has changed since
+        if not user or user.email != payload.get("email"):
+            raise APIException(status_code=400, message="Invalid or expired verification token")
 
-        # Apply role filter if provided
-        if role:
-            base_query = base_query.join(Role, User.role_id == Role.id).where(Role.name == role)
+        if user.account_status != AccountStatus.SUSPENDED:
+            user.account_status = AccountStatus.ACTIVE
+            await self.db.commit()
+            await self.db.refresh(user)
+        return True
+    
+    async def get(self, user_get: UserGet) -> User:
+        """Get a user by id, email, or both (which must then match the same user) as a User with `role_name` set.
+        Raises 404 if there is no match."""
+        conditions = []
+        if user_get.id is not None:
+            conditions.append(User.id == user_get.id)
+        if user_get.email is not None:
+            conditions.append(User.email == user_get.email.lower())
+        row = (await self.db.execute(
+            select(User, Role.name).join(Role, User.role_id == Role.id).where(and_(*conditions))
+        )).first()
+        if not row:
+            raise APIException(status_code=404, message="User not found")
+        user, role_name = row
+        user.role_name = role_name
+        return user
 
-        # Apply status filter if provided
-        if status:
-            if status in {v.value for v in AccountStatus}:
-                base_query = base_query.where(User.account_status == status)
-            else:
-                base_query = base_query.where(User.verified == (status == 'verified'))
+    async def list(self, filter: UserList, page: int = 1, limit: int = 10) -> dict:
+        """Get a paginated, filtered list of users, newest first.
+        Raises 400 if page is below 1 or limit is outside 1-100."""
+        if page < 1:
+            raise APIException(status_code=400, message="page must be 1 or greater")
+        if not 1 <= limit <= 100:
+            raise APIException(status_code=400, message="limit must be between 1 and 100")
+        conditions = []
+        if filter.role_name:
+            conditions.append(Role.name == filter.role_name.lower())
+        # `status` and `account_status` are the same filter; an explicit `status` wins over the default
+        account_status = filter.status or filter.account_status
+        if account_status:
+            conditions.append(User.account_status == account_status.value)
+        if filter.firstname:
+            conditions.append(User.firstname.ilike(f"%{filter.firstname}%"))
+        if filter.middlename:
+            conditions.append(User.middlename.ilike(f"%{filter.middlename}%"))
+        if filter.lastname:
+            conditions.append(User.lastname.ilike(f"%{filter.lastname}%"))
+        if filter.phone:
+            conditions.append(User.phone.ilike(f"%{filter.phone}%"))
+        if filter.country:
+            conditions.append(User.country.ilike(f"%{filter.country}%"))
+        if filter.language:
+            conditions.append(func.lower(User.language) == filter.language.lower())
+        if filter.dob:
+            conditions.append(User.dob == filter.dob)
+        if filter.gender:
+            conditions.append(func.lower(User.gender) == filter.gender.lower())
+        if filter.search:
+            term = f"%{filter.search}%"
+            conditions.append(or_(
+                User.firstname.ilike(term),
+                User.middlename.ilike(term),
+                User.lastname.ilike(term),
+                User.email.ilike(term),
+            ))
 
-        # Apply search query if provided
-        search_condition = None
-        if query:
-            search_term = f"%{query}%"
-            search_condition = or_(
-                User.firstname.ilike(search_term),
-                User.lastname.ilike(search_term),
-                User.email.ilike(search_term),
-            )
-            base_query = base_query.where(search_condition)
+        total = (await self.db.execute(
+            select(func.count()).select_from(User).join(Role, User.role_id == Role.id).where(*conditions)
+        )).scalar() or 0
 
-        # Get total count
-        count_query = select(func.count()).select_from(User)
-        if role:
-            count_query = count_query.join(Role, User.role_id == Role.id).where(Role.name == role)
-        if status:
-            if status in {v.value for v in AccountStatus}:
-                count_query = count_query.where(User.account_status == status)
-            else:
-                count_query = count_query.where(User.verified == (status == 'verified'))
-        if search_condition is not None:
-            count_query = count_query.where(search_condition)
-        count_result = await self.db.execute(count_query)
-        total = count_result.scalar()
+        rows = (await self.db.execute(
+            select(User, Role.name)
+            .join(Role, User.role_id == Role.id)
+            .where(*conditions)
+            .order_by(User.created_at.desc(), User.id.desc())  # id breaks ties so pages never repeat or skip
+            .offset((page - 1) * limit)
+            .limit(limit)
+        )).all()
 
-        # Apply pagination and ordering
-        base_query = base_query.offset(offset).limit(limit).order_by(User.created_at.desc())
-        result = await self.db.execute(base_query)
-        rows = result.all()
-
-        # Convert to list of dicts with user and order_count
-        users_with_counts = []
-        for row in rows:
-            user = row[0]
-            order_count = row[1]
-            user_dict = user.to_dict()
-            user_dict['order_count'] = order_count
-            users_with_counts.append(user_dict)
+        for user, role_name in rows:
+            user.role_name = role_name  # plain attribute (not a column) so the route can build a UserResponse
 
         return {
-            "users": users_with_counts,
+            "users": [user for user, _ in rows],
             "pagination": {
                 "page": page,
                 "limit": limit,
                 "total": total,
-                "pages": (total + limit - 1) // limit
-            }
+                "pages": (total + limit - 1) // limit,
+            },
         }
 
-    async def get(self, user_id: UUID) -> Optional[User]:
-        """Get user by ID"""
-        query = select(User).where(User.id == user_id)
-        result = await self.db.execute(query)
-        return result.scalar_one_or_none()
+    async def update(self, user_id: UUID, user_update: UserUpdate) -> User:
+        """Update the profile fields that were sent (PATCH semantics) and return the user.
+        Raises 404 if the user doesn't exist, 400 if nothing was sent or a required field is set to null."""
+        row = (await self.db.execute(
+            select(User, Role.name).join(Role, User.role_id == Role.id).where(User.id == user_id)
+        )).first()
+        if not row:
+            raise APIException(status_code=404, message="User not found")
+        user, role_name = row
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account suspended. Contact support.")
+        changes = user_update.model_dump(exclude_unset=True)
+        if not changes:
+            raise APIException(status_code=400, message="No fields to update")
 
-    async def update(self, user_id: UUID, user_data, allowed_fields: Optional[list] = None) -> Optional[User]:
-        """Update user. Accepts either UserUpdate Pydantic model or plain dict.
-        If allowed_fields provided, only those fields will be updated (for admin)."""
-        query = select(User).where(User.id == user_id)
-        result = await self.db.execute(query)
-        user = result.scalar_one_or_none()
-
-        if not user:
-            return None
-
-        # Handle both Pydantic models and plain dicts
-        if isinstance(user_data, dict):
-            data_dict = user_data
-        else:
-            data_dict = user_data.model_dump(exclude_unset=True)
-
-        # Update fields
-        for field, value in data_dict.items():
-            if hasattr(user, field):
-                if allowed_fields is None or field in allowed_fields:
-                    setattr(user, field, value)
+        required = {"firstname", "lastname", "language"}  # NOT NULL columns
+        for field, value in changes.items():
+            if value is None and field in required:
+                raise APIException(status_code=400, message=f"{field} cannot be null")
+            if field in {"firstname", "middlename", "lastname"}:
+                value = value.strip().lower() if value else ("" if field == "middlename" else value)
+            setattr(user, field, value)
 
         await self.db.commit()
         await self.db.refresh(user)
+        user.role_name = role_name
         return user
 
-    async def search(
-        self, 
-        query: str, 
-        limit: int = 20,
-        role_filter: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
-        """Search users by name/email prefix; falls back to LIKE if pg_trgm is unavailable."""
-        if not query or len(query.strip()) < 2:
-            return []
-
-        q = query.strip().lower()
-
-        try:
-            return await self._search_with_similarity(q, limit, role_filter)
-        except Exception:
-            # pg_trgm unavailable: fall back to LIKE. A failed raw-SQL statement leaves
-            # the transaction aborted, so it must be rolled back first.
-            await self.db.rollback()
-            return await self._search_simple(q, limit, role_filter)
-
-    async def _search_simple(
-        self,
-        query: str,
-        limit: int,
-        role_filter: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
-        """Simple LIKE-based user search fallback."""
-        search_term = f"%{query}%"
-        stmt = (
-            select(User)
-            .where(User.account_status == AccountStatus.ACTIVE)
-            .where(
-                or_(
-                    User.firstname.ilike(search_term),
-                    User.lastname.ilike(search_term),
-                    User.email.ilike(search_term),
-                )
-            )
-            .limit(limit)
-        )
-        if role_filter:
-            stmt = stmt.join(Role, User.role_id == Role.id).where(Role.name == role_filter)
-        result = await self.db.execute(stmt)
-        users = []
-        for user in result.scalars().all():
-            users.append({
-                "id": str(user.id),
-                "firstname": user.firstname,
-                "lastname": user.lastname,
-                "full_name": f"{user.firstname} {user.lastname}",
-                "email": user.email,
-                "role": user.role.value if hasattr(user.role, "value") else user.role,
-                "verified": user.verified,
-                "relevance_score": 1.0,
-                "type": "user"
-            })
-        return users
-
-    async def _search_with_similarity(
-        self,
-        query: str,
-        limit: int = 20,
-        role_filter: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
-        """Advanced search using pg_trgm similarity."""
-        # Build base conditions - account_status/verification_status are the real
-        # columns; is_active/verified are Python-only properties on the model.
-        base_conditions = ["u.account_status = 'active'"]
-        params = {
-            "query": query,
-            "similarity_threshold": self.similarity_threshold,
-            "limit": limit,
-            "exact_weight": self.weights["exact"],
-            "prefix_weight": self.weights["prefix"],
-            "fuzzy_weight": self.weights["fuzzy"]
-        }
+    async def change_role(self, user_id: UUID, new_role_id: UUID) -> User:
+        """Change the role of a user (admin only).
+        Raises 404 if the user or the role doesn't exist."""
+        user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=404, message="User not found")
         
-        if role_filter:
-            base_conditions.append("r.name = :role_filter")
-            params["role_filter"] = role_filter
-        
-        where_clause = " AND ".join(base_conditions)
-        
-        sql_query = text(f"""
-            SELECT 
-                u.id,
-                u.firstname,
-                u.lastname,
-                u.email,
-                r.name as role,
-                u.verified as verified,
-                (
-                    -- First name matching
-                    CASE WHEN LOWER(u.firstname) = :query THEN :exact_weight
-                         WHEN LOWER(u.firstname) LIKE CONCAT(:query, '%') THEN :prefix_weight
-                         WHEN LOWER(u.firstname) LIKE CONCAT('%', :query, '%') THEN :prefix_weight * 0.7
-                         ELSE similarity(LOWER(u.firstname), :query) * :fuzzy_weight
-                    END +
-                    -- Last name matching
-                    CASE WHEN LOWER(u.lastname) = :query THEN :exact_weight
-                         WHEN LOWER(u.lastname) LIKE CONCAT(:query, '%') THEN :prefix_weight
-                         WHEN LOWER(u.lastname) LIKE CONCAT('%', :query, '%') THEN :prefix_weight * 0.7
-                         ELSE similarity(LOWER(u.lastname), :query) * :fuzzy_weight
-                    END +
-                    -- Email matching (lower weight)
-                    CASE WHEN LOWER(u.email) LIKE CONCAT(:query, '%') THEN :prefix_weight * 0.8
-                         WHEN LOWER(u.email) LIKE CONCAT('%', :query, '%') THEN :prefix_weight * 0.6
-                         ELSE similarity(LOWER(u.email), :query) * :fuzzy_weight * 0.8
-                    END +
-                    -- Full name matching (concatenated)
-                    CASE WHEN LOWER(CONCAT(u.firstname, ' ', u.lastname)) LIKE CONCAT('%', :query, '%') THEN :prefix_weight * 0.9
-                         ELSE similarity(LOWER(CONCAT(u.firstname, ' ', u.lastname)), :query) * :fuzzy_weight * 0.9
-                    END
-                ) as relevance_score
-            FROM accounts.users u JOIN accounts.roles r ON r.id = u.role_id
-            WHERE {where_clause}
-            AND (
-                LOWER(u.firstname) LIKE CONCAT('%', :query, '%')
-                OR LOWER(u.lastname) LIKE CONCAT('%', :query, '%')
-                OR LOWER(u.email) LIKE CONCAT('%', :query, '%')
-                OR LOWER(CONCAT(u.firstname, ' ', u.lastname)) LIKE CONCAT('%', :query, '%')
-                OR similarity(LOWER(u.firstname), :query) > :similarity_threshold
-                OR similarity(LOWER(u.lastname), :query) > :similarity_threshold
-                OR similarity(LOWER(u.email), :query) > :similarity_threshold
-            )
-            ORDER BY relevance_score DESC, verified DESC
-            LIMIT :limit
-        """)
-        
-        result = await self.db.execute(sql_query, params)
-        
-        users = []
-        for row in result:
-            users.append({
-                "id": str(row.id),
-                "firstname": row.firstname,
-                "lastname": row.lastname,
-                "full_name": f"{row.firstname} {row.lastname}",
-                "email": row.email,
-                "role": row.role,
-                "verified": row.verified,
-                "relevance_score": float(row.relevance_score),
-                "type": "user"
-            })
-            
-        return users
+        role = await self.role_service.get_by_id(new_role_id)
+        if not role:
+            raise APIException(status_code=404, message="Role not found")
 
-    # --- Admin user management methods ---
+        user.role_id = role.id
+        await self.db.commit()
+        await self.db.refresh(user)
 
-    async def verify_user_account(self, user_id: UUID) -> Optional[User]:
-        """Verify user account (admin only)."""
-        query = select(User).where(User.id == user_id)
-        result = await self.db.execute(query)
-        user = result.scalar_one_or_none()
+        user.role_name = role.name
+        return user
 
+    async def change_email(self, user_id: UUID, new_email: str, background_tasks: BackgroundTasks) -> User:
+        """Change the email of a user (admin only). The new address is unverified, so the account goes back to
+        inactive (a suspended account stays suspended) and a verification link is issued for it.
+        Raises 404 if the user doesn't exist, 409 if the email is already taken."""
+        user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
         if not user:
             raise APIException(status_code=404, message="User not found")
 
-        user.verified = True
-        await self.db.commit()
-        await self.db.refresh(user)
-        return user
+        new_email = new_email.lower()
+        if (await self.db.execute(select(User.id).where(User.email == new_email, User.id != user_id))).first():
+            raise APIException(status_code=409, message="A user with this email already exists")
 
-    async def reset_password(self, user_id: UUID) -> Dict[str, Any]:
-        """Reset user password and send reset email (admin only)."""
-        try:
-            result = await self.db.execute(select(User).where(User.id == user_id))
-            user = result.scalar_one_or_none()
+        role = await self.role_service.get_by_id(user.role_id)
+        if not role:
+            raise APIException(status_code=500, message="User has no valid role")
 
-            if not user:
-                raise APIException(status_code=404, message="User not found")
-
-            # Generate reset token (stored in the same field the reset-confirmation flow reads from)
-            reset_token = secrets.token_urlsafe(32)
-            user.reset_token = reset_token
-            user.reset_token_expires = datetime.now(timezone.utc) + timedelta(hours=24)
-
-            await self.db.commit()
-            await self.db.refresh(user)
-
-            await send_password_reset(user.email, user.firstname, reset_token, user.language, 24)
-
-            return {
-                "success": True,
-                "message": f"Password reset email sent to {user.email}",
-                "user_id": str(user.id),
-                "email": user.email
-            }
-
-        except APIException:
-            raise
-        except Exception as e:
-            logger.error(f"Password reset email failed for {user_id}: {e}")
-            raise APIException(status_code=502, message="The reset link was created, but the email service didn't send it. Try again later.")
-
-    async def deactivate(self, user_id: UUID) -> Dict[str, Any]:
-        """Deactivate user account (admin only)."""
-        try:
-            result = await self.db.execute(select(User).where(User.id == user_id))
-            user = result.scalar_one_or_none()
-
-            if not user:
-                raise APIException(status_code=404, message="User not found")
-
+        user.email = new_email
+        if user.account_status != AccountStatus.SUSPENDED:
             user.account_status = AccountStatus.INACTIVE
-            await self.db.commit()
-            await self.db.refresh(user)
-
-            return {
-                "success": True,
-                "message": f"User {user.email} has been deactivated",
-                "user_id": str(user.id),
-                "email": user.email
-            }
-
-        except APIException:
-            raise
-        except Exception as e:
-            raise APIException(
-                status_code=500,
-                message=f"Failed to deactivate user: {str(e)}"
-            )
-
-    async def activate(self, user_id: UUID) -> Dict[str, Any]:
-        """Activate user account (admin only)."""
-        try:
-            result = await self.db.execute(select(User).where(User.id == user_id))
-            user = result.scalar_one_or_none()
-
-            if not user:
-                raise APIException(status_code=404, message="User not found")
-
-            user.account_status = AccountStatus.ACTIVE
-            await self.db.commit()
-            await self.db.refresh(user)
-
-            return {
-                "success": True,
-                "message": f"User {user.email} has been activated",
-                "user_id": str(user.id),
-                "email": user.email
-            }
-
-        except APIException:
-            raise
-        except Exception as e:
-            raise APIException(
-                status_code=500,
-                message=f"Failed to activate user: {str(e)}"
-            )
-
-    async def update_role(self, user_id: UUID, new_role: str) -> Optional[User]:
-        """Update user role (admin only)."""
-        query = select(User).where(User.id == user_id)
-        result = await self.db.execute(query)
-        user = result.scalar_one_or_none()
-
-        if not user:
-            return None
-
-        user.role_id = await get_role_id(self.db, new_role)
         await self.db.commit()
         await self.db.refresh(user)
+
+        verification_token = self.jwt_manager.create_verification_token({"sub": str(user.id), "email": user.email})
+        # queue(background_tasks, send_verification, user.email, user.firstname, verification_token, user.language)
+        if settings.ENVIRONMENT.lower() != "production":
+            logger.info(f"[dev] Verification link for {user.email}: /v1/auth/verify-email/?token={verification_token}")
+
+        user.role_name = role.name
         return user
+
+    async def reset_password(self, user_id: UUID) -> bool:
+        """Start a password reset: build a signed 15-minute link token for the user and email it.
+        Raises 404 if the user doesn't exist."""
+        user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=404, message="User not found")
+        
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account suspended. Contact support.")
+        
+        reset_token = self.jwt_manager.create_password_reset_token({"sub": str(user.id)})
+        # TODO: send the link once the email service exists:
+        # await send_password_reset(user.email, user.firstname, reset_token, user.language, 1)
+
+        return True
+
+    async def set_password(self, token: str, new_password: str) -> bool:
+        """Finish a password reset from the emailed token.
+        Raises 400 if the token is invalid, expired, or the user is gone.
+        The caller validates password strength."""
+        try:
+            payload = self.jwt_manager.decode(token, JWTManager.PASSWORD_RESET)
+        except TokenError:
+            raise APIException(status_code=400, message="Invalid or expired reset token")
+
+        user = (await self.db.execute(select(User).where(User.id == payload["sub"]))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=400, message="Invalid or expired reset token")
+
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account suspended. Contact support.")
+        user.passwordhash = self.password_manager.hash_password(new_password)
+        await self.db.commit()
+        return True
+
+    async def deactivate(self, user_id: UUID) -> bool:
+        """Deactivate a user account (admin only). Raises 404 if the user doesn't exist."""
+        user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=404, message="User not found")
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account suspended. Contact support.")
+        user.account_status = AccountStatus.INACTIVE
+        await self.db.commit()
+
+        return True
+
+    async def activate(self, user_id: UUID) -> bool:
+        """Activate a user account (admin only). Raises 404 if the user doesn't exist."""
+        user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=404, message="User not found")
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account suspended. Contact support.")
+        user.account_status = AccountStatus.ACTIVE
+        await self.db.commit()
+
+        return True
+
+    async def suspend(self, user_id: UUID) -> bool:
+        """Suspend a user account (admin only). Raises 404 if the user doesn't exist."""
+        user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=404, message="User not found")
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account already suspended.")
+        user.account_status = AccountStatus.SUSPENDED
+        await self.db.commit()
+
+        return True
+
+    async def refresh_token(self, refresh_token: str) -> Dict[str, str]:
+        """Exchange a valid refresh token for a new access/refresh pair.
+        Raises 401 if the token is invalid or expired, or the user is gone or inactive."""
+        try:
+            payload = self.jwt_manager.decode(refresh_token, JWTManager.REFRESH)
+        except TokenError as e:
+            raise APIException(status_code=401, message=str(e))
+
+        user = (await self.db.execute(select(User).where(User.id == payload["sub"]))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=401, message="User not found or inactive")
+        if user.account_status == AccountStatus.SUSPENDED:
+            raise APIException(status_code=403, message="Account suspended. Contact support.")
+        if user.account_status != AccountStatus.ACTIVE:
+            raise APIException(status_code=401, message="User not found or inactive")
+
+        role = await self.role_service.get_by_id(user.role_id)
+        if not role:
+            raise APIException(status_code=500, message="User has no valid role")
+
+        # Rebuilt from the database, so a role change or deactivation takes effect at the next refresh
+        return self.jwt_manager.create_token_pair({
+            "sub": str(user.id),
+            "email": user.email,
+            "account_status": user.account_status,
+            "role": role.name,
+        })
+
+    async def unsuspend(self, user_id: UUID) -> bool:
+        """Lift a suspension: the account becomes active again (admin only).
+        Raises 404 if the user doesn't exist, 400 if the account isn't suspended."""
+        user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
+        if not user:
+            raise APIException(status_code=404, message="User not found")
+        if user.account_status != AccountStatus.SUSPENDED:
+            raise APIException(status_code=400, message="Account is not suspended")
+        user.account_status = AccountStatus.ACTIVE
+        await self.db.commit()
+
+        return True

@@ -1,51 +1,66 @@
-"""Shared FastAPI dependencies used across multiple routers."""
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+"""Shared FastAPI dependencies: who is calling, and what they are allowed to do."""
+from fastapi import Depends, Request
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional
+
 from core.db import get_db
 from core.exceptions import APIException
-from core.logging import get_structured_logger
+from core.utils.encryption import JWTManager, TokenError
 from models.accounts.user import User
-from services.accounts.auth import AuthService
+from schemas.accounts.user import UserGet
+from services.accounts.permission import PermissionService
+from services.accounts.user import UserService
 
-logger = get_structured_logger(__name__)
+bearer_scheme = HTTPBearer(auto_error=False)
+jwt_manager = JWTManager()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/v1/auth/login", auto_error=False)
 
-
-async def get_current_auth_user(
-    token: Optional[str] = Depends(oauth2_scheme),
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
     db: AsyncSession = Depends(get_db),
-) -> Optional[User]:
-    """Authentication - returns None if not authenticated"""
-    if not token:
-        return None
-    try:
-        auth_service = AuthService(db)
-        return await auth_service.current_user(token)
-    except HTTPException:
-        # Expected for a missing/expired/invalid token - treat as unauthenticated
-        return None
-    except Exception:
-        # Unexpected failure (DB error, bug, etc.) - log it instead of masking it as "not authenticated"
-        logger.error("Unexpected error while resolving current user from token", exc_info=True)
-        return None
-
-
-async def require_auth(
-    current_user: Optional[User] = Depends(get_current_auth_user),
 ) -> User:
-    """Raises 401 if user is not authenticated."""
-    if current_user is None:
+    """The signed-in user from the access token. Raises 401 if there is no valid token or the user is gone,
+    403 if the account is not active."""
+    if credentials is None:
         raise APIException(status_code=401, message="Authentication required")
-    return current_user
+    try:
+        payload = jwt_manager.decode(credentials.credentials)
+    except TokenError as e:
+        raise APIException(status_code=401, message=str(e))
+
+    try:
+        user = await UserService(db).get(UserGet(id=payload["sub"]))
+    except APIException as e:
+        if e.status_code == 404:
+            raise APIException(status_code=401, message="User no longer exists")
+        raise
+    if not user.is_active:
+        raise APIException(status_code=403, message="Account is not active")
+    return user
 
 
-def require_admin(current_user: Optional[User] = Depends(get_current_auth_user)) -> User:
-    if current_user is None:
-        raise APIException(status_code=401, message="Authentication required")
-    if not current_user.is_staff:  # superadmin, admin or manager
-        raise APIException(status_code=403, message="Admin access required")
-    return current_user
+def require_permission(scope: str):
+    """Dependency factory: the caller's role must have `scope` (e.g. 'users:view'). Returns the user."""
+    async def checker(
+        user: User = Depends(get_current_user),
+        db: AsyncSession = Depends(get_db),
+    ) -> User:
+        if not await PermissionService(db).has_permission(user.role_id, scope):
+            raise APIException(status_code=403, message=f"Missing permission: {scope}")
+        return user
+    return checker
 
+
+def require_self_or_permission(scope: str, param: str = "user_id"):
+    """Like require_permission, but a caller may also act on their own record (the `user_id` path parameter)."""
+    async def checker(
+        request: Request,
+        user: User = Depends(get_current_user),
+        db: AsyncSession = Depends(get_db),
+    ) -> User:
+        if str(user.id) == request.path_params.get(param):
+            return user
+        if not await PermissionService(db).has_permission(user.role_id, scope):
+            raise APIException(status_code=403, message=f"Missing permission: {scope}")
+        return user
+    return checker

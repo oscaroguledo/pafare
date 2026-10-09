@@ -1,78 +1,110 @@
-from pydantic import BaseModel, EmailStr, ConfigDict, model_validator, AwareDatetime
+import re
+
+from pydantic import BaseModel, EmailStr, ConfigDict, field_validator, model_validator, AwareDatetime
 from typing import Optional
 from datetime import datetime
 from uuid import UUID
 
-from models.accounts.user import UserRole, AccountStatus
+from models.accounts.user import AccountStatus
 
 
-class Base(BaseModel):
+def strong_password(value: str) -> str:
+    """At least 8 characters with an upper-case letter, a lower-case letter and a digit."""
+    if len(value) < 8 or not re.search(r"[A-Z]", value) or not re.search(r"[a-z]", value) or not re.search(r"\d", value):
+        raise ValueError("Password must be at least 8 characters with an upper-case letter, a lower-case letter and a digit")
+    return value
+
+
+class UserCreate(BaseModel):
     email: EmailStr
-    firstname: Optional[str] = None
-    lastname: Optional[str] = None
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    role: UserRole = UserRole.CUSTOMER
+    firstname: Optional[str] = ""
+    middlename: Optional[str] = ""
+    lastname: Optional[str] = ""
+    password: str
+    account_status: AccountStatus = AccountStatus.ACTIVE
+    phone: Optional[str] = None
+    role_name: Optional[str] = None
+    language: Optional[str] = "en"
+    country: Optional[str] = None
+    timezone: Optional[str] = "UTC"
+    avatar_url: Optional[str] = None
+    dob: Optional[AwareDatetime] = None
+    gender: Optional[str] = None
+
+    _password = field_validator("password")(strong_password)
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class UserGet(BaseModel):
+    """Look a user up by id, email, or both (either one matching is enough)."""
+    id: Optional[UUID] = None
+    email: Optional[EmailStr] = None
 
     @model_validator(mode="after")
-    def normalize_names(self):
-        if not self.firstname and self.first_name:
-            self.firstname = self.first_name
-        if not self.lastname and self.last_name:
-            self.lastname = self.last_name
-        if not self.firstname:
-            self.firstname = ""
-        if not self.lastname:
-            self.lastname = ""
+    def require_one(self):
+        if self.id is None and self.email is None:
+            raise ValueError("Provide an id or an email")
         return self
 
-
-class Create(Base):
-    password: str
-    phone: Optional[str] = None
-
-
-class Update(BaseModel):
+class UserList(BaseModel):
+    """Filters for the admin user list; every field is optional and they combine with AND."""
+    search: Optional[str] = None          # matches first name, last name or email
+    role_name: Optional[str] = None            # role name, e.g. "admin"
+    status: Optional[AccountStatus] = None
+    account_status: Optional[AccountStatus] = None
     firstname: Optional[str] = None
+    middlename: Optional[str] = None
     lastname: Optional[str] = None
-    email: Optional[EmailStr] = None
     phone: Optional[str] = None
-    date_of_birth: Optional[AwareDatetime] = None
-    gender: Optional[str] = None
-    country: Optional[str] = None
     language: Optional[str] = None
-    timezone: Optional[str] = None
-    # is_active is derived from account_status; admins change it via POST /{user_id}/activate/ or /deactivate/.
-
-
-class UserRoleUpdate(BaseModel):
-    role: UserRole
-
-
-class Response(BaseModel):
-    id: UUID
-    email: EmailStr
-    firstname: str
-    lastname: str
-    full_name: Optional[str] = None
-    phone: Optional[str] = None
-    role: UserRole
-    account_status: AccountStatus
-    verified: bool
-    verified: bool
-    is_active: bool
-    date_of_birth: Optional[AwareDatetime] = None
+    country: Optional[str] = None
+    dob: Optional[AwareDatetime] = None
     gender: Optional[str] = None
+
+class UserUpdate(BaseModel):
+    """Fields that can be updated on a user; all optional."""
+    firstname: Optional[str] = None
+    middlename: Optional[str] = None
+    lastname: Optional[str] = None
+    phone: Optional[str] = None
     country: Optional[str] = None
     language: Optional[str] = None
     timezone: Optional[str] = None
     avatar_url: Optional[str] = None
-    created_at: datetime
-    updated_at: Optional[datetime] = None
+    dob: Optional[AwareDatetime] = None
+    gender: Optional[str] = None
 
-    model_config = ConfigDict(
-        from_attributes=True,
-        json_encoders={
-            datetime: lambda v: v.isoformat() if v else None
-        }
-    )
+class UserResponse(BaseModel):
+    """A user as returned by the API. Every field is required: nullable ones (Optional) must still be
+    present, and are None when the user hasn't set them."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: UUID
+    email: EmailStr
+    firstname: str
+    middlename: Optional[str]
+    lastname: str
+    role_id: UUID
+    role_name: str
+    account_status: AccountStatus
+    phone: Optional[str]
+    country: Optional[str]
+    language: str
+    timezone: Optional[str]
+    avatar_url: Optional[str]
+    dob: Optional[AwareDatetime]
+    gender: Optional[str]
+    last_login: Optional[AwareDatetime]
+    created_at: AwareDatetime
+    updated_at: Optional[AwareDatetime]
+
+
+
+class RoleChange(BaseModel):
+    role_id: UUID
+
+
+class EmailChange(BaseModel):
+    new_email: EmailStr
