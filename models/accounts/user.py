@@ -2,7 +2,6 @@ from sqlalchemy import String, Boolean, ForeignKey, DateTime, Integer, func, Ind
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from core.db import CHAR_LENGTH, GUID, UTCDateTime
 from models.base import BaseModel
-from models.accounts.roles import Role, UserRole, ROLE_RANK, STAFF_ROLES, role_rank, outranks, get_role_id  # noqa: F401 (re-exported)
 from core.utils.uuid_utils import uuid7
 from enum import Enum
 import uuid

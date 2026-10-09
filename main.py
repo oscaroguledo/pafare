@@ -24,16 +24,8 @@ from core.exceptions import (
     general_exception_handler
 )
 
-from api import (
-    auth_router, oauth_router, passkeys_router, user_router, addresses_router,
-    products_router, review_router, inventory_router, category_router,
-    cart_router, orders_router, payments_router, refunds_router, shipping_router,
-    shipping_tracking_router, tax_router, promocodes_router, subscriptions_router, webhooks_router,
-    analytics_router,
-    health_router,
-)
+from api import auth_router, oauth_router, user_router, health_router
 import models
-from core.worker import start_scheduler
 from core import redis_cache
 import uvicorn
 
@@ -79,9 +71,6 @@ async def lifespan(app: FastAPI):
             raise RuntimeError(str(e))
         logger.warning(f"Superadmin not set up: {e}")
 
-    # Start background scheduler (subscriptions, promocodes)
-    start_scheduler()
-
     yield
 
     # --- Shutdown ---
@@ -90,8 +79,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Banwee API",
-    description="Groceries and essentials from home for newcomers to Canada, delivered to your door.",
+    title="Pafare API",
+    description="Hotel room booking.",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
@@ -113,26 +102,7 @@ if hasattr(settings, 'ALLOWED_HOSTS'):
 v1_router = APIRouter(prefix="/v1", redirect_slashes=False)
 v1_router.include_router(auth_router)
 v1_router.include_router(oauth_router)
-v1_router.include_router(passkeys_router)
 v1_router.include_router(user_router)
-v1_router.include_router(addresses_router)
-v1_router.include_router(products_router)
-v1_router.include_router(review_router)
-v1_router.include_router(inventory_router)
-v1_router.include_router(category_router)
-v1_router.include_router(cart_router)
-v1_router.include_router(orders_router)
-v1_router.include_router(payments_router)
-v1_router.include_router(refunds_router)
-v1_router.include_router(shipping_router)
-v1_router.include_router(shipping_tracking_router)
-v1_router.include_router(tax_router)
-v1_router.include_router(promocodes_router)
-v1_router.include_router(subscriptions_router)
-v1_router.include_router(webhooks_router)
-# Admin routes are distributed to their domain-specific modules
-# (e.g. accounts/user.py, catalog/products.py, commerce/orders.py) rather than grouped here.
-v1_router.include_router(analytics_router)
 v1_router.include_router(health_router)
 
 app.include_router(v1_router)

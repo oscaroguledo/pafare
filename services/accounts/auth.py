@@ -11,7 +11,6 @@ from core.logging import get_structured_logger
 from core.utils.uuid_utils import uuid7
 from core.config import settings
 from models.accounts.user import User, UserRole
-from models.accounts.tokens import RevokedToken
 from schemas.accounts.user import Create as UserCreate, Response as UserResponse
 from schemas.accounts.auth import Auth as AuthResponse
 from services.accounts.user import UserService
@@ -21,7 +20,6 @@ from core.utils.encryption import PasswordManager
 logger = get_structured_logger(__name__)
 
 # How long a replaced refresh token keeps working, for requests already in flight (e.g. two tabs refreshing at once).
-REFRESH_GRACE_SECONDS = 60
 
 MAX_FAILED_LOGIN_ATTEMPTS = 5
 ACCOUNT_LOCKOUT_MINUTES = 15
@@ -125,8 +123,6 @@ class AuthService:
                     status_code=status.HTTP_401_UNAUTHORIZED,
                     detail="Invalid refresh token payload"
                 )
-            if await self.is_revoked(jti):
-                raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token has been revoked")
             
             # Get user from token
             user = await self.get(user_id=user_id_from_token)
@@ -143,8 +139,7 @@ class AuthService:
                 "role": getattr(user, 'role', 'user')
             }
             # Every refresh hands out a fresh refresh token, so a session ends only after
-            # REFRESH_TOKEN_EXPIRE_DAYS without use. The old one is retired after a short grace period.
-            await self._retire_refresh_token(jti, payload["exp"])
+            # REFRESH_TOKEN_EXPIRE_DAYS without use. Tokens are stateless: nothing is stored server-side.
             return {
                 "access_token": self.make_access_token(token_data),
                 "refresh_token": await self.make_refresh_token(token_data),
@@ -158,41 +153,6 @@ class AuthService:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not refresh token"
             )
-
-    async def revoke_token(self, token: str, token_type: str = "refresh") -> bool:
-        """Revoke a token by its jti until it expires; invalid or expired tokens return False."""
-        try:
-            payload = self.verify_token(token, token_type)
-        except HTTPException:
-            return False
-        jti, exp = payload.get("jti"), payload.get("exp")
-        if not jti or not exp:
-            return False
-        now = datetime.now(timezone.utc)
-        await self.db.execute(delete(RevokedToken).where(RevokedToken.expires_at < now))
-        existing = await self.db.get(RevokedToken, jti)
-        if existing:
-            existing.usable_until = None  # a replaced token still in its grace period ends now
-        else:
-            self.db.add(RevokedToken(jti=jti, expires_at=datetime.fromtimestamp(exp, tz=timezone.utc)))
-        await self.db.commit()
-        return True
-
-    async def _retire_refresh_token(self, jti: str, exp: int) -> None:
-        """Mark a replaced refresh token revoked after REFRESH_GRACE_SECONDS (kept if already retired or revoked)."""
-        if not await self.db.get(RevokedToken, jti):
-            self.db.add(RevokedToken(
-                jti=jti,
-                expires_at=datetime.fromtimestamp(exp, tz=timezone.utc),
-                usable_until=datetime.now(timezone.utc) + timedelta(seconds=REFRESH_GRACE_SECONDS),
-            ))
-            await self.db.commit()
-
-    async def is_revoked(self, jti: Optional[str]) -> bool:
-        if not jti:
-            return False
-        row = await self.db.get(RevokedToken, jti)
-        return row is not None and (row.usable_until is None or row.usable_until <= datetime.now(timezone.utc))
 
     async def get(self, user_id: Optional[str] = None, email: Optional[str] = None) -> Optional[User]:
         """Get user by ID or email."""
@@ -331,9 +291,6 @@ class AuthService:
                 )
                 
         except JWTError:
-            raise credentials_exception
-
-        if await self.is_revoked(payload.get("jti")):
             raise credentials_exception
 
         # Get user from database

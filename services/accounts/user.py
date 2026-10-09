@@ -6,7 +6,6 @@ from typing import List, Optional, Dict, Any
 from uuid import UUID
 from core.utils.uuid_utils import uuid7
 from models.accounts.user import User, Role, AccountStatus, get_role_id
-from models.commerce.orders import Order
 from core.exceptions import APIException
 from schemas.accounts.user import Create as UserCreate
 from services.accounts.email import queue, send_verification, send_password_reset
@@ -164,9 +163,7 @@ class UserService:
 
     async def get(self, user_id: UUID) -> Optional[User]:
         """Get user by ID"""
-        query = select(User).where(User.id == user_id).options(
-            selectinload(User.addresses)
-        )
+        query = select(User).where(User.id == user_id)
         result = await self.db.execute(query)
         return result.scalar_one_or_none()
 

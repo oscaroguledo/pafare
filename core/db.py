@@ -101,7 +101,7 @@ class DatabaseManager:
         @event.listens_for(engine_db.sync_engine, "connect")
         def set_search_path(dbapi_conn, connection_record):
             cursor = dbapi_conn.cursor()
-            cursor.execute("SET search_path TO accounts, catalog, commerce, admin, system, public")
+            cursor.execute("SET search_path TO accounts, bookings, public")
             cursor.execute("SET TIME ZONE 'UTC'")
             cursor.close()
 

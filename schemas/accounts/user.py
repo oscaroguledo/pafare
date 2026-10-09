@@ -5,33 +5,6 @@ from uuid import UUID
 
 from models.accounts.user import UserRole, AccountStatus
 
-class AddressBase(BaseModel):
-    street: str
-    city: str
-    state: Optional[str] = None
-    country: str
-    post_code: Optional[str] = None
-
-    @model_validator(mode="after")
-    def normalize_fields(self):
-        if not self.post_code:
-            self.post_code = ""
-        if not self.state:
-            self.state = ""
-        return self
-
-
-class AddressCreate(AddressBase):
-    pass
-
-
-class AddressUpdate(BaseModel):
-    street: Optional[str] = None
-    city: Optional[str] = None
-    state: Optional[str] = None
-    country: Optional[str] = None
-    post_code: Optional[str] = None
-
 
 class Base(BaseModel):
     email: EmailStr

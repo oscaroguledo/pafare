@@ -12,7 +12,6 @@ from schemas.accounts.auth import Register, Login, Refresh, ResendVerification, 
 from services.accounts.auth import AuthService
 from services.accounts.user import UserService
 from services.accounts.email import queue, send_verification
-from services.commerce.cart import CartService
 from models.accounts.user import User
 import time
 import re
@@ -24,14 +23,6 @@ logger = get_logger(__name__)
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-async def _add_pending_cart_item(db: AsyncSession, user_id, variant_id, quantity: int):
-    """Add the variant a client attached to a login/register request, without blocking auth on cart errors."""
-    try:
-        await CartService(db).add_to_cart(user_id, variant_id, quantity)
-    except HTTPException as e:
-        logger.warning(f"Could not add pending cart item {variant_id} for user {user_id}: {e.detail}")
-
-
 @router.post("/register/")
 async def register(
     user_data: Register,
@@ -39,15 +30,12 @@ async def register(
     accept_language: Optional[str] = Header(None),
     db: AsyncSession = Depends(get_db)
 ):
-    """Register a new user. If the signup was triggered by an add-to-cart attempt, add that item to their cart."""
+    """Register a new user."""
     try:
         if not user_data.language and accept_language:
             user_data = user_data.model_copy(update={"language": accept_language.split(",")[0].split(";")[0].strip()})
         auth_service = AuthService(db)
         user = await auth_service.create(user_data, background_tasks)
-
-        if user_data.variant_id:
-            await _add_pending_cart_item(db, user.id, user_data.variant_id, user_data.quantity)
 
         return Response.success(data=user, message="User registered successfully")
     except HTTPException:
@@ -65,14 +53,11 @@ async def login(
     user_login: Login,
     db: AsyncSession = Depends(get_db)
 ):
-    """Login user and return access token. If login was triggered by an add-to-cart attempt, add that item to their cart."""
+    """Login user and return access token."""
     try:
         auth_service = AuthService(db)
         token = await auth_service.authenticate(user_login.email, user_login.password, background_tasks)
         logger.info(f"User login successful: {user_login.email}")
-
-        if user_login.variant_id:
-            await _add_pending_cart_item(db, token.user.id, user_login.variant_id, user_login.quantity)
 
         return Response.success(data=token, message="Login successful")
     except HTTPException as e:
@@ -106,39 +91,13 @@ async def refresh(
         )
 
 
-@router.post("/revoke/")
-async def revoke(
-    payload: Refresh,
-    db: AsyncSession = Depends(get_db)
-):
-    """Revoke a refresh token; taken from the JSON body so it never lands in URLs or access logs."""
-    try:
-        auth_service = AuthService(db)
-        success = await auth_service.revoke_token(payload.refresh_token)
-        if success:
-            return Response.success(message="Refresh token revoked successfully")
-        else:
-            raise APIException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                message="Invalid refresh token"
-            )
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise APIException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            message=f"Failed to revoke token - {str(e)}"
-        )
-
-
 @router.post("/logout/")
 async def logout(
     token: Optional[str] = Depends(oauth2_scheme),
     current_user: User = Depends(require_auth),
     db: AsyncSession = Depends(get_db)
 ):
-    """Log out by revoking the presented access token; clients revoke the refresh token via /revoke/."""
-    await AuthService(db).revoke_token(token, "access")
+    """Stateless logout: JWTs aren't stored, so the client discards its access and refresh tokens."""
     return Response.success(message="Logged out successfully")
 
 
