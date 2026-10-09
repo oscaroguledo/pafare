@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block preheader %}{{ t('preheader', name=subscription_name, date=long_date(delivery_date)) }}{% endblock %}
+{% block heading %}{{ t('heading') }}{% endblock %}
+{% block content %}
+{{ m.greeting(t, name) }}
+{{ m.paragraph(t('body', name=subscription_name, date=long_date(delivery_date), amount=money(amount, currency))) }}
+{{ m.button(t, action_url, t('button')) }}
+{{ m.muted(t('manage')) }}
+{% endblock %}

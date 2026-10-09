@@ -1,0 +1,1970 @@
+{
+  "en": {
+    "common": {
+      "greeting": "Hi {name},",
+      "greetingNoName": "Hi,",
+      "linkFallback": "Button not working? Copy this link into your browser:",
+      "questions": "Questions? Write to us at <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Groceries and essentials from home, delivered across Canada.",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "rights": "© {year} {store}. All rights reserved.",
+      "orderNumber": "Order number"
+    },
+    "verification": {
+      "subject": "Confirm your email address",
+      "preheader": "One click and your Banwee account is ready.",
+      "heading": "Confirm your email",
+      "body": "Thanks for creating a Banwee account. Confirm your email address to start shopping.",
+      "button": "Confirm email",
+      "expiry": "This link expires in {duration}.",
+      "ignore": "If you didn’t create an account, you can ignore this email."
+    },
+    "password_reset": {
+      "subject": "Reset your password",
+      "preheader": "Choose a new password for your Banwee account.",
+      "heading": "Reset your password",
+      "body": "We received a request to reset the password for your Banwee account. Choose a new one with the button below.",
+      "button": "Reset password",
+      "expiry": "This link expires in {duration}.",
+      "ignore": "If you didn’t ask for this, you can ignore this email. Your password won’t change."
+    },
+    "order_confirmation": {
+      "subject": "Order {number} confirmed",
+      "preheader": "We’ve received order {number}.",
+      "heading": "Thanks for your order!",
+      "body": "We’ve received order {number} and we’re getting it ready. We’ll email you again when it ships.",
+      "item": "Item",
+      "qty": "Qty",
+      "price": "Price",
+      "total": "Total",
+      "shipTo": "Shipping to",
+      "button": "View your order"
+    },
+    "shipping_update": {
+      "subject": "Order {number} is on its way",
+      "preheader": "Order {number} has shipped.",
+      "heading": "Your order is on its way",
+      "body": "Good news! Order {number} has shipped.",
+      "carrier": "Carrier",
+      "tracking": "Tracking number",
+      "eta": "Estimated delivery",
+      "button": "Track your order"
+    },
+    "order_delivered": {
+      "subject": "Order {number} has been delivered",
+      "preheader": "Order {number} has arrived.",
+      "heading": "Your order has arrived",
+      "body": "Order {number} was delivered on {date}. We hope you enjoy it!",
+      "deliveredTo": "Delivered to",
+      "button": "View your order",
+      "help": "Something not right? You can request a refund from the order page."
+    },
+    "subscription_reminder": {
+      "subject": "Your next {name} delivery is coming up",
+      "preheader": "{name} renews on {date}.",
+      "heading": "Your next delivery is coming up",
+      "body": "Your subscription {name} renews on {date}. We’ll charge {amount} to your default card and send your products.",
+      "button": "Manage subscription",
+      "manage": "Need a change? You can skip this delivery, pause or cancel from your account."
+    },
+    "subscription_payment_failed": {
+      "subject": "Payment failed for {name}",
+      "subjectPaused": "{name} is paused: payment failed",
+      "heading": "We couldn’t take your payment",
+      "headingPaused": "Your subscription is paused",
+      "body": "We couldn’t charge your card for your subscription {name}. We’ll try again automatically, or you can pay now.",
+      "bodyPaused": "We couldn’t charge your card for your subscription {name} after several tries, so we’ve paused it.",
+      "reason": "Reason from your bank",
+      "button": "Pay now",
+      "buttonPaused": "Update payment method",
+      "resume": "Once your card is updated, resume the subscription from your account to get your next delivery."
+    }
+  },
+  "fr": {
+    "common": {
+      "greeting": "Bonjour {name},",
+      "greetingNoName": "Bonjour,",
+      "linkFallback": "Le bouton ne fonctionne pas? Copiez ce lien dans votre navigateur :",
+      "questions": "Des questions? Écrivez-nous à <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "L’épicerie et les essentiels de chez vous, livrés partout au Canada.",
+      "terms": "Conditions d’utilisation",
+      "privacy": "Politique de confidentialité",
+      "rights": "© {year} {store}. Tous droits réservés.",
+      "orderNumber": "Numéro de commande"
+    },
+    "verification": {
+      "subject": "Confirmez votre adresse courriel",
+      "preheader": "Un clic et votre compte Banwee est prêt.",
+      "heading": "Confirmez votre courriel",
+      "body": "Merci d’avoir créé un compte Banwee. Confirmez votre adresse courriel pour commencer à magasiner.",
+      "button": "Confirmer mon courriel",
+      "expiry": "Ce lien expire dans {duration}.",
+      "ignore": "Si vous n’avez pas créé de compte, vous pouvez ignorer ce courriel."
+    },
+    "password_reset": {
+      "subject": "Réinitialisez votre mot de passe",
+      "preheader": "Choisissez un nouveau mot de passe pour votre compte Banwee.",
+      "heading": "Réinitialisez votre mot de passe",
+      "body": "Nous avons reçu une demande de réinitialisation du mot de passe de votre compte Banwee. Choisissez-en un nouveau avec le bouton ci-dessous.",
+      "button": "Réinitialiser le mot de passe",
+      "expiry": "Ce lien expire dans {duration}.",
+      "ignore": "Si vous n’avez rien demandé, vous pouvez ignorer ce courriel. Votre mot de passe ne changera pas."
+    },
+    "order_confirmation": {
+      "subject": "Commande {number} confirmée",
+      "preheader": "Nous avons reçu la commande {number}.",
+      "heading": "Merci pour votre commande!",
+      "body": "Nous avons reçu la commande {number} et nous la préparons. Nous vous écrirons de nouveau à son expédition.",
+      "item": "Article",
+      "qty": "Qté",
+      "price": "Prix",
+      "total": "Total",
+      "shipTo": "Livraison à",
+      "button": "Voir ma commande"
+    },
+    "shipping_update": {
+      "subject": "La commande {number} est en route",
+      "preheader": "La commande {number} a été expédiée.",
+      "heading": "Votre commande est en route",
+      "body": "Bonne nouvelle! La commande {number} a été expédiée.",
+      "carrier": "Transporteur",
+      "tracking": "Numéro de suivi",
+      "eta": "Livraison prévue",
+      "button": "Suivre ma commande"
+    },
+    "order_delivered": {
+      "subject": "La commande {number} a été livrée",
+      "preheader": "La commande {number} est arrivée.",
+      "heading": "Votre commande est arrivée",
+      "body": "La commande {number} a été livrée le {date}. Bonne dégustation!",
+      "deliveredTo": "Livrée à",
+      "button": "Voir ma commande",
+      "help": "Un problème? Vous pouvez demander un remboursement depuis la page de la commande."
+    },
+    "subscription_reminder": {
+      "subject": "Votre prochaine livraison {name} approche",
+      "preheader": "{name} se renouvelle le {date}.",
+      "heading": "Votre prochaine livraison approche",
+      "body": "Votre abonnement {name} se renouvelle le {date}. Nous débiterons {amount} de votre carte par défaut et enverrons vos produits.",
+      "button": "Gérer l’abonnement",
+      "manage": "Besoin d’un changement? Vous pouvez sauter cette livraison, mettre en pause ou annuler depuis votre compte."
+    },
+    "subscription_payment_failed": {
+      "subject": "Paiement refusé pour {name}",
+      "subjectPaused": "{name} est en pause : paiement refusé",
+      "heading": "Nous n’avons pas pu prélever votre paiement",
+      "headingPaused": "Votre abonnement est en pause",
+      "body": "Nous n’avons pas pu débiter votre carte pour votre abonnement {name}. Nous réessaierons automatiquement, ou vous pouvez payer maintenant.",
+      "bodyPaused": "Après plusieurs tentatives, nous n’avons pas pu débiter votre carte pour votre abonnement {name} : nous l’avons donc mis en pause.",
+      "reason": "Motif indiqué par votre banque",
+      "button": "Payer maintenant",
+      "buttonPaused": "Mettre à jour le mode de paiement",
+      "resume": "Une fois votre carte mise à jour, reprenez l’abonnement depuis votre compte pour recevoir votre prochaine livraison."
+    }
+  },
+  "es": {
+    "common": {
+      "greeting": "Hola, {name}:",
+      "greetingNoName": "Hola:",
+      "linkFallback": "¿No funciona el botón? Copia este enlace en tu navegador:",
+      "questions": "¿Preguntas? Escríbenos a <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Alimentos y productos esenciales de tu tierra, con entrega en todo Canadá.",
+      "terms": "Términos del servicio",
+      "privacy": "Política de privacidad",
+      "rights": "© {year} {store}. Todos los derechos reservados.",
+      "orderNumber": "Número de pedido"
+    },
+    "verification": {
+      "subject": "Confirma tu correo electrónico",
+      "preheader": "Un clic y tu cuenta de Banwee estará lista.",
+      "heading": "Confirma tu correo",
+      "body": "Gracias por crear una cuenta en Banwee. Confirma tu correo electrónico para empezar a comprar.",
+      "button": "Confirmar correo",
+      "expiry": "Este enlace vence en {duration}.",
+      "ignore": "Si no creaste una cuenta, puedes ignorar este correo."
+    },
+    "password_reset": {
+      "subject": "Restablece tu contraseña",
+      "preheader": "Elige una nueva contraseña para tu cuenta de Banwee.",
+      "heading": "Restablece tu contraseña",
+      "body": "Recibimos una solicitud para restablecer la contraseña de tu cuenta de Banwee. Elige una nueva con el botón de abajo.",
+      "button": "Restablecer contraseña",
+      "expiry": "Este enlace vence en {duration}.",
+      "ignore": "Si no lo solicitaste, puedes ignorar este correo. Tu contraseña no cambiará."
+    },
+    "order_confirmation": {
+      "subject": "Pedido {number} confirmado",
+      "preheader": "Recibimos el pedido {number}.",
+      "heading": "¡Gracias por tu pedido!",
+      "body": "Recibimos el pedido {number} y lo estamos preparando. Te escribiremos de nuevo cuando se envíe.",
+      "item": "Artículo",
+      "qty": "Cant.",
+      "price": "Precio",
+      "total": "Total",
+      "shipTo": "Envío a",
+      "button": "Ver tu pedido"
+    },
+    "shipping_update": {
+      "subject": "El pedido {number} va en camino",
+      "preheader": "El pedido {number} fue enviado.",
+      "heading": "Tu pedido va en camino",
+      "body": "¡Buenas noticias! El pedido {number} fue enviado.",
+      "carrier": "Transportista",
+      "tracking": "Número de seguimiento",
+      "eta": "Entrega estimada",
+      "button": "Rastrear tu pedido"
+    },
+    "order_delivered": {
+      "subject": "El pedido {number} fue entregado",
+      "preheader": "El pedido {number} llegó.",
+      "heading": "Tu pedido llegó",
+      "body": "El pedido {number} se entregó el {date}. ¡Esperamos que lo disfrutes!",
+      "deliveredTo": "Entregado en",
+      "button": "Ver tu pedido",
+      "help": "¿Algo no está bien? Puedes solicitar un reembolso desde la página del pedido."
+    },
+    "subscription_reminder": {
+      "subject": "Se acerca tu próxima entrega de {name}",
+      "preheader": "{name} se renueva el {date}.",
+      "heading": "Se acerca tu próxima entrega",
+      "body": "Tu suscripción {name} se renueva el {date}. Cobraremos {amount} a tu tarjeta predeterminada y enviaremos tus productos.",
+      "button": "Administrar suscripción",
+      "manage": "¿Necesitas un cambio? Puedes omitir esta entrega, pausar o cancelar desde tu cuenta."
+    },
+    "subscription_payment_failed": {
+      "subject": "Falló el pago de {name}",
+      "subjectPaused": "{name} está en pausa: falló el pago",
+      "heading": "No pudimos cobrar tu pago",
+      "headingPaused": "Tu suscripción está en pausa",
+      "body": "No pudimos cobrar a tu tarjeta la suscripción {name}. Lo intentaremos de nuevo automáticamente, o puedes pagar ahora.",
+      "bodyPaused": "No pudimos cobrar a tu tarjeta la suscripción {name} después de varios intentos, así que la pausamos.",
+      "reason": "Motivo indicado por tu banco",
+      "button": "Pagar ahora",
+      "buttonPaused": "Actualizar método de pago",
+      "resume": "Cuando actualices tu tarjeta, reanuda la suscripción desde tu cuenta para recibir tu próxima entrega."
+    }
+  },
+  "zh": {
+    "common": {
+      "greeting": "{name}，您好：",
+      "greetingNoName": "您好：",
+      "linkFallback": "按钮无法使用？请将此链接复制到浏览器中：",
+      "questions": "有疑问？请发邮件至 <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>。",
+      "tagline": "来自家乡的食品和日用品，配送至加拿大各地。",
+      "terms": "服务条款",
+      "privacy": "隐私政策",
+      "rights": "© {year} {store}。保留所有权利。",
+      "orderNumber": "订单号"
+    },
+    "verification": {
+      "subject": "请确认您的电子邮箱",
+      "preheader": "只需一步，您的 Banwee 账户即可使用。",
+      "heading": "确认您的邮箱",
+      "body": "感谢您注册 Banwee 账户。请确认您的电子邮箱地址，即可开始购物。",
+      "button": "确认邮箱",
+      "expiry": "此链接将在 {duration}后失效。",
+      "ignore": "如果您没有注册账户，请忽略此邮件。"
+    },
+    "password_reset": {
+      "subject": "重置您的密码",
+      "preheader": "为您的 Banwee 账户设置新密码。",
+      "heading": "重置您的密码",
+      "body": "我们收到了重置您 Banwee 账户密码的请求。请点击下方按钮设置新密码。",
+      "button": "重置密码",
+      "expiry": "此链接将在 {duration}后失效。",
+      "ignore": "如果这不是您本人的请求，请忽略此邮件，您的密码不会改变。"
+    },
+    "order_confirmation": {
+      "subject": "订单 {number} 已确认",
+      "preheader": "我们已收到订单 {number}。",
+      "heading": "感谢您的订购！",
+      "body": "我们已收到订单 {number}，正在为您准备。发货时我们会再发邮件通知您。",
+      "item": "商品",
+      "qty": "数量",
+      "price": "价格",
+      "total": "合计",
+      "shipTo": "收货地址",
+      "button": "查看订单"
+    },
+    "shipping_update": {
+      "subject": "订单 {number} 已发货",
+      "preheader": "订单 {number} 已发出。",
+      "heading": "您的订单正在路上",
+      "body": "好消息！订单 {number} 已发货。",
+      "carrier": "承运商",
+      "tracking": "物流单号",
+      "eta": "预计送达",
+      "button": "追踪订单"
+    },
+    "order_delivered": {
+      "subject": "订单 {number} 已送达",
+      "preheader": "订单 {number} 已到达。",
+      "heading": "您的订单已送达",
+      "body": "订单 {number} 已于 {date} 送达。祝您喜欢！",
+      "deliveredTo": "送达地址",
+      "button": "查看订单",
+      "help": "有问题？您可以在订单页面申请退款。"
+    },
+    "subscription_reminder": {
+      "subject": "您的下一次 {name} 配送即将到来",
+      "preheader": "{name} 将于 {date} 续订。",
+      "heading": "您的下一次配送即将到来",
+      "body": "您的订阅 {name} 将于 {date} 续订。我们将从您的默认银行卡扣款 {amount}，并寄出您的商品。",
+      "button": "管理订阅",
+      "manage": "需要调整？您可以在账户中跳过本次配送、暂停或取消订阅。"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} 付款失败",
+      "subjectPaused": "{name} 已暂停：付款失败",
+      "heading": "我们未能完成扣款",
+      "headingPaused": "您的订阅已暂停",
+      "body": "我们未能从您的银行卡扣取订阅 {name} 的费用。我们会自动重试，您也可以立即付款。",
+      "bodyPaused": "多次尝试后仍未能从您的银行卡扣取订阅 {name} 的费用，因此我们已暂停该订阅。",
+      "reason": "银行给出的原因",
+      "button": "立即付款",
+      "buttonPaused": "更新支付方式",
+      "resume": "更新银行卡后，请在账户中恢复订阅，以收到下一次配送。"
+    }
+  },
+  "zh-Hant": {
+    "common": {
+      "greeting": "{name}，您好：",
+      "greetingNoName": "您好：",
+      "linkFallback": "按鈕無法使用？請將此連結複製到瀏覽器中：",
+      "questions": "有疑問？請寄信至 <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>。",
+      "tagline": "來自家鄉的食品和日用品，配送至加拿大各地。",
+      "terms": "服務條款",
+      "privacy": "隱私政策",
+      "rights": "© {year} {store}。保留所有權利。",
+      "orderNumber": "訂單號"
+    },
+    "verification": {
+      "subject": "請確認您的電子郵件",
+      "preheader": "只需一步，您的 Banwee 帳戶即可使用。",
+      "heading": "確認您的電子郵件",
+      "body": "感謝您註冊 Banwee 帳戶。請確認您的電子郵件地址，即可開始購物。",
+      "button": "確認電子郵件",
+      "expiry": "此連結將在 {duration}後失效。",
+      "ignore": "如果您沒有註冊帳戶，請忽略此郵件。"
+    },
+    "password_reset": {
+      "subject": "重置您的密碼",
+      "preheader": "為您的 Banwee 帳戶設定新密碼。",
+      "heading": "重置您的密碼",
+      "body": "我們收到了重置您 Banwee 帳戶密碼的請求。請點選下方按鈕設定新密碼。",
+      "button": "重置密碼",
+      "expiry": "此連結將在 {duration}後失效。",
+      "ignore": "如果這不是您本人的請求，請忽略此郵件，您的密碼不會改變。"
+    },
+    "order_confirmation": {
+      "subject": "訂單 {number} 已確認",
+      "preheader": "我們已收到訂單 {number}。",
+      "heading": "感謝您的訂購！",
+      "body": "我們已收到訂單 {number}，正在為您準備。發貨時我們會再寄信通知您。",
+      "item": "商品",
+      "qty": "數量",
+      "price": "價格",
+      "total": "合計",
+      "shipTo": "收貨地址",
+      "button": "檢視訂單"
+    },
+    "shipping_update": {
+      "subject": "訂單 {number} 已發貨",
+      "preheader": "訂單 {number} 已發出。",
+      "heading": "您的訂單正在路上",
+      "body": "好訊息！訂單 {number} 已發貨。",
+      "carrier": "承運商",
+      "tracking": "物流單號",
+      "eta": "預計送達",
+      "button": "追蹤訂單"
+    },
+    "order_delivered": {
+      "subject": "訂單 {number} 已送達",
+      "preheader": "訂單 {number} 已到達。",
+      "heading": "您的訂單已送達",
+      "body": "訂單 {number} 已於 {date} 送達。祝您喜歡！",
+      "deliveredTo": "送達地址",
+      "button": "檢視訂單",
+      "help": "有問題？您可以在訂單頁面申請退款。"
+    },
+    "subscription_reminder": {
+      "subject": "您的下一次 {name} 配送即將到來",
+      "preheader": "{name} 將於 {date} 續訂。",
+      "heading": "您的下一次配送即將到來",
+      "body": "您的訂閱 {name} 將於 {date} 續訂。我們將從您的預設銀行卡扣款 {amount}，並寄出您的商品。",
+      "button": "管理訂閱",
+      "manage": "需要調整？您可以在帳戶中跳過本次配送、暫停或取消訂閱。"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} 付款失敗",
+      "subjectPaused": "{name} 已暫停：付款失敗",
+      "heading": "我們未能完成扣款",
+      "headingPaused": "您的訂閱已暫停",
+      "body": "我們未能從您的銀行卡扣取訂閱 {name} 的費用。我們會自動重試，您也可以立即付款。",
+      "bodyPaused": "多次嘗試後仍未能從您的銀行卡扣取訂閱 {name} 的費用，因此我們已暫停該訂閱。",
+      "reason": "銀行給出的原因",
+      "button": "立即付款",
+      "buttonPaused": "更新支付方式",
+      "resume": "更新銀行卡後，請在帳戶中恢復訂閱，以收到下一次配送。"
+    }
+  },
+  "pa": {
+    "common": {
+      "greeting": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ {name} ਜੀ,",
+      "greetingNoName": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ ਜੀ,",
+      "linkFallback": "ਬਟਨ ਕੰਮ ਨਹੀਂ ਕਰ ਰਿਹਾ? ਇਹ ਲਿੰਕ ਆਪਣੇ ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਕਾਪੀ ਕਰੋ:",
+      "questions": "ਕੋਈ ਸਵਾਲ ਹੈ? ਸਾਨੂੰ <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> 'ਤੇ ਲਿਖੋ।",
+      "tagline": "ਘਰ ਵਾਲਾ ਰਾਸ਼ਨ ਅਤੇ ਜ਼ਰੂਰੀ ਸਮਾਨ, ਪੂਰੇ ਕੈਨੇਡਾ ਵਿੱਚ ਡਿਲੀਵਰੀ।",
+      "terms": "ਸੇਵਾ ਦੀਆਂ ਸ਼ਰਤਾਂ",
+      "privacy": "ਪਰਦੇਦਾਰੀ ਨੀਤੀ",
+      "rights": "© {year} {store}। ਸਾਰੇ ਹੱਕ ਰਾਖਵੇਂ ਹਨ।",
+      "orderNumber": "ਆਰਡਰ ਨੰਬਰ"
+    },
+    "verification": {
+      "subject": "ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+      "preheader": "ਇੱਕ ਕਲਿੱਕ ਅਤੇ ਤੁਹਾਡਾ Banwee ਖਾਤਾ ਤਿਆਰ ਹੈ।",
+      "heading": "ਆਪਣੀ ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+      "body": "Banwee ਖਾਤਾ ਬਣਾਉਣ ਲਈ ਧੰਨਵਾਦ। ਖਰੀਦਦਾਰੀ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਆਪਣੇ ਈਮੇਲ ਪਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ।",
+      "button": "ਈਮੇਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰੋ",
+      "expiry": "ਇਹ ਲਿੰਕ {duration} ਵਿੱਚ ਖਤਮ ਹੋ ਜਾਵੇਗਾ।",
+      "ignore": "ਜੇ ਤੁਸੀਂ ਖਾਤਾ ਨਹੀਂ ਬਣਾਇਆ, ਤਾਂ ਇਸ ਈਮੇਲ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰ ਸਕਦੇ ਹੋ।"
+    },
+    "password_reset": {
+      "subject": "ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
+      "preheader": "ਆਪਣੇ Banwee ਖਾਤੇ ਲਈ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ।",
+      "heading": "ਆਪਣਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
+      "body": "ਸਾਨੂੰ ਤੁਹਾਡੇ Banwee ਖਾਤੇ ਦਾ ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰਨ ਦੀ ਬੇਨਤੀ ਮਿਲੀ ਹੈ। ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ਨਾਲ ਨਵਾਂ ਪਾਸਵਰਡ ਚੁਣੋ।",
+      "button": "ਪਾਸਵਰਡ ਰੀਸੈੱਟ ਕਰੋ",
+      "expiry": "ਇਹ ਲਿੰਕ {duration} ਵਿੱਚ ਖਤਮ ਹੋ ਜਾਵੇਗਾ।",
+      "ignore": "ਜੇ ਤੁਸੀਂ ਇਹ ਬੇਨਤੀ ਨਹੀਂ ਕੀਤੀ, ਤਾਂ ਇਸ ਈਮੇਲ ਨੂੰ ਅਣਡਿੱਠਾ ਕਰੋ। ਤੁਹਾਡਾ ਪਾਸਵਰਡ ਨਹੀਂ ਬਦਲੇਗਾ।"
+    },
+    "order_confirmation": {
+      "subject": "ਆਰਡਰ {number} ਦੀ ਪੁਸ਼ਟੀ ਹੋ ਗਈ",
+      "preheader": "ਸਾਨੂੰ ਆਰਡਰ {number} ਮਿਲ ਗਿਆ ਹੈ।",
+      "heading": "ਤੁਹਾਡੇ ਆਰਡਰ ਲਈ ਧੰਨਵਾਦ!",
+      "body": "ਸਾਨੂੰ ਆਰਡਰ {number} ਮਿਲ ਗਿਆ ਹੈ ਅਤੇ ਅਸੀਂ ਇਸਨੂੰ ਤਿਆਰ ਕਰ ਰਹੇ ਹਾਂ। ਭੇਜੇ ਜਾਣ 'ਤੇ ਅਸੀਂ ਤੁਹਾਨੂੰ ਦੁਬਾਰਾ ਈਮੇਲ ਕਰਾਂਗੇ।",
+      "item": "ਆਈਟਮ",
+      "qty": "ਮਾਤਰਾ",
+      "price": "ਕੀਮਤ",
+      "total": "ਕੁੱਲ",
+      "shipTo": "ਇੱਥੇ ਭੇਜਿਆ ਜਾਵੇਗਾ",
+      "button": "ਆਪਣਾ ਆਰਡਰ ਵੇਖੋ"
+    },
+    "shipping_update": {
+      "subject": "ਆਰਡਰ {number} ਰਸਤੇ ਵਿੱਚ ਹੈ",
+      "preheader": "ਆਰਡਰ {number} ਭੇਜ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
+      "heading": "ਤੁਹਾਡਾ ਆਰਡਰ ਰਸਤੇ ਵਿੱਚ ਹੈ",
+      "body": "ਚੰਗੀ ਖ਼ਬਰ! ਆਰਡਰ {number} ਭੇਜ ਦਿੱਤਾ ਗਿਆ ਹੈ।",
+      "carrier": "ਕੋਰੀਅਰ",
+      "tracking": "ਟ੍ਰੈਕਿੰਗ ਨੰਬਰ",
+      "eta": "ਅੰਦਾਜ਼ਨ ਡਿਲੀਵਰੀ",
+      "button": "ਆਪਣਾ ਆਰਡਰ ਟ੍ਰੈਕ ਕਰੋ"
+    },
+    "order_delivered": {
+      "subject": "ਆਰਡਰ {number} ਡਿਲੀਵਰ ਹੋ ਗਿਆ",
+      "preheader": "ਆਰਡਰ {number} ਪਹੁੰਚ ਗਿਆ ਹੈ।",
+      "heading": "ਤੁਹਾਡਾ ਆਰਡਰ ਪਹੁੰਚ ਗਿਆ",
+      "body": "ਆਰਡਰ {number} {date} ਨੂੰ ਡਿਲੀਵਰ ਹੋ ਗਿਆ। ਉਮੀਦ ਹੈ ਤੁਹਾਨੂੰ ਪਸੰਦ ਆਵੇਗਾ!",
+      "deliveredTo": "ਇੱਥੇ ਡਿਲੀਵਰ ਹੋਇਆ",
+      "button": "ਆਪਣਾ ਆਰਡਰ ਵੇਖੋ",
+      "help": "ਕੋਈ ਸਮੱਸਿਆ ਹੈ? ਤੁਸੀਂ ਆਰਡਰ ਪੰਨੇ ਤੋਂ ਰਿਫੰਡ ਮੰਗ ਸਕਦੇ ਹੋ।"
+    },
+    "subscription_reminder": {
+      "subject": "{name} ਦੀ ਅਗਲੀ ਡਿਲੀਵਰੀ ਨੇੜੇ ਹੈ",
+      "preheader": "{name} {date} ਨੂੰ ਨਵਿਆਈ ਜਾਵੇਗੀ।",
+      "heading": "ਤੁਹਾਡੀ ਅਗਲੀ ਡਿਲੀਵਰੀ ਨੇੜੇ ਹੈ",
+      "body": "ਤੁਹਾਡੀ ਸਬਸਕ੍ਰਿਪਸ਼ਨ {name} {date} ਨੂੰ ਨਵਿਆਈ ਜਾਵੇਗੀ। ਅਸੀਂ ਤੁਹਾਡੇ ਡਿਫ਼ਾਲਟ ਕਾਰਡ ਤੋਂ {amount} ਚਾਰਜ ਕਰਾਂਗੇ ਅਤੇ ਤੁਹਾਡੇ ਉਤਪਾਦ ਭੇਜਾਂਗੇ।",
+      "button": "ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਦਾ ਪ੍ਰਬੰਧ ਕਰੋ",
+      "manage": "ਕੋਈ ਬਦਲਾਅ ਚਾਹੀਦਾ ਹੈ? ਤੁਸੀਂ ਆਪਣੇ ਖਾਤੇ ਤੋਂ ਇਹ ਡਿਲੀਵਰੀ ਛੱਡ ਸਕਦੇ ਹੋ, ਰੋਕ ਸਕਦੇ ਹੋ ਜਾਂ ਰੱਦ ਕਰ ਸਕਦੇ ਹੋ।"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} ਦਾ ਭੁਗਤਾਨ ਨਾਕਾਮ ਰਿਹਾ",
+      "subjectPaused": "{name} ਰੋਕੀ ਗਈ: ਭੁਗਤਾਨ ਨਾਕਾਮ",
+      "heading": "ਅਸੀਂ ਤੁਹਾਡਾ ਭੁਗਤਾਨ ਨਹੀਂ ਲੈ ਸਕੇ",
+      "headingPaused": "ਤੁਹਾਡੀ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਰੋਕ ਦਿੱਤੀ ਗਈ ਹੈ",
+      "body": "ਅਸੀਂ ਤੁਹਾਡੀ ਸਬਸਕ੍ਰਿਪਸ਼ਨ {name} ਲਈ ਤੁਹਾਡਾ ਕਾਰਡ ਚਾਰਜ ਨਹੀਂ ਕਰ ਸਕੇ। ਅਸੀਂ ਆਪਣੇ-ਆਪ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਾਂਗੇ, ਜਾਂ ਤੁਸੀਂ ਹੁਣੇ ਭੁਗਤਾਨ ਕਰ ਸਕਦੇ ਹੋ।",
+      "bodyPaused": "ਕਈ ਕੋਸ਼ਿਸ਼ਾਂ ਤੋਂ ਬਾਅਦ ਵੀ ਅਸੀਂ ਤੁਹਾਡੀ ਸਬਸਕ੍ਰਿਪਸ਼ਨ {name} ਲਈ ਕਾਰਡ ਚਾਰਜ ਨਹੀਂ ਕਰ ਸਕੇ, ਇਸ ਲਈ ਇਸਨੂੰ ਰੋਕ ਦਿੱਤਾ ਹੈ।",
+      "reason": "ਬੈਂਕ ਵੱਲੋਂ ਦੱਸਿਆ ਕਾਰਨ",
+      "button": "ਹੁਣੇ ਭੁਗਤਾਨ ਕਰੋ",
+      "buttonPaused": "ਭੁਗਤਾਨ ਦਾ ਤਰੀਕਾ ਅੱਪਡੇਟ ਕਰੋ",
+      "resume": "ਕਾਰਡ ਅੱਪਡੇਟ ਕਰਨ ਤੋਂ ਬਾਅਦ, ਅਗਲੀ ਡਿਲੀਵਰੀ ਲਈ ਆਪਣੇ ਖਾਤੇ ਤੋਂ ਸਬਸਕ੍ਰਿਪਸ਼ਨ ਦੁਬਾਰਾ ਸ਼ੁਰੂ ਕਰੋ।"
+    }
+  },
+  "ar": {
+    "common": {
+      "greeting": "مرحبًا {name}،",
+      "greetingNoName": "مرحبًا،",
+      "linkFallback": "الزر لا يعمل؟ انسخ هذا الرابط في متصفحك:",
+      "questions": "لديك أسئلة؟ راسلنا على <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "بقالة ومستلزمات من الوطن، توصَّل إلى جميع أنحاء كندا.",
+      "terms": "شروط الخدمة",
+      "privacy": "سياسة الخصوصية",
+      "rights": "© {year} {store}. جميع الحقوق محفوظة.",
+      "orderNumber": "رقم الطلب"
+    },
+    "verification": {
+      "subject": "أكّد عنوان بريدك الإلكتروني",
+      "preheader": "نقرة واحدة ويصبح حسابك في Banwee جاهزًا.",
+      "heading": "أكّد بريدك الإلكتروني",
+      "body": "شكرًا لإنشائك حسابًا في Banwee. أكّد عنوان بريدك الإلكتروني لتبدأ التسوق.",
+      "button": "تأكيد البريد الإلكتروني",
+      "expiry": "تنتهي صلاحية هذا الرابط خلال {duration}.",
+      "ignore": "إذا لم تُنشئ حسابًا، يمكنك تجاهل هذه الرسالة."
+    },
+    "password_reset": {
+      "subject": "إعادة تعيين كلمة المرور",
+      "preheader": "اختر كلمة مرور جديدة لحسابك في Banwee.",
+      "heading": "إعادة تعيين كلمة المرور",
+      "body": "تلقّينا طلبًا لإعادة تعيين كلمة مرور حسابك في Banwee. اختر كلمة مرور جديدة عبر الزر أدناه.",
+      "button": "إعادة تعيين كلمة المرور",
+      "expiry": "تنتهي صلاحية هذا الرابط خلال {duration}.",
+      "ignore": "إذا لم تطلب ذلك، يمكنك تجاهل هذه الرسالة ولن تتغير كلمة مرورك."
+    },
+    "order_confirmation": {
+      "subject": "تم تأكيد الطلب {number}",
+      "preheader": "استلمنا الطلب {number}.",
+      "heading": "شكرًا لطلبك!",
+      "body": "استلمنا الطلب {number} ونعمل على تجهيزه. سنراسلك مجددًا عند شحنه.",
+      "item": "المنتج",
+      "qty": "الكمية",
+      "price": "السعر",
+      "total": "الإجمالي",
+      "shipTo": "الشحن إلى",
+      "button": "عرض طلبك"
+    },
+    "shipping_update": {
+      "subject": "الطلب {number} في الطريق",
+      "preheader": "تم شحن الطلب {number}.",
+      "heading": "طلبك في الطريق",
+      "body": "أخبار سارة! تم شحن الطلب {number}.",
+      "carrier": "شركة الشحن",
+      "tracking": "رقم التتبّع",
+      "eta": "موعد التسليم المتوقع",
+      "button": "تتبّع طلبك"
+    },
+    "order_delivered": {
+      "subject": "تم تسليم الطلب {number}",
+      "preheader": "وصل الطلب {number}.",
+      "heading": "وصل طلبك",
+      "body": "تم تسليم الطلب {number} في {date}. نتمنى أن ينال إعجابك!",
+      "deliveredTo": "سُلّم إلى",
+      "button": "عرض طلبك",
+      "help": "هل هناك مشكلة؟ يمكنك طلب استرداد من صفحة الطلب."
+    },
+    "subscription_reminder": {
+      "subject": "توصيلتك القادمة من {name} تقترب",
+      "preheader": "يتجدد {name} في {date}.",
+      "heading": "توصيلتك القادمة تقترب",
+      "body": "يتجدد اشتراكك {name} في {date}. سنخصم {amount} من بطاقتك الافتراضية ونرسل منتجاتك.",
+      "button": "إدارة الاشتراك",
+      "manage": "تحتاج إلى تغيير؟ يمكنك تخطي هذه التوصيلة أو إيقافها مؤقتًا أو الإلغاء من حسابك."
+    },
+    "subscription_payment_failed": {
+      "subject": "فشل الدفع لـ {name}",
+      "subjectPaused": "تم إيقاف {name} مؤقتًا: فشل الدفع",
+      "heading": "لم نتمكن من تحصيل دفعتك",
+      "headingPaused": "تم إيقاف اشتراكك مؤقتًا",
+      "body": "لم نتمكن من الخصم من بطاقتك لاشتراك {name}. سنحاول مجددًا تلقائيًا، أو يمكنك الدفع الآن.",
+      "bodyPaused": "لم نتمكن من الخصم من بطاقتك لاشتراك {name} بعد عدة محاولات، لذا أوقفناه مؤقتًا.",
+      "reason": "السبب الذي ذكره مصرفك",
+      "button": "ادفع الآن",
+      "buttonPaused": "تحديث طريقة الدفع",
+      "resume": "بعد تحديث بطاقتك، استأنف الاشتراك من حسابك لتحصل على توصيلتك القادمة."
+    }
+  },
+  "tl": {
+    "common": {
+      "greeting": "Kumusta, {name},",
+      "greetingNoName": "Kumusta,",
+      "linkFallback": "Hindi gumagana ang button? Kopyahin ang link na ito sa iyong browser:",
+      "questions": "May tanong? Sumulat sa amin sa <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Mga grocery at pangangailangan mula sa inyong bayan, hatid sa buong Canada.",
+      "terms": "Mga Tuntunin ng Serbisyo",
+      "privacy": "Patakaran sa Privacy",
+      "rights": "© {year} {store}. Nakalaan ang lahat ng karapatan.",
+      "orderNumber": "Order number"
+    },
+    "verification": {
+      "subject": "Kumpirmahin ang iyong email address",
+      "preheader": "Isang click lang at handa na ang Banwee account mo.",
+      "heading": "Kumpirmahin ang iyong email",
+      "body": "Salamat sa paggawa ng Banwee account. Kumpirmahin ang iyong email address para makapagsimulang mamili.",
+      "button": "Kumpirmahin ang email",
+      "expiry": "Mag-e-expire ang link na ito sa loob ng {duration}.",
+      "ignore": "Kung hindi ka gumawa ng account, puwede mong balewalain ang email na ito."
+    },
+    "password_reset": {
+      "subject": "I-reset ang iyong password",
+      "preheader": "Pumili ng bagong password para sa iyong Banwee account.",
+      "heading": "I-reset ang iyong password",
+      "body": "May natanggap kaming kahilingan na i-reset ang password ng iyong Banwee account. Pumili ng bago gamit ang button sa ibaba.",
+      "button": "I-reset ang password",
+      "expiry": "Mag-e-expire ang link na ito sa loob ng {duration}.",
+      "ignore": "Kung hindi mo ito hiniling, puwede mong balewalain ang email na ito. Hindi magbabago ang password mo."
+    },
+    "order_confirmation": {
+      "subject": "Kumpirmado ang order {number}",
+      "preheader": "Natanggap namin ang order {number}.",
+      "heading": "Salamat sa iyong order!",
+      "body": "Natanggap namin ang order {number} at inihahanda na namin ito. Mag-e-email kami ulit kapag naipadala na.",
+      "item": "Item",
+      "qty": "Dami",
+      "price": "Presyo",
+      "total": "Kabuuan",
+      "shipTo": "Ipapadala sa",
+      "button": "Tingnan ang iyong order"
+    },
+    "shipping_update": {
+      "subject": "Paparating na ang order {number}",
+      "preheader": "Naipadala na ang order {number}.",
+      "heading": "Paparating na ang iyong order",
+      "body": "Magandang balita! Naipadala na ang order {number}.",
+      "carrier": "Courier",
+      "tracking": "Tracking number",
+      "eta": "Tinatayang delivery",
+      "button": "I-track ang iyong order"
+    },
+    "order_delivered": {
+      "subject": "Na-deliver na ang order {number}",
+      "preheader": "Dumating na ang order {number}.",
+      "heading": "Dumating na ang iyong order",
+      "body": "Na-deliver ang order {number} noong {date}. Sana magustuhan mo!",
+      "deliveredTo": "Na-deliver sa",
+      "button": "Tingnan ang iyong order",
+      "help": "May problema? Puwede kang humingi ng refund mula sa page ng order."
+    },
+    "subscription_reminder": {
+      "subject": "Malapit na ang susunod mong delivery ng {name}",
+      "preheader": "Magre-renew ang {name} sa {date}.",
+      "heading": "Malapit na ang susunod mong delivery",
+      "body": "Magre-renew ang subscription mong {name} sa {date}. Sisingilin namin ang {amount} sa iyong default card at ipapadala ang iyong mga produkto.",
+      "button": "Pamahalaan ang subscription",
+      "manage": "May gustong baguhin? Puwede mong laktawan ang delivery na ito, i-pause o kanselahin mula sa iyong account."
+    },
+    "subscription_payment_failed": {
+      "subject": "Nabigo ang bayad para sa {name}",
+      "subjectPaused": "Naka-pause ang {name}: nabigo ang bayad",
+      "heading": "Hindi namin makuha ang iyong bayad",
+      "headingPaused": "Naka-pause ang iyong subscription",
+      "body": "Hindi namin masingil ang iyong card para sa subscription mong {name}. Awtomatiko kaming susubok ulit, o puwede kang magbayad ngayon.",
+      "bodyPaused": "Hindi namin masingil ang iyong card para sa subscription mong {name} matapos ang ilang pagsubok, kaya pinause namin ito.",
+      "reason": "Dahilan mula sa iyong bangko",
+      "button": "Magbayad ngayon",
+      "buttonPaused": "I-update ang paraan ng pagbabayad",
+      "resume": "Kapag na-update na ang iyong card, ituloy ang subscription mula sa iyong account para matanggap ang susunod na delivery."
+    }
+  },
+  "pt": {
+    "common": {
+      "greeting": "Olá, {name},",
+      "greetingNoName": "Olá,",
+      "linkFallback": "O botão não funciona? Copie este link no seu navegador:",
+      "questions": "Dúvidas? Escreva para <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Mantimentos e itens essenciais da sua terra, entregues em todo o Canadá.",
+      "terms": "Termos de Serviço",
+      "privacy": "Política de Privacidade",
+      "rights": "© {year} {store}. Todos os direitos reservados.",
+      "orderNumber": "Número do pedido"
+    },
+    "verification": {
+      "subject": "Confirme seu endereço de e-mail",
+      "preheader": "Um clique e sua conta Banwee está pronta.",
+      "heading": "Confirme seu e-mail",
+      "body": "Obrigado por criar uma conta na Banwee. Confirme seu endereço de e-mail para começar a comprar.",
+      "button": "Confirmar e-mail",
+      "expiry": "Este link expira em {duration}.",
+      "ignore": "Se você não criou uma conta, pode ignorar este e-mail."
+    },
+    "password_reset": {
+      "subject": "Redefina sua senha",
+      "preheader": "Escolha uma nova senha para sua conta Banwee.",
+      "heading": "Redefina sua senha",
+      "body": "Recebemos um pedido para redefinir a senha da sua conta Banwee. Escolha uma nova no botão abaixo.",
+      "button": "Redefinir senha",
+      "expiry": "Este link expira em {duration}.",
+      "ignore": "Se você não pediu isso, pode ignorar este e-mail. Sua senha não será alterada."
+    },
+    "order_confirmation": {
+      "subject": "Pedido {number} confirmado",
+      "preheader": "Recebemos o pedido {number}.",
+      "heading": "Obrigado pelo seu pedido!",
+      "body": "Recebemos o pedido {number} e já estamos preparando. Vamos avisar por e-mail quando for enviado.",
+      "item": "Item",
+      "qty": "Qtd.",
+      "price": "Preço",
+      "total": "Total",
+      "shipTo": "Entrega em",
+      "button": "Ver seu pedido"
+    },
+    "shipping_update": {
+      "subject": "O pedido {number} está a caminho",
+      "preheader": "O pedido {number} foi enviado.",
+      "heading": "Seu pedido está a caminho",
+      "body": "Boa notícia! O pedido {number} foi enviado.",
+      "carrier": "Transportadora",
+      "tracking": "Código de rastreamento",
+      "eta": "Entrega prevista",
+      "button": "Rastrear seu pedido"
+    },
+    "order_delivered": {
+      "subject": "O pedido {number} foi entregue",
+      "preheader": "O pedido {number} chegou.",
+      "heading": "Seu pedido chegou",
+      "body": "O pedido {number} foi entregue em {date}. Esperamos que você goste!",
+      "deliveredTo": "Entregue em",
+      "button": "Ver seu pedido",
+      "help": "Algo errado? Você pode pedir reembolso na página do pedido."
+    },
+    "subscription_reminder": {
+      "subject": "Sua próxima entrega de {name} está chegando",
+      "preheader": "{name} será renovada em {date}.",
+      "heading": "Sua próxima entrega está chegando",
+      "body": "Sua assinatura {name} será renovada em {date}. Vamos cobrar {amount} no seu cartão padrão e enviar seus produtos.",
+      "button": "Gerenciar assinatura",
+      "manage": "Precisa mudar algo? Você pode pular esta entrega, pausar ou cancelar pela sua conta."
+    },
+    "subscription_payment_failed": {
+      "subject": "Falha no pagamento de {name}",
+      "subjectPaused": "{name} está pausada: falha no pagamento",
+      "heading": "Não conseguimos cobrar seu pagamento",
+      "headingPaused": "Sua assinatura está pausada",
+      "body": "Não conseguimos cobrar seu cartão pela assinatura {name}. Vamos tentar de novo automaticamente, ou você pode pagar agora.",
+      "bodyPaused": "Não conseguimos cobrar seu cartão pela assinatura {name} após várias tentativas, então ela foi pausada.",
+      "reason": "Motivo informado pelo banco",
+      "button": "Pagar agora",
+      "buttonPaused": "Atualizar forma de pagamento",
+      "resume": "Depois de atualizar o cartão, retome a assinatura pela sua conta para receber a próxima entrega."
+    }
+  },
+  "hi": {
+    "common": {
+      "greeting": "नमस्ते {name},",
+      "greetingNoName": "नमस्ते,",
+      "linkFallback": "बटन काम नहीं कर रहा? यह लिंक अपने ब्राउज़र में कॉपी करें:",
+      "questions": "कोई सवाल है? हमें <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> पर लिखें।",
+      "tagline": "अपने देश का राशन और ज़रूरी सामान, पूरे कनाडा में डिलीवरी।",
+      "terms": "सेवा की शर्तें",
+      "privacy": "गोपनीयता नीति",
+      "rights": "© {year} {store}. सर्वाधिकार सुरक्षित।",
+      "orderNumber": "ऑर्डर नंबर"
+    },
+    "verification": {
+      "subject": "अपने ईमेल पते की पुष्टि करें",
+      "preheader": "एक क्लिक और आपका Banwee खाता तैयार है।",
+      "heading": "अपने ईमेल की पुष्टि करें",
+      "body": "Banwee खाता बनाने के लिए धन्यवाद। खरीदारी शुरू करने के लिए अपने ईमेल पते की पुष्टि करें।",
+      "button": "ईमेल की पुष्टि करें",
+      "expiry": "यह लिंक {duration} में समाप्त हो जाएगा।",
+      "ignore": "अगर आपने खाता नहीं बनाया है, तो इस ईमेल को अनदेखा करें।"
+    },
+    "password_reset": {
+      "subject": "अपना पासवर्ड रीसेट करें",
+      "preheader": "अपने Banwee खाते के लिए नया पासवर्ड चुनें।",
+      "heading": "अपना पासवर्ड रीसेट करें",
+      "body": "हमें आपके Banwee खाते का पासवर्ड रीसेट करने का अनुरोध मिला है। नीचे दिए बटन से नया पासवर्ड चुनें।",
+      "button": "पासवर्ड रीसेट करें",
+      "expiry": "यह लिंक {duration} में समाप्त हो जाएगा।",
+      "ignore": "अगर आपने यह अनुरोध नहीं किया, तो इस ईमेल को अनदेखा करें। आपका पासवर्ड नहीं बदलेगा।"
+    },
+    "order_confirmation": {
+      "subject": "ऑर्डर {number} की पुष्टि हो गई",
+      "preheader": "हमें ऑर्डर {number} मिल गया है।",
+      "heading": "आपके ऑर्डर के लिए धन्यवाद!",
+      "body": "हमें ऑर्डर {number} मिल गया है और हम इसे तैयार कर रहे हैं। भेजे जाने पर हम आपको फिर से ईमेल करेंगे।",
+      "item": "आइटम",
+      "qty": "मात्रा",
+      "price": "कीमत",
+      "total": "कुल",
+      "shipTo": "यहाँ भेजा जाएगा",
+      "button": "अपना ऑर्डर देखें"
+    },
+    "shipping_update": {
+      "subject": "ऑर्डर {number} रास्ते में है",
+      "preheader": "ऑर्डर {number} भेज दिया गया है।",
+      "heading": "आपका ऑर्डर रास्ते में है",
+      "body": "अच्छी खबर! ऑर्डर {number} भेज दिया गया है।",
+      "carrier": "कूरियर",
+      "tracking": "ट्रैकिंग नंबर",
+      "eta": "अनुमानित डिलीवरी",
+      "button": "अपना ऑर्डर ट्रैक करें"
+    },
+    "order_delivered": {
+      "subject": "ऑर्डर {number} डिलीवर हो गया",
+      "preheader": "ऑर्डर {number} पहुँच गया है।",
+      "heading": "आपका ऑर्डर पहुँच गया",
+      "body": "ऑर्डर {number} {date} को डिलीवर हो गया। उम्मीद है आपको पसंद आएगा!",
+      "deliveredTo": "यहाँ डिलीवर हुआ",
+      "button": "अपना ऑर्डर देखें",
+      "help": "कोई समस्या है? आप ऑर्डर पेज से रिफ़ंड माँग सकते हैं।"
+    },
+    "subscription_reminder": {
+      "subject": "{name} की अगली डिलीवरी नज़दीक है",
+      "preheader": "{name} का {date} को नवीनीकरण होगा।",
+      "heading": "आपकी अगली डिलीवरी नज़दीक है",
+      "body": "आपकी सदस्यता {name} का {date} को नवीनीकरण होगा। हम आपके डिफ़ॉल्ट कार्ड से {amount} लेंगे और आपके उत्पाद भेजेंगे।",
+      "button": "सदस्यता प्रबंधित करें",
+      "manage": "कुछ बदलना है? आप अपने खाते से यह डिलीवरी छोड़ सकते हैं, रोक सकते हैं या रद्द कर सकते हैं।"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} का भुगतान विफल रहा",
+      "subjectPaused": "{name} रोकी गई: भुगतान विफल",
+      "heading": "हम आपका भुगतान नहीं ले सके",
+      "headingPaused": "आपकी सदस्यता रोक दी गई है",
+      "body": "हम आपकी सदस्यता {name} के लिए आपके कार्ड से भुगतान नहीं ले सके। हम अपने आप फिर से कोशिश करेंगे, या आप अभी भुगतान कर सकते हैं।",
+      "bodyPaused": "कई कोशिशों के बाद भी हम आपकी सदस्यता {name} के लिए कार्ड से भुगतान नहीं ले सके, इसलिए इसे रोक दिया गया है।",
+      "reason": "बैंक द्वारा बताया गया कारण",
+      "button": "अभी भुगतान करें",
+      "buttonPaused": "भुगतान का तरीका अपडेट करें",
+      "resume": "कार्ड अपडेट करने के बाद, अगली डिलीवरी पाने के लिए अपने खाते से सदस्यता फिर शुरू करें।"
+    }
+  },
+  "ur": {
+    "common": {
+      "greeting": "السلام علیکم {name}،",
+      "greetingNoName": "السلام علیکم،",
+      "linkFallback": "بٹن کام نہیں کر رہا؟ یہ لنک اپنے براؤزر میں کاپی کریں:",
+      "questions": "کوئی سوال ہے؟ ہمیں <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> پر لکھیں۔",
+      "tagline": "وطن کا راشن اور ضروری سامان، پورے کینیڈا میں ڈیلیوری کے ساتھ۔",
+      "terms": "سروس کی شرائط",
+      "privacy": "رازداری کی پالیسی",
+      "rights": "© {year} {store}۔ جملہ حقوق محفوظ ہیں۔",
+      "orderNumber": "آرڈر نمبر"
+    },
+    "verification": {
+      "subject": "اپنے ای میل پتے کی تصدیق کریں",
+      "preheader": "ایک کلک اور آپ کا Banwee اکاؤنٹ تیار ہے۔",
+      "heading": "اپنی ای میل کی تصدیق کریں",
+      "body": "Banwee اکاؤنٹ بنانے کا شکریہ۔ خریداری شروع کرنے کے لیے اپنے ای میل پتے کی تصدیق کریں۔",
+      "button": "ای میل کی تصدیق کریں",
+      "expiry": "یہ لنک {duration} میں ختم ہو جائے گا۔",
+      "ignore": "اگر آپ نے اکاؤنٹ نہیں بنایا تو اس ای میل کو نظر انداز کر دیں۔"
+    },
+    "password_reset": {
+      "subject": "اپنا پاس ورڈ ری سیٹ کریں",
+      "preheader": "اپنے Banwee اکاؤنٹ کے لیے نیا پاس ورڈ منتخب کریں۔",
+      "heading": "اپنا پاس ورڈ ری سیٹ کریں",
+      "body": "ہمیں آپ کے Banwee اکاؤنٹ کا پاس ورڈ ری سیٹ کرنے کی درخواست ملی ہے۔ نیچے دیے گئے بٹن سے نیا پاس ورڈ منتخب کریں۔",
+      "button": "پاس ورڈ ری سیٹ کریں",
+      "expiry": "یہ لنک {duration} میں ختم ہو جائے گا۔",
+      "ignore": "اگر آپ نے یہ درخواست نہیں کی تو اس ای میل کو نظر انداز کر دیں۔ آپ کا پاس ورڈ نہیں بدلے گا۔"
+    },
+    "order_confirmation": {
+      "subject": "آرڈر {number} کی تصدیق ہو گئی",
+      "preheader": "ہمیں آرڈر {number} مل گیا ہے۔",
+      "heading": "آپ کے آرڈر کا شکریہ!",
+      "body": "ہمیں آرڈر {number} مل گیا ہے اور ہم اسے تیار کر رہے ہیں۔ روانگی پر ہم آپ کو دوبارہ ای میل کریں گے۔",
+      "item": "آئٹم",
+      "qty": "مقدار",
+      "price": "قیمت",
+      "total": "کل",
+      "shipTo": "ڈیلیوری کا پتہ",
+      "button": "اپنا آرڈر دیکھیں"
+    },
+    "shipping_update": {
+      "subject": "آرڈر {number} راستے میں ہے",
+      "preheader": "آرڈر {number} روانہ ہو گیا ہے۔",
+      "heading": "آپ کا آرڈر راستے میں ہے",
+      "body": "اچھی خبر! آرڈر {number} روانہ ہو گیا ہے۔",
+      "carrier": "کورئیر",
+      "tracking": "ٹریکنگ نمبر",
+      "eta": "متوقع ڈیلیوری",
+      "button": "اپنا آرڈر ٹریک کریں"
+    },
+    "order_delivered": {
+      "subject": "آرڈر {number} ڈیلیور ہو گیا",
+      "preheader": "آرڈر {number} پہنچ گیا ہے۔",
+      "heading": "آپ کا آرڈر پہنچ گیا",
+      "body": "آرڈر {number} {date} کو ڈیلیور ہو گیا۔ امید ہے آپ کو پسند آئے گا!",
+      "deliveredTo": "ڈیلیوری کا پتہ",
+      "button": "اپنا آرڈر دیکھیں",
+      "help": "کوئی مسئلہ ہے؟ آپ آرڈر کے صفحے سے رقم کی واپسی کی درخواست کر سکتے ہیں۔"
+    },
+    "subscription_reminder": {
+      "subject": "{name} کی اگلی ڈیلیوری قریب ہے",
+      "preheader": "{name} کی تجدید {date} کو ہوگی۔",
+      "heading": "آپ کی اگلی ڈیلیوری قریب ہے",
+      "body": "آپ کی سبسکرپشن {name} کی تجدید {date} کو ہوگی۔ ہم آپ کے ڈیفالٹ کارڈ سے {amount} چارج کریں گے اور آپ کی مصنوعات بھیجیں گے۔",
+      "button": "سبسکرپشن کا انتظام کریں",
+      "manage": "کوئی تبدیلی چاہیے؟ آپ اپنے اکاؤنٹ سے یہ ڈیلیوری چھوڑ سکتے ہیں، موقوف یا منسوخ کر سکتے ہیں۔"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} کی ادائیگی ناکام ہو گئی",
+      "subjectPaused": "{name} موقوف: ادائیگی ناکام",
+      "heading": "ہم آپ کی ادائیگی وصول نہیں کر سکے",
+      "headingPaused": "آپ کی سبسکرپشن موقوف کر دی گئی ہے",
+      "body": "ہم آپ کی سبسکرپشن {name} کے لیے آپ کا کارڈ چارج نہیں کر سکے۔ ہم خود بخود دوبارہ کوشش کریں گے، یا آپ ابھی ادائیگی کر سکتے ہیں۔",
+      "bodyPaused": "کئی کوششوں کے بعد بھی ہم آپ کی سبسکرپشن {name} کے لیے کارڈ چارج نہیں کر سکے، اس لیے ہم نے اسے موقوف کر دیا ہے۔",
+      "reason": "بینک کی بتائی گئی وجہ",
+      "button": "ابھی ادائیگی کریں",
+      "buttonPaused": "ادائیگی کا طریقہ اپ ڈیٹ کریں",
+      "resume": "کارڈ اپ ڈیٹ کرنے کے بعد، اگلی ڈیلیوری کے لیے اپنے اکاؤنٹ سے سبسکرپشن دوبارہ شروع کریں۔"
+    }
+  },
+  "ru": {
+    "common": {
+      "greeting": "Здравствуйте, {name}!",
+      "greetingNoName": "Здравствуйте!",
+      "linkFallback": "Кнопка не работает? Скопируйте эту ссылку в браузер:",
+      "questions": "Есть вопросы? Напишите нам на <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Продукты и товары с родины с доставкой по всей Канаде.",
+      "terms": "Условия использования",
+      "privacy": "Политика конфиденциальности",
+      "rights": "© {year} {store}. Все права защищены.",
+      "orderNumber": "Номер заказа"
+    },
+    "verification": {
+      "subject": "Подтвердите адрес электронной почты",
+      "preheader": "Один клик — и ваш аккаунт Banwee готов.",
+      "heading": "Подтвердите почту",
+      "body": "Спасибо, что создали аккаунт Banwee. Подтвердите адрес электронной почты, чтобы начать покупки.",
+      "button": "Подтвердить почту",
+      "expiry": "Ссылка действительна {duration}.",
+      "ignore": "Если вы не создавали аккаунт, просто проигнорируйте это письмо."
+    },
+    "password_reset": {
+      "subject": "Сброс пароля",
+      "preheader": "Придумайте новый пароль для аккаунта Banwee.",
+      "heading": "Сброс пароля",
+      "body": "Мы получили запрос на сброс пароля от вашего аккаунта Banwee. Задайте новый пароль с помощью кнопки ниже.",
+      "button": "Сбросить пароль",
+      "expiry": "Ссылка действительна {duration}.",
+      "ignore": "Если вы этого не запрашивали, проигнорируйте письмо. Ваш пароль не изменится."
+    },
+    "order_confirmation": {
+      "subject": "Заказ {number} подтверждён",
+      "preheader": "Мы получили заказ {number}.",
+      "heading": "Спасибо за заказ!",
+      "body": "Мы получили заказ {number} и уже собираем его. Напишем ещё раз, когда он будет отправлен.",
+      "item": "Товар",
+      "qty": "Кол-во",
+      "price": "Цена",
+      "total": "Итого",
+      "shipTo": "Адрес доставки",
+      "button": "Посмотреть заказ"
+    },
+    "shipping_update": {
+      "subject": "Заказ {number} в пути",
+      "preheader": "Заказ {number} отправлен.",
+      "heading": "Ваш заказ в пути",
+      "body": "Хорошие новости! Заказ {number} отправлен.",
+      "carrier": "Перевозчик",
+      "tracking": "Трек-номер",
+      "eta": "Ожидаемая доставка",
+      "button": "Отследить заказ"
+    },
+    "order_delivered": {
+      "subject": "Заказ {number} доставлен",
+      "preheader": "Заказ {number} прибыл.",
+      "heading": "Ваш заказ доставлен",
+      "body": "Заказ {number} доставлен {date}. Надеемся, вам понравится!",
+      "deliveredTo": "Доставлено по адресу",
+      "button": "Посмотреть заказ",
+      "help": "Что-то не так? Вы можете запросить возврат на странице заказа."
+    },
+    "subscription_reminder": {
+      "subject": "Скоро следующая доставка {name}",
+      "preheader": "{name} продлевается {date}.",
+      "heading": "Скоро следующая доставка",
+      "body": "Ваша подписка {name} продлевается {date}. Мы спишем {amount} с карты по умолчанию и отправим ваши товары.",
+      "button": "Управлять подпиской",
+      "manage": "Нужно что-то изменить? В аккаунте можно пропустить эту доставку, приостановить или отменить подписку."
+    },
+    "subscription_payment_failed": {
+      "subject": "Не удалось оплатить {name}",
+      "subjectPaused": "{name} приостановлена: оплата не прошла",
+      "heading": "Не удалось провести оплату",
+      "headingPaused": "Ваша подписка приостановлена",
+      "body": "Не удалось списать оплату за подписку {name} с вашей карты. Мы автоматически попробуем снова, или вы можете оплатить сейчас.",
+      "bodyPaused": "После нескольких попыток нам не удалось списать оплату за подписку {name}, поэтому мы её приостановили.",
+      "reason": "Причина от банка",
+      "button": "Оплатить сейчас",
+      "buttonPaused": "Обновить способ оплаты",
+      "resume": "Обновив карту, возобновите подписку в аккаунте, чтобы получить следующую доставку."
+    }
+  },
+  "uk": {
+    "common": {
+      "greeting": "Вітаємо, {name}!",
+      "greetingNoName": "Вітаємо!",
+      "linkFallback": "Кнопка не працює? Скопіюйте це посилання в браузер:",
+      "questions": "Маєте запитання? Напишіть нам на <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Продукти й товари з батьківщини з доставкою по всій Канаді.",
+      "terms": "Умови використання",
+      "privacy": "Політика конфіденційності",
+      "rights": "© {year} {store}. Усі права захищено.",
+      "orderNumber": "Номер замовлення"
+    },
+    "verification": {
+      "subject": "Підтвердьте адресу електронної пошти",
+      "preheader": "Один клік — і ваш обліковий запис Banwee готовий.",
+      "heading": "Підтвердьте пошту",
+      "body": "Дякуємо, що створили обліковий запис Banwee. Підтвердьте адресу електронної пошти, щоб почати покупки.",
+      "button": "Підтвердити пошту",
+      "expiry": "Посилання дійсне {duration}.",
+      "ignore": "Якщо ви не створювали обліковий запис, просто проігноруйте цей лист."
+    },
+    "password_reset": {
+      "subject": "Скидання пароля",
+      "preheader": "Створіть новий пароль для облікового запису Banwee.",
+      "heading": "Скидання пароля",
+      "body": "Ми отримали запит на скидання пароля до вашого облікового запису Banwee. Задайте новий пароль кнопкою нижче.",
+      "button": "Скинути пароль",
+      "expiry": "Посилання дійсне {duration}.",
+      "ignore": "Якщо ви цього не запитували, проігноруйте лист. Ваш пароль не зміниться."
+    },
+    "order_confirmation": {
+      "subject": "Замовлення {number} підтверджено",
+      "preheader": "Ми отримали замовлення {number}.",
+      "heading": "Дякуємо за замовлення!",
+      "body": "Ми отримали замовлення {number} і вже збираємо його. Напишемо ще раз, коли його буде відправлено.",
+      "item": "Товар",
+      "qty": "К-сть",
+      "price": "Ціна",
+      "total": "Разом",
+      "shipTo": "Адреса доставки",
+      "button": "Переглянути замовлення"
+    },
+    "shipping_update": {
+      "subject": "Замовлення {number} у дорозі",
+      "preheader": "Замовлення {number} відправлено.",
+      "heading": "Ваше замовлення в дорозі",
+      "body": "Гарні новини! Замовлення {number} відправлено.",
+      "carrier": "Перевізник",
+      "tracking": "Трек-номер",
+      "eta": "Очікувана доставка",
+      "button": "Відстежити замовлення"
+    },
+    "order_delivered": {
+      "subject": "Замовлення {number} доставлено",
+      "preheader": "Замовлення {number} прибуло.",
+      "heading": "Ваше замовлення доставлено",
+      "body": "Замовлення {number} доставлено {date}. Сподіваємося, вам сподобається!",
+      "deliveredTo": "Доставлено за адресою",
+      "button": "Переглянути замовлення",
+      "help": "Щось не так? Ви можете запросити повернення коштів на сторінці замовлення."
+    },
+    "subscription_reminder": {
+      "subject": "Незабаром наступна доставка {name}",
+      "preheader": "{name} продовжується {date}.",
+      "heading": "Незабаром наступна доставка",
+      "body": "Ваша підписка {name} продовжується {date}. Ми спишемо {amount} з картки за замовчуванням і надішлемо ваші товари.",
+      "button": "Керувати підпискою",
+      "manage": "Потрібно щось змінити? В обліковому записі можна пропустити цю доставку, призупинити або скасувати підписку."
+    },
+    "subscription_payment_failed": {
+      "subject": "Не вдалося оплатити {name}",
+      "subjectPaused": "{name} призупинено: оплата не пройшла",
+      "heading": "Не вдалося провести оплату",
+      "headingPaused": "Вашу підписку призупинено",
+      "body": "Не вдалося списати оплату за підписку {name} з вашої картки. Ми автоматично спробуємо знову, або ви можете оплатити зараз.",
+      "bodyPaused": "Після кількох спроб нам не вдалося списати оплату за підписку {name}, тож ми її призупинили.",
+      "reason": "Причина від банку",
+      "button": "Оплатити зараз",
+      "buttonPaused": "Оновити спосіб оплати",
+      "resume": "Оновивши картку, відновіть підписку в обліковому записі, щоб отримати наступну доставку."
+    }
+  },
+  "de": {
+    "common": {
+      "greeting": "Hallo {name},",
+      "greetingNoName": "Hallo,",
+      "linkFallback": "Der Button funktioniert nicht? Kopiere diesen Link in deinen Browser:",
+      "questions": "Fragen? Schreib uns an <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Lebensmittel und Alltagsprodukte aus der Heimat, geliefert in ganz Kanada.",
+      "terms": "Nutzungsbedingungen",
+      "privacy": "Datenschutzerklärung",
+      "rights": "© {year} {store}. Alle Rechte vorbehalten.",
+      "orderNumber": "Bestellnummer"
+    },
+    "verification": {
+      "subject": "Bestätige deine E-Mail-Adresse",
+      "preheader": "Ein Klick, und dein Banwee-Konto ist bereit.",
+      "heading": "Bestätige deine E-Mail",
+      "body": "Danke, dass du ein Banwee-Konto erstellt hast. Bestätige deine E-Mail-Adresse, um mit dem Einkaufen zu beginnen.",
+      "button": "E-Mail bestätigen",
+      "expiry": "Dieser Link läuft in {duration} ab.",
+      "ignore": "Wenn du kein Konto erstellt hast, kannst du diese E-Mail ignorieren."
+    },
+    "password_reset": {
+      "subject": "Setze dein Passwort zurück",
+      "preheader": "Wähle ein neues Passwort für dein Banwee-Konto.",
+      "heading": "Passwort zurücksetzen",
+      "body": "Wir haben eine Anfrage erhalten, das Passwort deines Banwee-Kontos zurückzusetzen. Wähle mit dem Button unten ein neues.",
+      "button": "Passwort zurücksetzen",
+      "expiry": "Dieser Link läuft in {duration} ab.",
+      "ignore": "Wenn du das nicht angefordert hast, kannst du diese E-Mail ignorieren. Dein Passwort bleibt unverändert."
+    },
+    "order_confirmation": {
+      "subject": "Bestellung {number} bestätigt",
+      "preheader": "Wir haben Bestellung {number} erhalten.",
+      "heading": "Danke für deine Bestellung!",
+      "body": "Wir haben Bestellung {number} erhalten und bereiten sie vor. Wir melden uns wieder, sobald sie versandt wird.",
+      "item": "Artikel",
+      "qty": "Menge",
+      "price": "Preis",
+      "total": "Gesamt",
+      "shipTo": "Lieferung an",
+      "button": "Bestellung ansehen"
+    },
+    "shipping_update": {
+      "subject": "Bestellung {number} ist unterwegs",
+      "preheader": "Bestellung {number} wurde versandt.",
+      "heading": "Deine Bestellung ist unterwegs",
+      "body": "Gute Nachrichten! Bestellung {number} wurde versandt.",
+      "carrier": "Versanddienst",
+      "tracking": "Sendungsnummer",
+      "eta": "Voraussichtliche Lieferung",
+      "button": "Bestellung verfolgen"
+    },
+    "order_delivered": {
+      "subject": "Bestellung {number} wurde zugestellt",
+      "preheader": "Bestellung {number} ist angekommen.",
+      "heading": "Deine Bestellung ist angekommen",
+      "body": "Bestellung {number} wurde am {date} zugestellt. Viel Freude damit!",
+      "deliveredTo": "Zugestellt an",
+      "button": "Bestellung ansehen",
+      "help": "Stimmt etwas nicht? Du kannst auf der Bestellseite eine Erstattung anfordern."
+    },
+    "subscription_reminder": {
+      "subject": "Deine nächste Lieferung von {name} steht an",
+      "preheader": "{name} verlängert sich am {date}.",
+      "heading": "Deine nächste Lieferung steht an",
+      "body": "Dein Abonnement {name} verlängert sich am {date}. Wir belasten deine Standardkarte mit {amount} und schicken deine Produkte los.",
+      "button": "Abonnement verwalten",
+      "manage": "Möchtest du etwas ändern? Du kannst diese Lieferung in deinem Konto überspringen, pausieren oder kündigen."
+    },
+    "subscription_payment_failed": {
+      "subject": "Zahlung für {name} fehlgeschlagen",
+      "subjectPaused": "{name} ist pausiert: Zahlung fehlgeschlagen",
+      "heading": "Wir konnten deine Zahlung nicht einziehen",
+      "headingPaused": "Dein Abonnement ist pausiert",
+      "body": "Wir konnten deine Karte für dein Abonnement {name} nicht belasten. Wir versuchen es automatisch erneut, oder du bezahlst jetzt.",
+      "bodyPaused": "Wir konnten deine Karte für dein Abonnement {name} auch nach mehreren Versuchen nicht belasten und haben es daher pausiert.",
+      "reason": "Grund laut deiner Bank",
+      "button": "Jetzt bezahlen",
+      "buttonPaused": "Zahlungsmethode aktualisieren",
+      "resume": "Sobald deine Karte aktualisiert ist, setze das Abonnement in deinem Konto fort, um deine nächste Lieferung zu erhalten."
+    }
+  },
+  "tr": {
+    "common": {
+      "greeting": "Merhaba {name},",
+      "greetingNoName": "Merhaba,",
+      "linkFallback": "Düğme çalışmıyor mu? Bu bağlantıyı tarayıcınıza kopyalayın:",
+      "questions": "Sorunuz mu var? <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> adresine yazın.",
+      "tagline": "Memleketinizden gıda ve temel ihtiyaçlar, Kanada'nın her yerine teslim.",
+      "terms": "Hizmet Şartları",
+      "privacy": "Gizlilik Politikası",
+      "rights": "© {year} {store}. Tüm hakları saklıdır.",
+      "orderNumber": "Sipariş numarası"
+    },
+    "verification": {
+      "subject": "E-posta adresinizi onaylayın",
+      "preheader": "Tek tıkla Banwee hesabınız hazır.",
+      "heading": "E-postanızı onaylayın",
+      "body": "Banwee hesabı oluşturduğunuz için teşekkürler. Alışverişe başlamak için e-posta adresinizi onaylayın.",
+      "button": "E-postayı onayla",
+      "expiry": "Bu bağlantının süresi {duration} içinde dolar.",
+      "ignore": "Hesap oluşturmadıysanız bu e-postayı yok sayabilirsiniz."
+    },
+    "password_reset": {
+      "subject": "Şifrenizi sıfırlayın",
+      "preheader": "Banwee hesabınız için yeni bir şifre belirleyin.",
+      "heading": "Şifrenizi sıfırlayın",
+      "body": "Banwee hesabınızın şifresini sıfırlama talebi aldık. Aşağıdaki düğmeyle yeni bir şifre belirleyin.",
+      "button": "Şifreyi sıfırla",
+      "expiry": "Bu bağlantının süresi {duration} içinde dolar.",
+      "ignore": "Bunu siz istemediyseniz bu e-postayı yok sayabilirsiniz. Şifreniz değişmez."
+    },
+    "order_confirmation": {
+      "subject": "{number} numaralı sipariş onaylandı",
+      "preheader": "{number} numaralı siparişinizi aldık.",
+      "heading": "Siparişiniz için teşekkürler!",
+      "body": "{number} numaralı siparişinizi aldık ve hazırlıyoruz. Kargoya verildiğinde size tekrar e-posta göndereceğiz.",
+      "item": "Ürün",
+      "qty": "Adet",
+      "price": "Fiyat",
+      "total": "Toplam",
+      "shipTo": "Teslimat adresi",
+      "button": "Siparişi görüntüle"
+    },
+    "shipping_update": {
+      "subject": "{number} numaralı sipariş yolda",
+      "preheader": "{number} numaralı sipariş kargoya verildi.",
+      "heading": "Siparişiniz yolda",
+      "body": "Güzel haber! {number} numaralı siparişiniz kargoya verildi.",
+      "carrier": "Kargo firması",
+      "tracking": "Takip numarası",
+      "eta": "Tahmini teslimat",
+      "button": "Siparişi takip et"
+    },
+    "order_delivered": {
+      "subject": "{number} numaralı sipariş teslim edildi",
+      "preheader": "{number} numaralı sipariş ulaştı.",
+      "heading": "Siparişiniz ulaştı",
+      "body": "{number} numaralı sipariş {date} tarihinde teslim edildi. Keyifle kullanın!",
+      "deliveredTo": "Teslim adresi",
+      "button": "Siparişi görüntüle",
+      "help": "Bir sorun mu var? Sipariş sayfasından iade talep edebilirsiniz."
+    },
+    "subscription_reminder": {
+      "subject": "{name} için sıradaki teslimatınız yaklaşıyor",
+      "preheader": "{name} {date} tarihinde yenilenecek.",
+      "heading": "Sıradaki teslimatınız yaklaşıyor",
+      "body": "{name} aboneliğiniz {date} tarihinde yenilenecek. Varsayılan kartınızdan {amount} tahsil edip ürünlerinizi göndereceğiz.",
+      "button": "Aboneliği yönet",
+      "manage": "Değişiklik mi gerekiyor? Hesabınızdan bu teslimatı atlayabilir, duraklatabilir veya iptal edebilirsiniz."
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} için ödeme başarısız oldu",
+      "subjectPaused": "{name} duraklatıldı: ödeme başarısız",
+      "heading": "Ödemenizi alamadık",
+      "headingPaused": "Aboneliğiniz duraklatıldı",
+      "body": "{name} aboneliğiniz için kartınızdan ödeme alamadık. Otomatik olarak tekrar deneyeceğiz; isterseniz şimdi ödeyebilirsiniz.",
+      "bodyPaused": "{name} aboneliğiniz için birkaç denemeye rağmen kartınızdan ödeme alamadığımızdan aboneliği duraklattık.",
+      "reason": "Bankanızın belirttiği neden",
+      "button": "Şimdi öde",
+      "buttonPaused": "Ödeme yöntemini güncelle",
+      "resume": "Kartınızı güncelledikten sonra, sıradaki teslimatı almak için aboneliği hesabınızdan devam ettirin."
+    }
+  },
+  "vi": {
+    "common": {
+      "greeting": "Chào {name},",
+      "greetingNoName": "Xin chào,",
+      "linkFallback": "Nút không hoạt động? Hãy sao chép liên kết này vào trình duyệt:",
+      "questions": "Có câu hỏi? Hãy viết cho chúng tôi tại <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "Thực phẩm và đồ dùng thiết yếu từ quê nhà, giao trên khắp Canada.",
+      "terms": "Điều khoản dịch vụ",
+      "privacy": "Chính sách quyền riêng tư",
+      "rights": "© {year} {store}. Bảo lưu mọi quyền.",
+      "orderNumber": "Mã đơn hàng"
+    },
+    "verification": {
+      "subject": "Xác nhận địa chỉ email của bạn",
+      "preheader": "Chỉ một cú nhấp là tài khoản Banwee của bạn sẵn sàng.",
+      "heading": "Xác nhận email của bạn",
+      "body": "Cảm ơn bạn đã tạo tài khoản Banwee. Hãy xác nhận địa chỉ email để bắt đầu mua sắm.",
+      "button": "Xác nhận email",
+      "expiry": "Liên kết này hết hạn sau {duration}.",
+      "ignore": "Nếu bạn không tạo tài khoản, bạn có thể bỏ qua email này."
+    },
+    "password_reset": {
+      "subject": "Đặt lại mật khẩu",
+      "preheader": "Chọn mật khẩu mới cho tài khoản Banwee của bạn.",
+      "heading": "Đặt lại mật khẩu",
+      "body": "Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản Banwee của bạn. Hãy chọn mật khẩu mới bằng nút bên dưới.",
+      "button": "Đặt lại mật khẩu",
+      "expiry": "Liên kết này hết hạn sau {duration}.",
+      "ignore": "Nếu bạn không yêu cầu, bạn có thể bỏ qua email này. Mật khẩu của bạn sẽ không thay đổi."
+    },
+    "order_confirmation": {
+      "subject": "Đơn hàng {number} đã được xác nhận",
+      "preheader": "Chúng tôi đã nhận đơn hàng {number}.",
+      "heading": "Cảm ơn bạn đã đặt hàng!",
+      "body": "Chúng tôi đã nhận đơn hàng {number} và đang chuẩn bị. Chúng tôi sẽ email cho bạn khi hàng được gửi đi.",
+      "item": "Sản phẩm",
+      "qty": "SL",
+      "price": "Giá",
+      "total": "Tổng cộng",
+      "shipTo": "Giao đến",
+      "button": "Xem đơn hàng"
+    },
+    "shipping_update": {
+      "subject": "Đơn hàng {number} đang trên đường giao",
+      "preheader": "Đơn hàng {number} đã được gửi đi.",
+      "heading": "Đơn hàng của bạn đang trên đường giao",
+      "body": "Tin vui! Đơn hàng {number} đã được gửi đi.",
+      "carrier": "Hãng vận chuyển",
+      "tracking": "Mã vận đơn",
+      "eta": "Dự kiến giao hàng",
+      "button": "Theo dõi đơn hàng"
+    },
+    "order_delivered": {
+      "subject": "Đơn hàng {number} đã được giao",
+      "preheader": "Đơn hàng {number} đã đến nơi.",
+      "heading": "Đơn hàng của bạn đã đến",
+      "body": "Đơn hàng {number} đã được giao vào {date}. Chúc bạn hài lòng!",
+      "deliveredTo": "Giao đến",
+      "button": "Xem đơn hàng",
+      "help": "Có vấn đề? Bạn có thể yêu cầu hoàn tiền từ trang đơn hàng."
+    },
+    "subscription_reminder": {
+      "subject": "Sắp đến lần giao tiếp theo của {name}",
+      "preheader": "{name} sẽ gia hạn vào {date}.",
+      "heading": "Sắp đến lần giao tiếp theo",
+      "body": "Gói đăng ký {name} của bạn sẽ gia hạn vào {date}. Chúng tôi sẽ trừ {amount} vào thẻ mặc định và gửi sản phẩm cho bạn.",
+      "button": "Quản lý gói đăng ký",
+      "manage": "Cần thay đổi? Bạn có thể bỏ qua lần giao này, tạm dừng hoặc hủy trong tài khoản."
+    },
+    "subscription_payment_failed": {
+      "subject": "Thanh toán cho {name} không thành công",
+      "subjectPaused": "{name} đã tạm dừng: thanh toán không thành công",
+      "heading": "Chúng tôi không thể thu tiền",
+      "headingPaused": "Gói đăng ký của bạn đã tạm dừng",
+      "body": "Chúng tôi không thể trừ tiền thẻ của bạn cho gói đăng ký {name}. Chúng tôi sẽ tự động thử lại, hoặc bạn có thể thanh toán ngay.",
+      "bodyPaused": "Sau nhiều lần thử, chúng tôi vẫn không thể trừ tiền thẻ của bạn cho gói đăng ký {name}, nên đã tạm dừng gói.",
+      "reason": "Lý do từ ngân hàng",
+      "button": "Thanh toán ngay",
+      "buttonPaused": "Cập nhật phương thức thanh toán",
+      "resume": "Sau khi cập nhật thẻ, hãy tiếp tục gói đăng ký trong tài khoản để nhận lần giao tiếp theo."
+    }
+  },
+  "ja": {
+    "common": {
+      "greeting": "{name} 様",
+      "greetingNoName": "お客様",
+      "linkFallback": "ボタンが機能しない場合は、このリンクをブラウザにコピーしてください：",
+      "questions": "ご不明な点は <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> までお問い合わせください。",
+      "tagline": "ふるさとの食料品と日用品を、カナダ全土にお届けします。",
+      "terms": "利用規約",
+      "privacy": "プライバシーポリシー",
+      "rights": "© {year} {store}. All rights reserved.",
+      "orderNumber": "注文番号"
+    },
+    "verification": {
+      "subject": "メールアドレスの確認",
+      "preheader": "ワンクリックで Banwee アカウントが使えるようになります。",
+      "heading": "メールアドレスを確認してください",
+      "body": "Banwee アカウントを作成いただきありがとうございます。メールアドレスを確認して、お買い物を始めましょう。",
+      "button": "メールアドレスを確認",
+      "expiry": "このリンクの有効期限は {duration}です。",
+      "ignore": "アカウントを作成した覚えがない場合は、このメールを無視してください。"
+    },
+    "password_reset": {
+      "subject": "パスワードの再設定",
+      "preheader": "Banwee アカウントの新しいパスワードを設定してください。",
+      "heading": "パスワードを再設定",
+      "body": "Banwee アカウントのパスワード再設定のリクエストを受け付けました。下のボタンから新しいパスワードを設定してください。",
+      "button": "パスワードを再設定",
+      "expiry": "このリンクの有効期限は {duration}です。",
+      "ignore": "お心当たりがない場合は、このメールを無視してください。パスワードは変更されません。"
+    },
+    "order_confirmation": {
+      "subject": "ご注文 {number} を承りました",
+      "preheader": "ご注文 {number} を受け付けました。",
+      "heading": "ご注文ありがとうございます！",
+      "body": "ご注文 {number} を受け付け、準備を進めています。発送時に改めてメールでお知らせします。",
+      "item": "商品",
+      "qty": "数量",
+      "price": "価格",
+      "total": "合計",
+      "shipTo": "お届け先",
+      "button": "注文を見る"
+    },
+    "shipping_update": {
+      "subject": "ご注文 {number} を発送しました",
+      "preheader": "ご注文 {number} を発送しました。",
+      "heading": "ご注文の商品を発送しました",
+      "body": "お待たせしました！ご注文 {number} を発送しました。",
+      "carrier": "配送業者",
+      "tracking": "追跡番号",
+      "eta": "お届け予定日",
+      "button": "注文を追跡"
+    },
+    "order_delivered": {
+      "subject": "ご注文 {number} をお届けしました",
+      "preheader": "ご注文 {number} が届きました。",
+      "heading": "ご注文の商品が届きました",
+      "body": "ご注文 {number} は {date} にお届けしました。お楽しみください！",
+      "deliveredTo": "お届け先",
+      "button": "注文を見る",
+      "help": "問題がありましたか？注文ページから返金を申請できます。"
+    },
+    "subscription_reminder": {
+      "subject": "{name} の次回のお届けが近づいています",
+      "preheader": "{name} は {date} に更新されます。",
+      "heading": "次回のお届けが近づいています",
+      "body": "定期購入 {name} は {date} に更新されます。既定のカードに {amount} を請求し、商品をお送りします。",
+      "button": "定期購入を管理",
+      "manage": "変更が必要ですか？アカウントから今回のお届けのスキップ、一時停止、解約ができます。"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} のお支払いができませんでした",
+      "subjectPaused": "{name} を一時停止しました：お支払いができませんでした",
+      "heading": "お支払いを完了できませんでした",
+      "headingPaused": "定期購入を一時停止しました",
+      "body": "定期購入 {name} のカード決済ができませんでした。自動で再試行しますが、今すぐお支払いいただくこともできます。",
+      "bodyPaused": "定期購入 {name} のカード決済が何度か失敗したため、一時停止しました。",
+      "reason": "カード会社からの理由",
+      "button": "今すぐ支払う",
+      "buttonPaused": "お支払い方法を更新",
+      "resume": "カードを更新したら、アカウントから定期購入を再開すると次回のお届けを受け取れます。"
+    }
+  },
+  "ko": {
+    "common": {
+      "greeting": "{name}님, 안녕하세요.",
+      "greetingNoName": "안녕하세요.",
+      "linkFallback": "버튼이 작동하지 않나요? 이 링크를 브라우저에 복사하세요:",
+      "questions": "궁금한 점이 있으면 <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>로 문의하세요.",
+      "tagline": "고향의 식료품과 생필품을 캐나다 전역에 배송합니다.",
+      "terms": "이용 약관",
+      "privacy": "개인정보 처리방침",
+      "rights": "© {year} {store}. All rights reserved.",
+      "orderNumber": "주문 번호"
+    },
+    "verification": {
+      "subject": "이메일 주소를 확인해 주세요",
+      "preheader": "클릭 한 번이면 Banwee 계정이 준비됩니다.",
+      "heading": "이메일을 확인해 주세요",
+      "body": "Banwee 계정을 만들어 주셔서 감사합니다. 이메일 주소를 확인하고 쇼핑을 시작하세요.",
+      "button": "이메일 확인",
+      "expiry": "이 링크는 {duration} 후에 만료됩니다.",
+      "ignore": "계정을 만들지 않으셨다면 이 이메일을 무시하셔도 됩니다."
+    },
+    "password_reset": {
+      "subject": "비밀번호를 재설정하세요",
+      "preheader": "Banwee 계정의 새 비밀번호를 설정하세요.",
+      "heading": "비밀번호 재설정",
+      "body": "Banwee 계정의 비밀번호 재설정 요청을 받았습니다. 아래 버튼으로 새 비밀번호를 설정하세요.",
+      "button": "비밀번호 재설정",
+      "expiry": "이 링크는 {duration} 후에 만료됩니다.",
+      "ignore": "요청하지 않으셨다면 이 이메일을 무시하셔도 됩니다. 비밀번호는 변경되지 않습니다."
+    },
+    "order_confirmation": {
+      "subject": "주문 {number}이(가) 확인되었습니다",
+      "preheader": "주문 {number}을(를) 접수했습니다.",
+      "heading": "주문해 주셔서 감사합니다!",
+      "body": "주문 {number}을(를) 접수하여 준비하고 있습니다. 발송되면 다시 이메일로 알려 드릴게요.",
+      "item": "상품",
+      "qty": "수량",
+      "price": "가격",
+      "total": "합계",
+      "shipTo": "배송지",
+      "button": "주문 보기"
+    },
+    "shipping_update": {
+      "subject": "주문 {number}이(가) 배송 중입니다",
+      "preheader": "주문 {number}이(가) 발송되었습니다.",
+      "heading": "주문하신 상품이 배송 중입니다",
+      "body": "좋은 소식입니다! 주문 {number}이(가) 발송되었습니다.",
+      "carrier": "택배사",
+      "tracking": "운송장 번호",
+      "eta": "도착 예정일",
+      "button": "주문 조회"
+    },
+    "order_delivered": {
+      "subject": "주문 {number}이(가) 배송 완료되었습니다",
+      "preheader": "주문 {number}이(가) 도착했습니다.",
+      "heading": "주문하신 상품이 도착했습니다",
+      "body": "주문 {number}이(가) {date}에 배송 완료되었습니다. 즐거운 시간 되세요!",
+      "deliveredTo": "배송지",
+      "button": "주문 보기",
+      "help": "문제가 있나요? 주문 페이지에서 환불을 요청할 수 있습니다."
+    },
+    "subscription_reminder": {
+      "subject": "{name} 다음 배송이 곧 시작됩니다",
+      "preheader": "{name}이(가) {date}에 갱신됩니다.",
+      "heading": "다음 배송이 곧 시작됩니다",
+      "body": "구독 {name}이(가) {date}에 갱신됩니다. 기본 카드로 {amount}을(를) 결제하고 상품을 보내 드립니다.",
+      "button": "구독 관리",
+      "manage": "변경이 필요하신가요? 계정에서 이번 배송을 건너뛰거나 일시 중지 또는 취소할 수 있습니다."
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} 결제에 실패했습니다",
+      "subjectPaused": "{name}이(가) 일시 중지되었습니다: 결제 실패",
+      "heading": "결제를 완료하지 못했습니다",
+      "headingPaused": "구독이 일시 중지되었습니다",
+      "body": "구독 {name}의 카드 결제에 실패했습니다. 자동으로 다시 시도하며, 지금 바로 결제하실 수도 있습니다.",
+      "bodyPaused": "구독 {name}의 카드 결제가 여러 번 실패하여 구독을 일시 중지했습니다.",
+      "reason": "카드사에서 알려 준 사유",
+      "button": "지금 결제",
+      "buttonPaused": "결제 수단 업데이트",
+      "resume": "카드를 업데이트한 후 계정에서 구독을 재개하면 다음 배송을 받을 수 있습니다."
+    }
+  },
+  "he": {
+    "common": {
+      "greeting": "שלום {name},",
+      "greetingNoName": "שלום,",
+      "linkFallback": "הכפתור לא עובד? העתיקו את הקישור הזה לדפדפן:",
+      "questions": "יש שאלות? כתבו לנו ל־<a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "מצרכים ומוצרי יסוד מהבית, במשלוח לכל רחבי קנדה.",
+      "terms": "תנאי השירות",
+      "privacy": "מדיניות הפרטיות",
+      "rights": "© {year} {store}. כל הזכויות שמורות.",
+      "orderNumber": "מספר הזמנה"
+    },
+    "verification": {
+      "subject": "אשרו את כתובת האימייל שלכם",
+      "preheader": "לחיצה אחת והחשבון שלכם ב־Banwee מוכן.",
+      "heading": "אשרו את האימייל שלכם",
+      "body": "תודה שפתחתם חשבון ב־Banwee. אשרו את כתובת האימייל כדי להתחיל לקנות.",
+      "button": "אישור האימייל",
+      "expiry": "תוקף הקישור יפוג בעוד {duration}.",
+      "ignore": "אם לא פתחתם חשבון, אפשר להתעלם מהאימייל הזה."
+    },
+    "password_reset": {
+      "subject": "איפוס הסיסמה",
+      "preheader": "בחרו סיסמה חדשה לחשבון שלכם ב־Banwee.",
+      "heading": "איפוס הסיסמה",
+      "body": "קיבלנו בקשה לאפס את הסיסמה של החשבון שלכם ב־Banwee. בחרו סיסמה חדשה בכפתור שלמטה.",
+      "button": "איפוס סיסמה",
+      "expiry": "תוקף הקישור יפוג בעוד {duration}.",
+      "ignore": "אם לא ביקשתם זאת, אפשר להתעלם מהאימייל. הסיסמה שלכם לא תשתנה."
+    },
+    "order_confirmation": {
+      "subject": "הזמנה {number} אושרה",
+      "preheader": "קיבלנו את הזמנה {number}.",
+      "heading": "תודה על ההזמנה!",
+      "body": "קיבלנו את הזמנה {number} ואנחנו מכינים אותה. נכתוב לכם שוב כשהיא תישלח.",
+      "item": "פריט",
+      "qty": "כמות",
+      "price": "מחיר",
+      "total": "סה״כ",
+      "shipTo": "משלוח אל",
+      "button": "צפייה בהזמנה"
+    },
+    "shipping_update": {
+      "subject": "הזמנה {number} בדרך",
+      "preheader": "הזמנה {number} נשלחה.",
+      "heading": "ההזמנה שלכם בדרך",
+      "body": "חדשות טובות! הזמנה {number} נשלחה.",
+      "carrier": "חברת המשלוחים",
+      "tracking": "מספר מעקב",
+      "eta": "מועד מסירה משוער",
+      "button": "מעקב אחר ההזמנה"
+    },
+    "order_delivered": {
+      "subject": "הזמנה {number} נמסרה",
+      "preheader": "הזמנה {number} הגיעה.",
+      "heading": "ההזמנה שלכם הגיעה",
+      "body": "הזמנה {number} נמסרה ב־{date}. תיהנו!",
+      "deliveredTo": "נמסרה אל",
+      "button": "צפייה בהזמנה",
+      "help": "משהו לא בסדר? אפשר לבקש החזר מדף ההזמנה."
+    },
+    "subscription_reminder": {
+      "subject": "המשלוח הבא של {name} מתקרב",
+      "preheader": "{name} מתחדש ב־{date}.",
+      "heading": "המשלוח הבא שלכם מתקרב",
+      "body": "המינוי {name} מתחדש ב־{date}. נחייב {amount} בכרטיס ברירת המחדל ונשלח את המוצרים שלכם.",
+      "button": "ניהול המינוי",
+      "manage": "צריכים שינוי? אפשר לדלג על המשלוח הזה, להשהות או לבטל מהחשבון."
+    },
+    "subscription_payment_failed": {
+      "subject": "התשלום עבור {name} נכשל",
+      "subjectPaused": "{name} הושהה: התשלום נכשל",
+      "heading": "לא הצלחנו לגבות את התשלום",
+      "headingPaused": "המינוי שלכם הושהה",
+      "body": "לא הצלחנו לחייב את הכרטיס עבור המינוי {name}. ננסה שוב אוטומטית, או שתוכלו לשלם עכשיו.",
+      "bodyPaused": "לא הצלחנו לחייב את הכרטיס עבור המינוי {name} גם אחרי כמה ניסיונות, ולכן השהינו אותו.",
+      "reason": "הסיבה שמסר הבנק",
+      "button": "תשלום עכשיו",
+      "buttonPaused": "עדכון אמצעי התשלום",
+      "resume": "אחרי עדכון הכרטיס, חדשו את המינוי מהחשבון כדי לקבל את המשלוח הבא."
+    }
+  },
+  "fa": {
+    "common": {
+      "greeting": "سلام {name}،",
+      "greetingNoName": "سلام،",
+      "linkFallback": "دکمه کار نمی‌کند؟ این پیوند را در مرورگرتان کپی کنید:",
+      "questions": "پرسشی دارید؟ به <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> بنویسید.",
+      "tagline": "خواربار و اقلام ضروری وطن، با ارسال به سراسر کانادا.",
+      "terms": "شرایط خدمات",
+      "privacy": "سیاست حریم خصوصی",
+      "rights": "© {year} {store}. تمامی حقوق محفوظ است.",
+      "orderNumber": "شمارهٔ سفارش"
+    },
+    "verification": {
+      "subject": "نشانی ایمیلتان را تأیید کنید",
+      "preheader": "با یک کلیک حساب Banwee شما آماده است.",
+      "heading": "ایمیلتان را تأیید کنید",
+      "body": "از ساخت حساب Banwee سپاسگزاریم. برای شروع خرید، نشانی ایمیلتان را تأیید کنید.",
+      "button": "تأیید ایمیل",
+      "expiry": "این پیوند تا {duration} دیگر منقضی می‌شود.",
+      "ignore": "اگر حسابی نساخته‌اید، می‌توانید این ایمیل را نادیده بگیرید."
+    },
+    "password_reset": {
+      "subject": "بازنشانی رمز عبور",
+      "preheader": "برای حساب Banwee خود رمز عبور تازه‌ای انتخاب کنید.",
+      "heading": "بازنشانی رمز عبور",
+      "body": "درخواستی برای بازنشانی رمز عبور حساب Banwee شما دریافت کردیم. با دکمهٔ زیر رمز تازه‌ای انتخاب کنید.",
+      "button": "بازنشانی رمز عبور",
+      "expiry": "این پیوند تا {duration} دیگر منقضی می‌شود.",
+      "ignore": "اگر شما درخواست نکرده‌اید، این ایمیل را نادیده بگیرید. رمز عبورتان تغییر نمی‌کند."
+    },
+    "order_confirmation": {
+      "subject": "سفارش {number} تأیید شد",
+      "preheader": "سفارش {number} را دریافت کردیم.",
+      "heading": "از سفارش شما سپاسگزاریم!",
+      "body": "سفارش {number} را دریافت کردیم و در حال آماده‌سازی آن هستیم. هنگام ارسال دوباره به شما ایمیل می‌زنیم.",
+      "item": "کالا",
+      "qty": "تعداد",
+      "price": "قیمت",
+      "total": "جمع کل",
+      "shipTo": "ارسال به",
+      "button": "مشاهدهٔ سفارش"
+    },
+    "shipping_update": {
+      "subject": "سفارش {number} در راه است",
+      "preheader": "سفارش {number} ارسال شد.",
+      "heading": "سفارش شما در راه است",
+      "body": "خبر خوب! سفارش {number} ارسال شد.",
+      "carrier": "شرکت حمل",
+      "tracking": "کد رهگیری",
+      "eta": "تحویل تخمینی",
+      "button": "پیگیری سفارش"
+    },
+    "order_delivered": {
+      "subject": "سفارش {number} تحویل داده شد",
+      "preheader": "سفارش {number} رسید.",
+      "heading": "سفارش شما رسید",
+      "body": "سفارش {number} در {date} تحویل داده شد. امیدواریم از آن لذت ببرید!",
+      "deliveredTo": "تحویل به",
+      "button": "مشاهدهٔ سفارش",
+      "help": "مشکلی هست؟ می‌توانید از صفحهٔ سفارش درخواست بازپرداخت بدهید."
+    },
+    "subscription_reminder": {
+      "subject": "تحویل بعدی {name} نزدیک است",
+      "preheader": "{name} در {date} تمدید می‌شود.",
+      "heading": "تحویل بعدی شما نزدیک است",
+      "body": "اشتراک {name} در {date} تمدید می‌شود. مبلغ {amount} را از کارت پیش‌فرض شما کسر می‌کنیم و محصولاتتان را می‌فرستیم.",
+      "button": "مدیریت اشتراک",
+      "manage": "تغییری لازم است؟ می‌توانید از حسابتان این تحویل را رد کنید، اشتراک را متوقف یا لغو کنید."
+    },
+    "subscription_payment_failed": {
+      "subject": "پرداخت برای {name} ناموفق بود",
+      "subjectPaused": "{name} متوقف شد: پرداخت ناموفق",
+      "heading": "نتوانستیم پرداخت شما را دریافت کنیم",
+      "headingPaused": "اشتراک شما متوقف شد",
+      "body": "نتوانستیم هزینهٔ اشتراک {name} را از کارت شما کسر کنیم. به‌طور خودکار دوباره تلاش می‌کنیم، یا می‌توانید همین حالا پرداخت کنید.",
+      "bodyPaused": "پس از چند تلاش نتوانستیم هزینهٔ اشتراک {name} را از کارت شما کسر کنیم، بنابراین آن را متوقف کردیم.",
+      "reason": "دلیل اعلام‌شده از سوی بانک",
+      "button": "پرداخت کنید",
+      "buttonPaused": "به‌روزرسانی روش پرداخت",
+      "resume": "پس از به‌روزرسانی کارت، اشتراک را از حسابتان ادامه دهید تا تحویل بعدی را دریافت کنید."
+    }
+  },
+  "ps": {
+    "common": {
+      "greeting": "سلام {name}،",
+      "greetingNoName": "سلام،",
+      "linkFallback": "تڼۍ کار نه کوي؟ دا لینک خپل براوزر ته کاپي کړئ:",
+      "questions": "پوښتنه لرئ؟ موږ ته په <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> ولیکئ.",
+      "tagline": "د وطن خواړه او اړین توکي، ټول کاناډا ته لېږل کېږي.",
+      "terms": "د خدمت شرایط",
+      "privacy": "د محرمیت تګلاره",
+      "rights": "© {year} {store}. ټول حقونه خوندي دي.",
+      "orderNumber": "د فرمایش شمېره"
+    },
+    "verification": {
+      "subject": "خپل برېښنالیک تایید کړئ",
+      "preheader": "یو کلیک او ستاسو د Banwee حساب چمتو دی.",
+      "heading": "خپل برېښنالیک تایید کړئ",
+      "body": "د Banwee حساب جوړولو مننه. د پېرود پیل لپاره خپل برېښنالیک تایید کړئ.",
+      "button": "برېښنالیک تایید کړئ",
+      "expiry": "دا لینک په {duration} کې پای ته رسېږي.",
+      "ignore": "که تاسو حساب نه دی جوړ کړی، دا برېښنالیک له پامه وغورځوئ."
+    },
+    "password_reset": {
+      "subject": "خپل پټنوم بیا تنظیم کړئ",
+      "preheader": "د خپل Banwee حساب لپاره نوی پټنوم وټاکئ.",
+      "heading": "خپل پټنوم بیا تنظیم کړئ",
+      "body": "موږ ستاسو د Banwee حساب د پټنوم د بیا تنظیمولو غوښتنه ترلاسه کړه. د لاندې تڼۍ په مرسته نوی پټنوم وټاکئ.",
+      "button": "پټنوم بیا تنظیم کړئ",
+      "expiry": "دا لینک په {duration} کې پای ته رسېږي.",
+      "ignore": "که تاسو دا غوښتنه نه ده کړې، دا برېښنالیک له پامه وغورځوئ. ستاسو پټنوم نه بدلېږي."
+    },
+    "order_confirmation": {
+      "subject": "فرمایش {number} تایید شو",
+      "preheader": "موږ فرمایش {number} ترلاسه کړ.",
+      "heading": "ستاسو د فرمایش مننه!",
+      "body": "موږ فرمایش {number} ترلاسه کړ او چمتو کوو یې. کله چې ولېږل شي، بیا به درته برېښنالیک درولېږو.",
+      "item": "توکی",
+      "qty": "شمېر",
+      "price": "بیه",
+      "total": "ټوله",
+      "shipTo": "لېږل کېږي ته",
+      "button": "خپل فرمایش وګورئ"
+    },
+    "shipping_update": {
+      "subject": "فرمایش {number} په لاره کې دی",
+      "preheader": "فرمایش {number} ولېږل شو.",
+      "heading": "ستاسو فرمایش په لاره کې دی",
+      "body": "ښه خبر! فرمایش {number} ولېږل شو.",
+      "carrier": "لېږدونکی شرکت",
+      "tracking": "د تعقیب شمېره",
+      "eta": "د رسېدو اټکلي نېټه",
+      "button": "خپل فرمایش تعقیب کړئ"
+    },
+    "order_delivered": {
+      "subject": "فرمایش {number} وسپارل شو",
+      "preheader": "فرمایش {number} ورسېد.",
+      "heading": "ستاسو فرمایش ورسېد",
+      "body": "فرمایش {number} په {date} وسپارل شو. هیله ده خوند ترې واخلئ!",
+      "deliveredTo": "سپارل شوی ته",
+      "button": "خپل فرمایش وګورئ",
+      "help": "کومه ستونزه ده؟ د فرمایش له پاڼې څخه د پیسو بېرته اخیستو غوښتنه کولی شئ."
+    },
+    "subscription_reminder": {
+      "subject": "د {name} راتلونکې سپارنه نږدې ده",
+      "preheader": "{name} په {date} نوی کېږي.",
+      "heading": "ستاسو راتلونکې سپارنه نږدې ده",
+      "body": "ستاسو ګډون {name} په {date} نوی کېږي. موږ به {amount} ستاسو له اصلي کارت څخه واخلو او توکي به مو درولېږو.",
+      "button": "ګډون اداره کړئ",
+      "manage": "بدلون غواړئ؟ له خپل حساب څخه دا سپارنه پرېښودلی، درولی یا لغوه کولی شئ."
+    },
+    "subscription_payment_failed": {
+      "subject": "د {name} تادیه ناکامه شوه",
+      "subjectPaused": "{name} ودرول شو: تادیه ناکامه شوه",
+      "heading": "موږ ستاسو تادیه ترلاسه نه کړای شوه",
+      "headingPaused": "ستاسو ګډون ودرول شو",
+      "body": "موږ ونه شو کولی ستاسو د ګډون {name} لپاره له کارت څخه پیسې واخلو. په اتوماتيک ډول به بیا هڅه وکړو، یا همدا اوس تادیه وکړئ.",
+      "bodyPaused": "له څو هڅو وروسته هم ونه شو کولی ستاسو د ګډون {name} لپاره له کارت څخه پیسې واخلو، نو مو ودراوه.",
+      "reason": "د بانک له خوا ویل شوی دلیل",
+      "button": "همدا اوس تادیه وکړئ",
+      "buttonPaused": "د تادیې لاره تازه کړئ",
+      "resume": "کله چې مو کارت تازه کړ، د راتلونکې سپارنې لپاره ګډون له خپل حساب څخه بیا پیل کړئ."
+    }
+  },
+  "ckb": {
+    "common": {
+      "greeting": "سڵاو {name}،",
+      "greetingNoName": "سڵاو،",
+      "linkFallback": "دوگمەکە کار ناکات؟ ئەم بەستەرە لە وێبگەڕەکەتدا لەبەر بگرەوە:",
+      "questions": "پرسیارت هەیە؟ بۆمان بنووسە لە <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>.",
+      "tagline": "خۆراک و پێداویستییەکانی نیشتمان، گەیاندن بۆ سەرتاسەری کەنەدا.",
+      "terms": "مەرجەکانی خزمەتگوزاری",
+      "privacy": "سیاسەتی تایبەتمەندی",
+      "rights": "© {year} {store}. هەموو مافەکان پارێزراون.",
+      "orderNumber": "ژمارەی داواکاری"
+    },
+    "verification": {
+      "subject": "ناونیشانی ئیمەیڵەکەت پشتڕاست بکەرەوە",
+      "preheader": "تەنها یەک کرتە و هەژماری Banwee ـەکەت ئامادەیە.",
+      "heading": "ئیمەیڵەکەت پشتڕاست بکەرەوە",
+      "body": "سوپاس بۆ دروستکردنی هەژمار لە Banwee. بۆ دەستپێکردنی کڕین ناونیشانی ئیمەیڵەکەت پشتڕاست بکەرەوە.",
+      "button": "ئیمەیڵ پشتڕاست بکەرەوە",
+      "expiry": "ئەم بەستەرە لە ماوەی {duration} بەسەر دەچێت.",
+      "ignore": "ئەگەر هەژمارت دروست نەکردووە، دەتوانیت ئەم ئیمەیڵە فەرامۆش بکەیت."
+    },
+    "password_reset": {
+      "subject": "وشەی نهێنییەکەت ڕێکبخەرەوە",
+      "preheader": "وشەیەکی نهێنی نوێ بۆ هەژماری Banwee ـەکەت هەڵبژێرە.",
+      "heading": "وشەی نهێنییەکەت ڕێکبخەرەوە",
+      "body": "داوایەکمان پێگەیشت بۆ ڕێکخستنەوەی وشەی نهێنی هەژماری Banwee ـەکەت. بە دوگمەی خوارەوە وشەیەکی نوێ هەڵبژێرە.",
+      "button": "ڕێکخستنەوەی وشەی نهێنی",
+      "expiry": "ئەم بەستەرە لە ماوەی {duration} بەسەر دەچێت.",
+      "ignore": "ئەگەر تۆ داوات نەکردووە، ئەم ئیمەیڵە فەرامۆش بکە. وشەی نهێنییەکەت ناگۆڕێت."
+    },
+    "order_confirmation": {
+      "subject": "داواکاری {number} پشتڕاست کرایەوە",
+      "preheader": "داواکاری {number}مان پێگەیشت.",
+      "heading": "سوپاس بۆ داواکارییەکەت!",
+      "body": "داواکاری {number}مان پێگەیشت و ئامادەی دەکەین. کاتێک نێردرا دووبارە ئیمەیڵت بۆ دەنێرین.",
+      "item": "کاڵا",
+      "qty": "بڕ",
+      "price": "نرخ",
+      "total": "کۆی گشتی",
+      "shipTo": "ناردن بۆ",
+      "button": "داواکارییەکەت ببینە"
+    },
+    "shipping_update": {
+      "subject": "داواکاری {number} لە ڕێگادایە",
+      "preheader": "داواکاری {number} نێردرا.",
+      "heading": "داواکارییەکەت لە ڕێگادایە",
+      "body": "هەواڵی خۆش! داواکاری {number} نێردرا.",
+      "carrier": "کۆمپانیای گواستنەوە",
+      "tracking": "ژمارەی شوێنکەوتن",
+      "eta": "گەیاندنی خەمڵێنراو",
+      "button": "شوێن داواکارییەکەت بکەوە"
+    },
+    "order_delivered": {
+      "subject": "داواکاری {number} گەیەنرا",
+      "preheader": "داواکاری {number} گەیشت.",
+      "heading": "داواکارییەکەت گەیشت",
+      "body": "داواکاری {number} لە {date} گەیەنرا. هیوادارین چێژی لێ وەربگریت!",
+      "deliveredTo": "گەیەنرا بۆ",
+      "button": "داواکارییەکەت ببینە",
+      "help": "کێشەیەک هەیە؟ دەتوانیت لە پەڕەی داواکارییەوە داوای گەڕاندنەوەی پارە بکەیت."
+    },
+    "subscription_reminder": {
+      "subject": "گەیاندنی داهاتووی {name} نزیکە",
+      "preheader": "{name} لە {date} نوێ دەبێتەوە.",
+      "heading": "گەیاندنی داهاتووت نزیکە",
+      "body": "بەشدارییەکەت {name} لە {date} نوێ دەبێتەوە. {amount} لە کارتی سەرەکیت دەبڕین و بەرهەمەکانت دەنێرین.",
+      "button": "بەڕێوەبردنی بەشداری",
+      "manage": "گۆڕانکاریت دەوێت؟ دەتوانیت لە هەژمارەکەتەوە ئەم گەیاندنە بەجێ بهێڵیت، ڕایبگریت یان هەڵیبوەشێنیتەوە."
+    },
+    "subscription_payment_failed": {
+      "subject": "پارەدان بۆ {name} سەرکەوتوو نەبوو",
+      "subjectPaused": "{name} ڕاگیرا: پارەدان سەرکەوتوو نەبوو",
+      "heading": "نەمانتوانی پارەکەت وەربگرین",
+      "headingPaused": "بەشدارییەکەت ڕاگیرا",
+      "body": "نەمانتوانی پارەی بەشداریی {name} لە کارتەکەت ببڕین. بە شێوەیەکی خۆکار دووبارە هەوڵ دەدەینەوە، یان دەتوانیت ئێستا پارە بدەیت.",
+      "bodyPaused": "دوای چەند هەوڵێک نەمانتوانی پارەی بەشداریی {name} لە کارتەکەت ببڕین، بۆیە ڕامانگرت.",
+      "reason": "هۆکار بەپێی بانکەکەت",
+      "button": "ئێستا پارە بدە",
+      "buttonPaused": "نوێکردنەوەی ڕێگای پارەدان",
+      "resume": "دوای نوێکردنەوەی کارتەکەت، بۆ وەرگرتنی گەیاندنی داهاتوو بەشدارییەکە لە هەژمارەکەتەوە دەست پێبکەرەوە."
+    }
+  },
+  "bn": {
+    "common": {
+      "greeting": "হ্যালো {name},",
+      "greetingNoName": "হ্যালো,",
+      "linkFallback": "বোতাম কাজ করছে না? এই লিংকটি আপনার ব্রাউজারে কপি করুন:",
+      "questions": "প্রশ্ন আছে? আমাদের লিখুন <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a>-এ।",
+      "tagline": "দেশের মুদি ও দরকারি জিনিস, কানাডা জুড়ে ডেলিভারি।",
+      "terms": "পরিষেবার শর্তাবলি",
+      "privacy": "গোপনীয়তা নীতি",
+      "rights": "© {year} {store}। সর্বস্বত্ব সংরক্ষিত।",
+      "orderNumber": "অর্ডার নম্বর"
+    },
+    "verification": {
+      "subject": "আপনার ইমেইল ঠিকানা নিশ্চিত করুন",
+      "preheader": "একটি ক্লিকেই আপনার Banwee অ্যাকাউন্ট প্রস্তুত।",
+      "heading": "আপনার ইমেইল নিশ্চিত করুন",
+      "body": "Banwee অ্যাকাউন্ট তৈরি করার জন্য ধন্যবাদ। কেনাকাটা শুরু করতে আপনার ইমেইল ঠিকানা নিশ্চিত করুন।",
+      "button": "ইমেইল নিশ্চিত করুন",
+      "expiry": "এই লিংকের মেয়াদ {duration} পর শেষ হবে।",
+      "ignore": "আপনি অ্যাকাউন্ট তৈরি না করে থাকলে এই ইমেইলটি উপেক্ষা করুন।"
+    },
+    "password_reset": {
+      "subject": "আপনার পাসওয়ার্ড রিসেট করুন",
+      "preheader": "আপনার Banwee অ্যাকাউন্টের জন্য নতুন পাসওয়ার্ড বেছে নিন।",
+      "heading": "আপনার পাসওয়ার্ড রিসেট করুন",
+      "body": "আপনার Banwee অ্যাকাউন্টের পাসওয়ার্ড রিসেটের অনুরোধ পেয়েছি। নিচের বোতাম দিয়ে নতুন পাসওয়ার্ড বেছে নিন।",
+      "button": "পাসওয়ার্ড রিসেট করুন",
+      "expiry": "এই লিংকের মেয়াদ {duration} পর শেষ হবে।",
+      "ignore": "আপনি অনুরোধ না করে থাকলে এই ইমেইলটি উপেক্ষা করুন। আপনার পাসওয়ার্ড বদলাবে না।"
+    },
+    "order_confirmation": {
+      "subject": "অর্ডার {number} নিশ্চিত হয়েছে",
+      "preheader": "আমরা অর্ডার {number} পেয়েছি।",
+      "heading": "আপনার অর্ডারের জন্য ধন্যবাদ!",
+      "body": "আমরা অর্ডার {number} পেয়েছি এবং প্রস্তুত করছি। পাঠানো হলে আবার ইমেইল করব।",
+      "item": "পণ্য",
+      "qty": "পরিমাণ",
+      "price": "দাম",
+      "total": "মোট",
+      "shipTo": "পাঠানো হবে",
+      "button": "আপনার অর্ডার দেখুন"
+    },
+    "shipping_update": {
+      "subject": "অর্ডার {number} পথে আছে",
+      "preheader": "অর্ডার {number} পাঠানো হয়েছে।",
+      "heading": "আপনার অর্ডার পথে আছে",
+      "body": "সুখবর! অর্ডার {number} পাঠানো হয়েছে।",
+      "carrier": "কুরিয়ার",
+      "tracking": "ট্র্যাকিং নম্বর",
+      "eta": "আনুমানিক ডেলিভারি",
+      "button": "আপনার অর্ডার ট্র্যাক করুন"
+    },
+    "order_delivered": {
+      "subject": "অর্ডার {number} ডেলিভারি হয়েছে",
+      "preheader": "অর্ডার {number} পৌঁছে গেছে।",
+      "heading": "আপনার অর্ডার পৌঁছে গেছে",
+      "body": "অর্ডার {number} {date} তারিখে ডেলিভারি হয়েছে। আশা করি আপনার ভালো লাগবে!",
+      "deliveredTo": "যেখানে ডেলিভারি হয়েছে",
+      "button": "আপনার অর্ডার দেখুন",
+      "help": "কোনো সমস্যা? অর্ডারের পেজ থেকে রিফান্ড চাইতে পারেন।"
+    },
+    "subscription_reminder": {
+      "subject": "{name}-এর পরের ডেলিভারি আসছে",
+      "preheader": "{name} {date} তারিখে নবায়ন হবে।",
+      "heading": "আপনার পরের ডেলিভারি আসছে",
+      "body": "আপনার সাবস্ক্রিপশন {name} {date} তারিখে নবায়ন হবে। আমরা আপনার ডিফল্ট কার্ড থেকে {amount} নেব এবং আপনার পণ্য পাঠাব।",
+      "button": "সাবস্ক্রিপশন পরিচালনা করুন",
+      "manage": "কিছু বদলাতে চান? আপনার অ্যাকাউন্ট থেকে এই ডেলিভারি বাদ দিতে, থামাতে বা বাতিল করতে পারেন।"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name}-এর পেমেন্ট ব্যর্থ হয়েছে",
+      "subjectPaused": "{name} থামানো হয়েছে: পেমেন্ট ব্যর্থ",
+      "heading": "আপনার পেমেন্ট নেওয়া যায়নি",
+      "headingPaused": "আপনার সাবস্ক্রিপশন থামানো হয়েছে",
+      "body": "আপনার সাবস্ক্রিপশন {name}-এর জন্য কার্ড থেকে টাকা কাটা যায়নি। আমরা স্বয়ংক্রিয়ভাবে আবার চেষ্টা করব, অথবা আপনি এখনই পেমেন্ট করতে পারেন।",
+      "bodyPaused": "কয়েকবার চেষ্টার পরও আপনার সাবস্ক্রিপশন {name}-এর জন্য কার্ড থেকে টাকা কাটা যায়নি, তাই এটি থামানো হয়েছে।",
+      "reason": "ব্যাংকের জানানো কারণ",
+      "button": "এখনই পেমেন্ট করুন",
+      "buttonPaused": "পেমেন্টের পদ্ধতি আপডেট করুন",
+      "resume": "কার্ড আপডেট করার পর, পরের ডেলিভারি পেতে আপনার অ্যাকাউন্ট থেকে সাবস্ক্রিপশন আবার চালু করুন।"
+    }
+  },
+  "ne": {
+    "common": {
+      "greeting": "नमस्ते {name},",
+      "greetingNoName": "नमस्ते,",
+      "linkFallback": "बटनले काम गरेन? यो लिंक आफ्नो ब्राउजरमा कपी गर्नुहोस्:",
+      "questions": "प्रश्न छ? हामीलाई <a href=\"mailto:{email}\" style=\"color:#4c9066;\">{email}</a> मा लेख्नुहोस्।",
+      "tagline": "आफ्नो देशका खाद्यान्न र आवश्यक सामान, क्यानडाभरि डेलिभरी।",
+      "terms": "सेवाका सर्तहरू",
+      "privacy": "गोपनीयता नीति",
+      "rights": "© {year} {store}. सर्वाधिकार सुरक्षित।",
+      "orderNumber": "अर्डर नम्बर"
+    },
+    "verification": {
+      "subject": "आफ्नो इमेल ठेगाना पुष्टि गर्नुहोस्",
+      "preheader": "एक क्लिकमै तपाईंको Banwee खाता तयार हुन्छ।",
+      "heading": "आफ्नो इमेल पुष्टि गर्नुहोस्",
+      "body": "Banwee खाता बनाउनुभएकोमा धन्यवाद। किनमेल सुरु गर्न आफ्नो इमेल ठेगाना पुष्टि गर्नुहोस्।",
+      "button": "इमेल पुष्टि गर्नुहोस्",
+      "expiry": "यो लिंकको म्याद {duration} मा सकिन्छ।",
+      "ignore": "तपाईंले खाता बनाउनुभएको छैन भने यो इमेल बेवास्ता गर्नुहोस्।"
+    },
+    "password_reset": {
+      "subject": "आफ्नो पासवर्ड रिसेट गर्नुहोस्",
+      "preheader": "आफ्नो Banwee खाताका लागि नयाँ पासवर्ड छान्नुहोस्।",
+      "heading": "आफ्नो पासवर्ड रिसेट गर्नुहोस्",
+      "body": "हामीले तपाईंको Banwee खाताको पासवर्ड रिसेट गर्ने अनुरोध पायौं। तलको बटनबाट नयाँ पासवर्ड छान्नुहोस्।",
+      "button": "पासवर्ड रिसेट गर्नुहोस्",
+      "expiry": "यो लिंकको म्याद {duration} मा सकिन्छ।",
+      "ignore": "तपाईंले अनुरोध गर्नुभएको होइन भने यो इमेल बेवास्ता गर्नुहोस्। तपाईंको पासवर्ड बदलिँदैन।"
+    },
+    "order_confirmation": {
+      "subject": "अर्डर {number} पुष्टि भयो",
+      "preheader": "हामीले अर्डर {number} पायौं।",
+      "heading": "तपाईंको अर्डरका लागि धन्यवाद!",
+      "body": "हामीले अर्डर {number} पायौं र तयार गर्दैछौं। पठाइएपछि हामी तपाईंलाई फेरि इमेल गर्नेछौं।",
+      "item": "सामान",
+      "qty": "परिमाण",
+      "price": "मूल्य",
+      "total": "जम्मा",
+      "shipTo": "पठाइने ठेगाना",
+      "button": "आफ्नो अर्डर हेर्नुहोस्"
+    },
+    "shipping_update": {
+      "subject": "अर्डर {number} बाटोमा छ",
+      "preheader": "अर्डर {number} पठाइयो।",
+      "heading": "तपाईंको अर्डर बाटोमा छ",
+      "body": "खुसीको खबर! अर्डर {number} पठाइयो।",
+      "carrier": "ढुवानी कम्पनी",
+      "tracking": "ट्र्याकिङ नम्बर",
+      "eta": "अनुमानित डेलिभरी",
+      "button": "आफ्नो अर्डर ट्र्याक गर्नुहोस्"
+    },
+    "order_delivered": {
+      "subject": "अर्डर {number} डेलिभर भयो",
+      "preheader": "अर्डर {number} आइपुग्यो।",
+      "heading": "तपाईंको अर्डर आइपुग्यो",
+      "body": "अर्डर {number} {date} मा डेलिभर भयो। आशा छ तपाईंलाई मन पर्नेछ!",
+      "deliveredTo": "डेलिभर भएको ठेगाना",
+      "button": "आफ्नो अर्डर हेर्नुहोस्",
+      "help": "केही समस्या छ? अर्डरको पेजबाट रकम फिर्ता माग्न सक्नुहुन्छ।"
+    },
+    "subscription_reminder": {
+      "subject": "{name} को अर्को डेलिभरी नजिकिँदैछ",
+      "preheader": "{name} {date} मा नवीकरण हुन्छ।",
+      "heading": "तपाईंको अर्को डेलिभरी नजिकिँदैछ",
+      "body": "तपाईंको सदस्यता {name} {date} मा नवीकरण हुन्छ। हामी तपाईंको मुख्य कार्डबाट {amount} काट्नेछौं र तपाईंका सामान पठाउनेछौं।",
+      "button": "सदस्यता व्यवस्थापन गर्नुहोस्",
+      "manage": "केही बदल्नु छ? आफ्नो खाताबाट यो डेलिभरी छोड्न, रोक्न वा रद्द गर्न सक्नुहुन्छ।"
+    },
+    "subscription_payment_failed": {
+      "subject": "{name} को भुक्तानी असफल भयो",
+      "subjectPaused": "{name} रोकियो: भुक्तानी असफल",
+      "heading": "हामीले तपाईंको भुक्तानी लिन सकेनौं",
+      "headingPaused": "तपाईंको सदस्यता रोकिएको छ",
+      "body": "तपाईंको सदस्यता {name} का लागि कार्डबाट रकम काट्न सकिएन। हामी आफैं फेरि प्रयास गर्नेछौं, वा तपाईं अहिले भुक्तानी गर्न सक्नुहुन्छ।",
+      "bodyPaused": "धेरै प्रयासपछि पनि तपाईंको सदस्यता {name} का लागि कार्डबाट रकम काट्न सकिएन, त्यसैले यसलाई रोकिएको छ।",
+      "reason": "बैंकले दिएको कारण",
+      "button": "अहिले भुक्तानी गर्नुहोस्",
+      "buttonPaused": "भुक्तानी विधि अपडेट गर्नुहोस्",
+      "resume": "कार्ड अपडेट गरेपछि, अर्को डेलिभरी पाउन आफ्नो खाताबाट सदस्यता फेरि सुरु गर्नुहोस्।"
+    }
+  }
+}

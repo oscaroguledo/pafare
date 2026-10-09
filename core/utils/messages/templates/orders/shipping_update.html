@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block preheader %}{{ t('preheader', number=order_number) }}{% endblock %}
+{% block heading %}{{ t('heading') }}{% endblock %}
+{% block content %}
+{{ m.greeting(t, name) }}
+{{ m.paragraph(t('body', number=order_number)) }}
+{{ m.facts([(t('orderNumber'), order_number), (t('carrier'), carrier), (t('tracking'), tracking_number), (t('eta'), long_date(estimated_delivery) if estimated_delivery else None)], start, end) }}
+{{ m.button(t, action_url, t('button')) }}
+{% endblock %}

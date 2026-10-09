@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block preheader %}{{ t('preheader', number=order_number) }}{% endblock %}
+{% block heading %}{{ t('heading') }}{% endblock %}
+{% block content %}
+{{ m.greeting(t, name) }}
+{{ m.paragraph(t('body', number=order_number)) }}
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 20px; border-collapse:collapse;">
+  <tr>
+    <th style="padding:8px 0; font-size:13px; color:#52615e; text-align:{{ start }}; border-bottom:1px solid #e6ddd1;">{{ t('item') }}</th>
+    <th style="padding:8px 0; font-size:13px; color:#52615e; text-align:center; border-bottom:1px solid #e6ddd1;">{{ t('qty') }}</th>
+    <th style="padding:8px 0; font-size:13px; color:#52615e; text-align:{{ end }}; border-bottom:1px solid #e6ddd1;">{{ t('price') }}</th>
+  </tr>
+  {% for item in items %}
+  <tr>
+    <td style="padding:10px 0; font-size:15px; text-align:{{ start }}; border-bottom:1px solid #f1ebe2; unicode-bidi:plaintext;">{{ item.name }}</td>
+    <td style="padding:10px 0; font-size:15px; text-align:center; border-bottom:1px solid #f1ebe2;">{{ item.quantity }}</td>
+    <td style="padding:10px 0; font-size:15px; text-align:{{ end }}; border-bottom:1px solid #f1ebe2; white-space:nowrap;">{{ money(item.total, currency) }}</td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td colspan="2" style="padding:12px 0 0; font-size:16px; font-weight:700; color:#183c3a; text-align:{{ start }};">{{ t('total') }}</td>
+    <td style="padding:12px 0 0; font-size:16px; font-weight:700; color:#183c3a; text-align:{{ end }}; white-space:nowrap;">{{ money(total, currency) }}</td>
+  </tr>
+</table>
+{{ m.address_block(t('shipTo'), address, start) }}
+{{ m.button(t, action_url, t('button')) }}
+{% endblock %}
