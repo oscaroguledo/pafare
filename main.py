@@ -28,6 +28,7 @@ from core.exceptions import (
 from api import (
     auth_router, user_router, role_router, permission_router,
     hotel_router, room_type_router, room_router, booking_router, review_router,
+    payment_router,
     health_router,
 )
 import models
@@ -105,6 +106,7 @@ v1_router.include_router(room_type_router)
 v1_router.include_router(room_router)
 v1_router.include_router(booking_router)
 v1_router.include_router(review_router)
+v1_router.include_router(payment_router)
 v1_router.include_router(health_router)
 
 app.include_router(v1_router)

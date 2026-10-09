@@ -62,6 +62,10 @@ SCOPES = {
     'reviews:edit': "Edit other guests' reviews",
     'reviews:delete': 'Delete reviews',
     'reviews:moderate': 'Approve or hide reviews',
+    'payments:view': "List and read everyone's payments",
+    'payments:confirm': 'Record that a payment was received',
+    'payments:fail': 'Record that a payment failed',
+    'payments:refund': 'Refund a payment',
 }
 ROLES = ["guest", "customer", "support", "manager", "admin", "superadmin"]
 
@@ -72,6 +76,7 @@ permissions = sa.table("permissions", sa.column("id", core.db.GUID()), sa.column
 def upgrade():
     op.execute("CREATE SCHEMA IF NOT EXISTS accounts")
     op.execute("CREATE SCHEMA IF NOT EXISTS bookings")
+    op.execute("CREATE SCHEMA IF NOT EXISTS billings")
 
     op.create_table('permissions',
     sa.Column('name', sa.String(length=100), nullable=False),
@@ -276,6 +281,31 @@ def upgrade():
     op.create_index(op.f('ix_bookings_reviews_rating'), 'reviews', ['rating'], unique=False, schema='bookings')
     op.create_index(op.f('ix_bookings_reviews_updated_at'), 'reviews', ['updated_at'], unique=False, schema='bookings')
 
+    op.create_table('payments',
+    sa.Column('user_id', core.db.GUID(), nullable=False),
+    sa.Column('booking_id', core.db.GUID(), nullable=False),
+    sa.Column('amount', sa.Integer(), nullable=False),
+    sa.Column('currency', sa.String(length=3), nullable=False),
+    sa.Column('status', sa.String(length=20), nullable=False),
+    sa.Column('reference', sa.String(length=100), nullable=True),
+    sa.Column('card_id', sa.String(length=100), nullable=True),
+    sa.Column('paid_at', core.db.UTCDateTime(), nullable=True),
+    sa.Column('id', core.db.GUID(), nullable=False),
+    sa.Column('created_at', core.db.UTCDateTime(), server_default=sa.text('now()'), nullable=False),
+    sa.Column('updated_at', core.db.UTCDateTime(), server_default=sa.text('now()'), nullable=True),
+    sa.CheckConstraint('amount >= 0', name='ck_payments_amount'),
+    sa.ForeignKeyConstraint(['booking_id'], ['bookings.bookings.id'], ondelete='RESTRICT'),
+    sa.ForeignKeyConstraint(['user_id'], ['accounts.users.id'], ondelete='RESTRICT'),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('reference'),
+    schema='billings'
+    )
+    op.create_index(op.f('ix_billings_payments_booking_id'), 'payments', ['booking_id'], unique=False, schema='billings')
+    op.create_index(op.f('ix_billings_payments_created_at'), 'payments', ['created_at'], unique=False, schema='billings')
+    op.create_index(op.f('ix_billings_payments_status'), 'payments', ['status'], unique=False, schema='billings')
+    op.create_index(op.f('ix_billings_payments_updated_at'), 'payments', ['updated_at'], unique=False, schema='billings')
+    op.create_index(op.f('ix_billings_payments_user_id'), 'payments', ['user_id'], unique=False, schema='billings')
+
     # ---- seed: roles, scopes, and every scope for the superadmin ----
     op.bulk_insert(roles, [{"id": str(uuid.uuid4()), "name": n} for n in ROLES])
     op.bulk_insert(permissions, [{"id": str(uuid.uuid4()), "name": n, "description": d} for n, d in SCOPES.items()])
@@ -287,6 +317,7 @@ def upgrade():
 
 
 def downgrade():
+    op.drop_table('payments', schema='billings')
     op.drop_table('reviews', schema='bookings')
     op.drop_table('bookings', schema='bookings')
     op.drop_table('rooms', schema='bookings')
@@ -296,5 +327,6 @@ def downgrade():
     op.drop_table('hotels', schema='bookings')
     op.drop_table('roles', schema='accounts')
     op.drop_table('permissions', schema='accounts')
+    op.execute("DROP SCHEMA IF EXISTS billings")
     op.execute("DROP SCHEMA IF EXISTS bookings")
     op.execute("DROP SCHEMA IF EXISTS accounts")

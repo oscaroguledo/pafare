@@ -63,6 +63,12 @@ class Scope(str, Enum):
     REVIEWS_DELETE = "reviews:delete"
     REVIEWS_MODERATE = "reviews:moderate"          # approve or hide
 
+    # ---- payments (guests pay for and read their own; these are for the money side) ----
+    PAYMENTS_VIEW = "payments:view"                # everyone's payments
+    PAYMENTS_CONFIRM = "payments:confirm"          # record that the money arrived
+    PAYMENTS_FAIL = "payments:fail"                # record that a payment did not go through
+    PAYMENTS_REFUND = "payments:refund"
+
     def __str__(self) -> str:
         return self.value
 
@@ -109,6 +115,10 @@ DESCRIPTIONS = {
     Scope.REVIEWS_EDIT: "Edit other guests' reviews",
     Scope.REVIEWS_DELETE: "Delete reviews",
     Scope.REVIEWS_MODERATE: "Approve or hide reviews",
+    Scope.PAYMENTS_VIEW: "List and read everyone's payments",
+    Scope.PAYMENTS_CONFIRM: "Record that a payment was received",
+    Scope.PAYMENTS_FAIL: "Record that a payment failed",
+    Scope.PAYMENTS_REFUND: "Refund a payment",
 }
 
 # Every scope's name, for seeding. Scopes without an entry in DESCRIPTIONS get a generic one.

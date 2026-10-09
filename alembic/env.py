@@ -16,7 +16,7 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 # Only track our application schemas, not Supabase internals
-APP_SCHEMAS = {'accounts', 'bookings', 'public'}
+APP_SCHEMAS = {'accounts', 'bookings', 'billings', 'public'}
 
 def include_object(object, name, type_, reflected, compare_to):
     if type_ == "table":
@@ -47,7 +47,7 @@ def run_migrations_online() -> None:
     connectable = create_engine(
         get_url(),
         poolclass=pool.NullPool,
-        connect_args={"options": "-csearch_path=accounts,bookings,public"}
+        connect_args={"options": "-csearch_path=accounts,bookings,billings,public"}
     )
 
     with connectable.connect() as connection:
