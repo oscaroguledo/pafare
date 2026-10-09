@@ -20,3 +20,13 @@ argon2-cffi==25.1.0
 
 # Cache (optional at runtime: the app works without REDIS_URL)
 redis==8.1.0
+
+# Email templates and translations (core/utils/messages/email.py)
+Jinja2==3.1.6
+MarkupSafe==3.0.4
+Babel==2.18.0
+aiohttp==3.14.4
+
+# Cloudflare R2 / S3 file storage (core/r2_storage.py)
+boto3==1.43.111
+botocore==1.43.111
