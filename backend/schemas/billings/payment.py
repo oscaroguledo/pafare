@@ -25,6 +25,11 @@ class PaymentConfirm(BaseModel):
     reference: Optional[str] = Field(None, min_length=1, max_length=100)
 
 
+class PaymentRefund(BaseModel):
+    """Leave `amount` out to refund whatever is left of the payment; give it for a part refund."""
+    amount: Optional[int] = Field(None, ge=1)
+
+
 class PaymentList(BaseModel):
     """Filters for the payment list; every field is optional and they combine with AND."""
     user_id: Optional[UUID] = None
@@ -41,6 +46,7 @@ class PaymentResponse(BaseModel):
     booking_status: BookingStatus   # a pending booking becomes confirmed when its payments cover the total
     user_id: UUID
     amount: int
+    refunded_amount: int
     currency: Currency
     status: PaymentStatus
     reference: Optional[str]
@@ -55,6 +61,7 @@ class PaymentSummary(BaseModel):
     booking_id: UUID
     currency: Currency
     total: int         # the booking's total price
-    paid: int          # succeeded payments
+    paid: int          # succeeded payments, minus anything refunded
     pending: int       # payments started but not confirmed yet
+    refunded: int      # money handed back so far (already taken off `paid`)
     remaining: int     # total - paid - pending: what can still be paid

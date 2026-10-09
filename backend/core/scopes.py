@@ -39,9 +39,14 @@ class Scope(str, Enum):
     HOTELS_CREATE = "hotels:create"
     HOTELS_EDIT = "hotels:edit"
     HOTELS_DELETE = "hotels:delete"
+    HOTELS_ACCESS_ALL = "hotels:access_all"        # work on every hotel; without it, only on hotels you are assigned to
+    HOTELS_ASSIGN_STAFF = "hotels:assign_staff"    # assign staff to a hotel, or remove them
     ROOM_TYPES_CREATE = "room_types:create"
     ROOM_TYPES_EDIT = "room_types:edit"
     ROOM_TYPES_DELETE = "room_types:delete"
+    ROOM_RATES_CREATE = "room_rates:create"        # seasonal and weekday price rules for a room type
+    ROOM_RATES_EDIT = "room_rates:edit"
+    ROOM_RATES_DELETE = "room_rates:delete"
     ROOMS_CREATE = "rooms:create"
     ROOMS_EDIT = "rooms:edit"
     ROOMS_DELETE = "rooms:delete"
@@ -96,13 +101,18 @@ DESCRIPTIONS = {
     Scope.HOTELS_CREATE: "Create hotels",
     Scope.HOTELS_EDIT: "Edit hotels",
     Scope.HOTELS_DELETE: "Delete hotels",
+    Scope.HOTELS_ACCESS_ALL: "Work on every hotel, not just the ones assigned to you",
+    Scope.HOTELS_ASSIGN_STAFF: "Assign staff to a hotel or remove them",
+    Scope.ROOM_RATES_CREATE: "Create seasonal and weekday price rules",
+    Scope.ROOM_RATES_EDIT: "Edit price rules",
+    Scope.ROOM_RATES_DELETE: "Delete price rules",
     Scope.ROOM_TYPES_CREATE: "Create room types",
     Scope.ROOM_TYPES_EDIT: "Edit room types",
     Scope.ROOM_TYPES_DELETE: "Delete room types",
     Scope.ROOMS_CREATE: "Create rooms",
     Scope.ROOMS_EDIT: "Edit rooms",
     Scope.ROOMS_DELETE: "Delete rooms",
-    Scope.BOOKINGS_VIEW: "List and read everyone's bookings",
+    Scope.BOOKINGS_VIEW: "List and read guests' bookings at your hotels",
     Scope.BOOKINGS_CREATE: "Book a room on behalf of a guest",
     Scope.BOOKINGS_EDIT: "Reschedule or change other guests' bookings",
     Scope.BOOKINGS_CANCEL: "Cancel other guests' bookings",

@@ -28,6 +28,8 @@ class Settings:
 
     # Frontend
     FRONTEND_URL: str = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    # Where this API is reachable from outside; the verification link in emails points here
+    API_PUBLIC_URL: str = os.getenv("API_PUBLIC_URL", "http://localhost:8000")
     BACKEND_CORS_ORIGINS: list = ["*"] if os.getenv("ENVIRONMENT", "dev") == "dev" else \
         [os.getenv("FRONTEND_URL", "http://localhost:5173")]
 

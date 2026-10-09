@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block preheader %}{{ t('preheader', hotel=hotel_name) }}{% endblock %}
+{% block heading %}{{ t('heading') }}{% endblock %}
+{% block content %}
+{{ m.greeting(t, name) }}
+{{ m.paragraph(t('body', code=booking_code, hotel=hotel_name)) }}
+{{ m.facts([
+  (t('bookingCode'), booking_code),
+  (t('hotel'), hotel_name),
+  (t('checkIn'), long_date(check_in)),
+  (t('checkOut'), long_date(check_out)),
+  (t('fee'), money_minor(fee, currency) if fee else None),
+  (t('refund'), money_minor(refund, currency) if refund else None),
+], start, end) }}
+{% if refund %}{{ m.muted(t('refundNote')) }}{% endif %}
+{{ m.button(t, action_url, t('button')) }}
+{% endblock %}

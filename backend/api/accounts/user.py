@@ -158,12 +158,13 @@ async def change_email(
 @router.post("/{user_id}/reset-password/", summary="Send a password-reset link", responses=errors(401, 403, 404, 500))
 async def reset_user_password(
     user_id: UUID,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(require_permission(Scope.USERS_RESET_PASSWORD)),
     db: AsyncSession = Depends(get_db),
 ):
     """Send a user a password-reset link (needs users:reset_password)."""
     try:
-        await UserService(db).reset_password(user_id)
+        await UserService(db).reset_password(user_id, background_tasks)
         logger.info(f"{current_user.email} sent a password reset to user {user_id}")
         return Response.success(message="Password reset link sent")
     except (APIException, HTTPException, ValidationError):

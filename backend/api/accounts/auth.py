@@ -101,7 +101,7 @@ async def verify_email(
 
 
 @router.post("/forgot-password/", summary="Start a password reset", responses=errors(422, 500))
-async def forgot_password(payload: ForgotPassword, db: AsyncSession = Depends(get_db)):
+async def forgot_password(payload: ForgotPassword, background_tasks: BackgroundTasks, db: AsyncSession = Depends(get_db)):
     """Always answers the same, whether or not the email is registered, so it can't be used to find accounts."""
     message = "If an account exists with this email, a reset link has been sent."
     try:
@@ -112,7 +112,7 @@ async def forgot_password(payload: ForgotPassword, db: AsyncSession = Depends(ge
             if e.status_code != 404:
                 raise
             return Response.success(message=message)
-        await service.reset_password(user.id)
+        await service.reset_password(user.id, background_tasks)
         return Response.success(message=message)
     except (APIException, HTTPException, ValidationError):
         raise

@@ -26,7 +26,6 @@ services:
   # One-off job: create/upgrade the tables and the seeded roles and permissions, then exit
   migrate:
     build: ./backend
-    image: pafare-api:local
     command: ["alembic", "upgrade", "head"]
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-pafare}:${POSTGRES_PASSWORD:-pafare}@db:5432/${POSTGRES_DB:-pafare}
@@ -37,7 +36,6 @@ services:
 
   api:
     build: ./backend
-    image: pafare-api:local
     restart: unless-stopped
     environment:
       ENVIRONMENT: ${ENVIRONMENT:-dev}
@@ -46,6 +44,9 @@ services:
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-60}
       REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS:-30}
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+      API_PUBLIC_URL: ${API_PUBLIC_URL:-http://localhost:${API_PORT:-8000}}
+      BREVO_API_KEY: ${BREVO_API_KEY:-}
+      BREVO_FROM_EMAIL: ${BREVO_FROM_EMAIL:-Pafare <noreply@pafare.com>}
     ports:
       - "${API_PORT:-8000}:8000"
     depends_on:

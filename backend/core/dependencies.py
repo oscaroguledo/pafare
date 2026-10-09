@@ -1,5 +1,6 @@
 """Shared FastAPI dependencies: who is calling, and what they are allowed to do."""
-from typing import Optional
+from dataclasses import dataclass
+from typing import Optional, Set
 from uuid import UUID
 
 from fastapi import Depends, Request
@@ -13,6 +14,7 @@ from models.accounts.user import User
 from schemas.accounts.user import UserGet
 from services.accounts.permission import PermissionService
 from services.accounts.user import UserService
+from services.bookings.hotel import HotelService
 
 bearer_scheme = HTTPBearer(auto_error=False)
 jwt_manager = JWTManager()
@@ -79,15 +81,36 @@ async def get_optional_user(
     return await get_current_user(credentials, db)
 
 
-def owner_unless_permitted(scope: str):
-    """Dependency factory for records that belong to a guest (bookings, reviews). Returns None when the caller
-    has `scope` (they may act on anyone's), otherwise the caller's own id, to pass to a service as `user_id`
-    so it only touches their records."""
+@dataclass
+class Access:
+    """Who is calling and what their requests may touch. Pass `user_id` and `hotel_ids` to a service."""
+    user: User
+    user_id: Optional[UUID] = None         # set for a guest: only that guest's own records
+    hotel_ids: Optional[Set[UUID]] = None  # set for hotel-limited staff: only these hotels; None = no limit
+
+
+def hotel_access(scope: str):
+    """Dependency factory for staff actions on hotel data. The caller's role must have `scope`; the result says which
+    hotels they may work on (every hotel if their role holds hotels:access_all, otherwise the ones they are assigned to)."""
     async def checker(
         user: User = Depends(get_current_user),
         db: AsyncSession = Depends(get_db),
-    ) -> Optional[UUID]:
+    ) -> Access:
+        if not await PermissionService(db).has_permission(user.role_id, scope):
+            raise APIException(status_code=403, message=f"Missing permission: {scope}")
+        return Access(user=user, user_id=None, hotel_ids=await HotelService(db).hotel_ids_for(user))
+    return checker
+
+
+def guest_or_hotel_access(scope: str):
+    """Dependency factory for records that belong to a guest (bookings, payments, reviews). A caller whose role has
+    `scope` is staff: they see any guest's records at the hotels they work on. Anyone else is a guest and sees only
+    their own records."""
+    async def checker(
+        user: User = Depends(get_current_user),
+        db: AsyncSession = Depends(get_db),
+    ) -> Access:
         if await PermissionService(db).has_permission(user.role_id, scope):
-            return None
-        return user.id
+            return Access(user=user, user_id=None, hotel_ids=await HotelService(db).hotel_ids_for(user))
+        return Access(user=user, user_id=user.id, hotel_ids=None)
     return checker

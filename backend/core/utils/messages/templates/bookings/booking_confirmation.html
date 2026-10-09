@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+{% block preheader %}{{ t('preheader', hotel=hotel_name) }}{% endblock %}
+{% block heading %}{{ t('heading') }}{% endblock %}
+{% block content %}
+{{ m.greeting(t, name) }}
+{{ m.paragraph(t('body', store=store_name, hotel=hotel_name)) }}
+{{ m.facts([
+  (t('bookingCode'), booking_code),
+  (t('hotel'), hotel_name),
+  (t('room'), room_label),
+  (t('checkIn'), long_date(check_in)),
+  (t('checkOut'), long_date(check_out)),
+  (t('nights'), nights),
+  (t('guests'), guests),
+  (t('total'), money_minor(total, currency)),
+], start, end) }}
+{{ m.button(t, action_url, t('button')) }}
+{% endblock %}

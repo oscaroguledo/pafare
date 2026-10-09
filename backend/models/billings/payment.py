@@ -21,12 +21,14 @@ class Payment(BaseModel):
     __tablename__ = "payments"
     __table_args__ = (
         CheckConstraint('amount >= 0', name='ck_payments_amount'),
+        CheckConstraint('refunded_amount >= 0 AND refunded_amount <= amount', name='ck_payments_refunded_amount'),
         {'schema': 'billings'},
     )
 
     user_id: Mapped[uuid.UUID] = mapped_column(GUID(), ForeignKey("accounts.users.id", ondelete="RESTRICT"), index=True)
     booking_id: Mapped[uuid.UUID] = mapped_column(GUID(), ForeignKey("bookings.bookings.id", ondelete="RESTRICT"), index=True)
     amount: Mapped[int] = mapped_column(Integer)  # minor units (e.g. kobo or cents), in `currency`
+    refunded_amount: Mapped[int] = mapped_column(Integer, default=0)  # the part of `amount` given back; equal to amount = fully refunded
     currency: Mapped[Currency] = mapped_column(String(3), default=Currency.NGN.value)
     status: Mapped[PaymentStatus] = mapped_column(String(20), default=PaymentStatus.PENDING.value, index=True)
     reference: Mapped[Optional[str]] = mapped_column(String(100), nullable=True, unique=True)  # the payment provider's transaction id

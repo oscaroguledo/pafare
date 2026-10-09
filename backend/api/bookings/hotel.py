@@ -7,14 +7,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.docs import errors
 from core.db import get_db
-from core.dependencies import require_permission
+from core.dependencies import Access, hotel_access
 from core.exceptions import APIException
 from core.logging import get_structured_logger
 from core.scopes import Scope
 from core.utils.response import Response
-from models.accounts.user import User
 from models.base import Currency
-from schemas.bookings.hotel import HotelCreate, HotelUpdate, HotelList, HotelResponse
+from schemas.bookings.hotel import (
+    HotelCreate, HotelUpdate, HotelList, HotelResponse, HotelStaffAssign, HotelStaffResponse,
+)
 from schemas.bookings.review import HotelRating
 from services.bookings.hotel import HotelService
 from services.bookings.review import ReviewService
@@ -76,13 +77,15 @@ async def get_hotel_rating(hotel_id: UUID, db: AsyncSession = Depends(get_db)):
 @router.post("/", status_code=status.HTTP_201_CREATED, summary="Create a hotel", responses=errors(401, 403, 422, 500))
 async def create_hotel(
     payload: HotelCreate,
-    current_user: User = Depends(require_permission(Scope.HOTELS_CREATE)),
+    access: Access = Depends(hotel_access(Scope.HOTELS_CREATE)),
     db: AsyncSession = Depends(get_db),
 ):
-    """Create a hotel (needs hotels:create). Prices at the hotel are in `currency`, in minor units."""
+    """Create a hotel (needs hotels:create). Prices at the hotel are in `currency`, in minor units. Staff limited to
+    their own hotels are assigned to the one they create, so they can manage it."""
     try:
-        hotel = await HotelService(db).create(payload)
-        logger.info(f"{current_user.email} created hotel {hotel.name}")
+        creator_id = access.user.id if access.hotel_ids is not None else None
+        hotel = await HotelService(db).create(payload, creator_id)
+        logger.info(f"{access.user.email} created hotel {hotel.name}")
         return Response.success(data=HotelResponse.model_validate(hotel), message="Hotel created", status_code=status.HTTP_201_CREATED)
     except (APIException, HTTPException, ValidationError):
         raise
@@ -95,13 +98,14 @@ async def create_hotel(
 async def update_hotel(
     hotel_id: UUID,
     payload: HotelUpdate,
-    current_user: User = Depends(require_permission(Scope.HOTELS_EDIT)),
+    access: Access = Depends(hotel_access(Scope.HOTELS_EDIT)),
     db: AsyncSession = Depends(get_db),
 ):
-    """Update the fields sent (needs hotels:edit). The currency can't change once the hotel has bookings."""
+    """Update the fields sent (needs hotels:edit, for a hotel you work on). The currency can't change once the hotel
+    has bookings. A new tax rate or cancellation policy applies to future bookings only."""
     try:
-        hotel = await HotelService(db).update(hotel_id, payload)
-        logger.info(f"{current_user.email} updated hotel {hotel_id}")
+        hotel = await HotelService(db).update(hotel_id, payload, access.hotel_ids)
+        logger.info(f"{access.user.email} updated hotel {hotel_id}")
         return Response.success(data=HotelResponse.model_validate(hotel), message="Hotel updated")
     except (APIException, HTTPException, ValidationError):
         raise
@@ -113,16 +117,72 @@ async def update_hotel(
 @router.delete("/{hotel_id}/", summary="Delete a hotel", responses=errors(401, 403, 404, 409, 500))
 async def delete_hotel(
     hotel_id: UUID,
-    current_user: User = Depends(require_permission(Scope.HOTELS_DELETE)),
+    access: Access = Depends(hotel_access(Scope.HOTELS_DELETE)),
     db: AsyncSession = Depends(get_db),
 ):
-    """Delete a hotel (needs hotels:delete). Refused while it has rooms or bookings."""
+    """Delete a hotel (needs hotels:delete, for a hotel you work on). Refused while it has rooms, room types or bookings."""
     try:
-        await HotelService(db).delete(hotel_id)
-        logger.info(f"{current_user.email} deleted hotel {hotel_id}")
+        await HotelService(db).delete(hotel_id, access.hotel_ids)
+        logger.info(f"{access.user.email} deleted hotel {hotel_id}")
         return Response.success(message="Hotel deleted")
     except (APIException, HTTPException, ValidationError):
         raise
     except Exception:
         logger.exception(f"Deleting hotel {hotel_id} failed")
         raise APIException(status_code=500, message="Could not delete the hotel")
+
+
+@router.get("/{hotel_id}/staff/", summary="A hotel's staff", responses=errors(401, 403, 404, 500))
+async def list_hotel_staff(
+    hotel_id: UUID,
+    access: Access = Depends(hotel_access(Scope.HOTELS_ASSIGN_STAFF)),
+    db: AsyncSession = Depends(get_db),
+):
+    """The staff assigned to a hotel (needs hotels:assign_staff, for a hotel you work on)."""
+    try:
+        staff = await HotelService(db).list_staff(hotel_id, access.hotel_ids)
+        return Response.success(data=[HotelStaffResponse(**member) for member in staff])
+    except (APIException, HTTPException, ValidationError):
+        raise
+    except Exception:
+        logger.exception(f"Listing staff of hotel {hotel_id} failed")
+        raise APIException(status_code=500, message="Could not load the hotel's staff")
+
+
+@router.post("/{hotel_id}/staff/", status_code=status.HTTP_201_CREATED, summary="Assign staff to a hotel", responses=errors(401, 403, 404, 422, 500))
+async def assign_hotel_staff(
+    hotel_id: UUID,
+    payload: HotelStaffAssign,
+    access: Access = Depends(hotel_access(Scope.HOTELS_ASSIGN_STAFF)),
+    db: AsyncSession = Depends(get_db),
+):
+    """Let a staff member work on this hotel (needs hotels:assign_staff, for a hotel you work on). What they may do
+    there is still decided by their role's permissions. Assigning someone already assigned is harmless."""
+    try:
+        member = await HotelService(db).assign_staff(hotel_id, payload.user_id, access.hotel_ids)
+        logger.info(f"{access.user.email} assigned user {payload.user_id} to hotel {hotel_id}")
+        return Response.success(data=HotelStaffResponse(**member), message="Staff member assigned", status_code=status.HTTP_201_CREATED)
+    except (APIException, HTTPException, ValidationError):
+        raise
+    except Exception:
+        logger.exception(f"Assigning staff to hotel {hotel_id} failed")
+        raise APIException(status_code=500, message="Could not assign the staff member")
+
+
+@router.delete("/{hotel_id}/staff/{user_id}/", summary="Remove staff from a hotel", responses=errors(401, 403, 404, 500))
+async def unassign_hotel_staff(
+    hotel_id: UUID,
+    user_id: UUID,
+    access: Access = Depends(hotel_access(Scope.HOTELS_ASSIGN_STAFF)),
+    db: AsyncSession = Depends(get_db),
+):
+    """Stop a staff member working on this hotel (needs hotels:assign_staff, for a hotel you work on)."""
+    try:
+        await HotelService(db).unassign_staff(hotel_id, user_id, access.hotel_ids)
+        logger.info(f"{access.user.email} removed user {user_id} from hotel {hotel_id}")
+        return Response.success(message="Staff member removed")
+    except (APIException, HTTPException, ValidationError):
+        raise
+    except Exception:
+        logger.exception(f"Removing staff from hotel {hotel_id} failed")
+        raise APIException(status_code=500, message="Could not remove the staff member")

@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 from sqlalchemy.exc import IntegrityError
-from typing import Optional
+from typing import Optional, Set
 from uuid import UUID
 from core.utils.uuid_utils import uuid7
 from models.bookings.booking import Booking, BookingStatus
@@ -15,8 +15,9 @@ logger = get_structured_logger(__name__)
 
 
 class ReviewService:
-    """Reviews. Methods that take `user_id` only see that guest's reviews (someone else's is reported as not
-    found); leave it out for staff."""
+    """Reviews. Two optional limits narrow what a method sees: `user_id` limits it to that guest's reviews (someone
+    else's is reported as not found; leave it out for staff), and `hotel_ids` limits it to reviews of those hotels
+    (None = all hotels; a review of another hotel is reported as not found)."""
 
     def __init__(self, db: AsyncSession):
         self.db = db
@@ -52,12 +53,14 @@ class ReviewService:
         review.hotel_id, review.hotel_name, review.user_id = hotel_id, hotel_name, user_id
         return review
 
-    async def get(self, review_id: UUID, user_id: Optional[UUID] = None) -> Review:
-        """Get a review with its hotel and guest. Raises 404 if it doesn't exist
-        (or isn't this guest's, when user_id is given)."""
+    async def get(self, review_id: UUID, user_id: Optional[UUID] = None, hotel_ids: Optional[Set[UUID]] = None) -> Review:
+        """Get a review with its hotel and guest. Raises 404 if it doesn't exist (or isn't this guest's, or isn't for
+        one of the staff member's hotels, when those limits are given)."""
         conditions = [Review.id == review_id]
         if user_id is not None:
             conditions.append(Booking.user_id == user_id)
+        if hotel_ids is not None:
+            conditions.append(Booking.hotel_id.in_(hotel_ids))
         row = (await self.db.execute(
             select(Review, Booking.hotel_id, Hotel.name, Booking.user_id)
             .join(Booking, Review.booking_id == Booking.id)
@@ -71,8 +74,8 @@ class ReviewService:
 
         return review
 
-    async def list(self, filter: ReviewList, page: int = 1, limit: int = 10) -> dict:
-        """Get a paginated, filtered list of reviews, newest first.
+    async def list(self, filter: ReviewList, page: int = 1, limit: int = 10, hotel_ids: Optional[Set[UUID]] = None) -> dict:
+        """Get a paginated, filtered list of reviews, newest first. When hotel_ids is given, only reviews of those hotels.
         Raises 400 if page is below 1 or limit is outside 1-100."""
         if page < 1:
             raise APIException(status_code=400, message="page must be 1 or greater")
@@ -80,6 +83,8 @@ class ReviewService:
             raise APIException(status_code=400, message="limit must be between 1 and 100")
 
         conditions = []
+        if hotel_ids is not None:
+            conditions.append(Booking.hotel_id.in_(hotel_ids))
         if filter.hotel_id:
             conditions.append(Booking.hotel_id == filter.hotel_id)
         if filter.user_id:
@@ -117,10 +122,12 @@ class ReviewService:
             },
         }
 
-    async def update(self, review_id: UUID, data: ReviewUpdate, user_id: Optional[UUID] = None) -> Review:
+    async def update(
+        self, review_id: UUID, data: ReviewUpdate, user_id: Optional[UUID] = None, hotel_ids: Optional[Set[UUID]] = None,
+    ) -> Review:
         """Edit a review's rating or comment (PATCH semantics). An edit sends it back for approval.
         Raises 404 if the review doesn't exist (or isn't this guest's), 400 if nothing was sent or rating is null."""
-        review = await self.get(review_id, user_id)
+        review = await self.get(review_id, user_id, hotel_ids)
 
         changes = data.model_dump(exclude_unset=True)
         if not changes:
@@ -138,9 +145,9 @@ class ReviewService:
         review.hotel_id, review.hotel_name, review.user_id = hotel_id, hotel_name, guest_id
         return review
 
-    async def moderate(self, review_id: UUID, is_approved: bool) -> Review:
-        """Approve or hide a review (staff). Raises 404 if it doesn't exist."""
-        review = await self.get(review_id)
+    async def moderate(self, review_id: UUID, is_approved: bool, hotel_ids: Optional[Set[UUID]] = None) -> Review:
+        """Approve or hide a review (staff). Raises 404 if it doesn't exist (or isn't for one of the staff member's hotels)."""
+        review = await self.get(review_id, None, hotel_ids)
 
         hotel_id, hotel_name, guest_id = review.hotel_id, review.hotel_name, review.user_id
         review.is_approved = is_approved
@@ -150,9 +157,9 @@ class ReviewService:
         review.hotel_id, review.hotel_name, review.user_id = hotel_id, hotel_name, guest_id
         return review
 
-    async def delete(self, review_id: UUID, user_id: Optional[UUID] = None) -> None:
-        """Delete a review. Raises 404 if it doesn't exist (or isn't this guest's, when user_id is given)."""
-        review = await self.get(review_id, user_id)
+    async def delete(self, review_id: UUID, user_id: Optional[UUID] = None, hotel_ids: Optional[Set[UUID]] = None) -> None:
+        """Delete a review. Raises 404 if it doesn't exist (or isn't this guest's / for the staff member's hotels)."""
+        review = await self.get(review_id, user_id, hotel_ids)
 
         await self.db.delete(review)
         await self.db.commit()

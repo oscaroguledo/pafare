@@ -1,8 +1,7 @@
-from sqlalchemy import String, Boolean, ForeignKey, DateTime, Integer, func, Index, JSON
+from sqlalchemy import String, ForeignKey, UniqueConstraint, func
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 from core.db import CHAR_LENGTH, GUID, UTCDateTime
 from models.base import BaseModel
-from core.utils.uuid_utils import uuid7
 from enum import Enum
 import uuid
 from datetime import datetime
@@ -52,3 +51,19 @@ class User(BaseModel):
     def is_active(self) -> bool:
         """True when account_status is 'active'."""
         return self.account_status == AccountStatus.ACTIVE
+
+
+class HotelStaff(BaseModel):
+    """Assigns a user to a hotel with permissions scoped to that hotel."""
+    __tablename__ = "hotel_staff"
+    __table_args__ = (
+        UniqueConstraint("hotel_id", "user_id", name="uq_hotel_staff_hotel_user"),
+        {"schema": "bookings"},
+    )
+
+    hotel_id: Mapped[uuid.UUID] = mapped_column(
+        GUID(), ForeignKey("bookings.hotels.id", ondelete="CASCADE")
+    )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        GUID(), ForeignKey("accounts.users.id", ondelete="CASCADE"), index=True
+    )

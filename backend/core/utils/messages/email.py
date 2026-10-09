@@ -2,13 +2,16 @@
 import json
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
+from decimal import Decimal
 from pathlib import Path
 from typing import Any, Dict, Optional
+
+from fastapi import BackgroundTasks
 
 import aiohttp
 from babel import Locale, UnknownLocaleError
 from babel.dates import format_date, format_timedelta
-from babel.numbers import format_currency
+from babel.numbers import format_currency, get_currency_precision
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from markupsafe import Markup, escape
 
@@ -17,15 +20,12 @@ from core.logging import get_structured_logger
 
 logger = get_structured_logger(__name__)
 
-# Every email the store sends, and the template that draws it.
+# Every email the app sends, and the template that draws it.
 TEMPLATES: Dict[str, str] = {
     "verification": "account/verification.html",
     "password_reset": "account/password_reset.html",
-    "order_confirmation": "orders/order_confirmation.html",
-    "shipping_update": "orders/shipping_update.html",
-    "order_delivered": "orders/order_delivered.html",
-    "subscription_reminder": "subscriptions/subscription_reminder.html",
-    "subscription_payment_failed": "subscriptions/subscription_payment_failed.html",
+    "booking_confirmation": "bookings/booking_confirmation.html",
+    "booking_cancelled": "bookings/booking_cancelled.html",
 }
 
 RTL_LANGUAGES = {"ar", "ur", "fa", "ps", "ckb", "he"}
@@ -73,6 +73,10 @@ def _formatters(language: str) -> Dict[str, Any]:
     locale = _babel_locale(language)
     return {
         "money": lambda amount, currency=settings.STORE_CURRENCY: format_currency(amount or 0, currency, locale=locale),
+        # Amounts in the app are whole minor units (kobo, cents); show them in the currency's usual form
+        "money_minor": lambda amount, currency: format_currency(
+            Decimal(amount or 0) / (10 ** get_currency_precision(currency)), currency, locale=locale
+        ),
         "long_date": lambda value: format_date(value if isinstance(value, (date, datetime)) else datetime.fromisoformat(str(value)), format="long", locale=locale),
         "duration": lambda hours: format_timedelta(timedelta(hours=hours), threshold=2, locale=locale),
     }
@@ -123,3 +127,72 @@ async def send_email(to_email: str, kind: str, context: Dict[str, Any], language
             if response.status not in (200, 201):
                 raise RuntimeError(f"Brevo refused the {kind} email ({response.status}): {await response.text()}")
     logger.info(f"Sent {kind} email to {to_email} in {email_language(language)}")
+
+
+class EmailService:
+    """Sending the app's emails: sign-up and password-reset links, booking confirmations and cancellations.
+
+    Mail goes out through Brevo when BREVO_API_KEY is set. Without a key, development just logs each email (with its
+    link), so sign-up and password reset can be tried without an email account; in production a missing key is logged
+    as an error. A failed send is logged and never fails the request that triggered it.
+    """
+
+    @staticmethod
+    async def deliver(to_email: str, kind: str, context: Dict[str, Any], language: Optional[str] = None) -> None:
+        """Send one email, or log it when no mail provider is configured. Never raises."""
+        link = context.get("action_url", "")
+        if not settings.BREVO_API_KEY:
+            if settings.ENVIRONMENT.lower() == "production":
+                logger.error(f"BREVO_API_KEY is not set: the {kind} email to {to_email} was not sent")
+            else:
+                logger.info(f"[dev] {kind} email to {to_email} not sent (no BREVO_API_KEY): {link}")
+            return
+        try:
+            await send_email(to_email, kind, context, language)
+        except Exception:
+            logger.exception(f"Sending the {kind} email to {to_email} failed")
+
+    @staticmethod
+    def queue(background_tasks: Optional[BackgroundTasks], func, *args, **kwargs) -> None:
+        """Run an email method after the response is sent. Without a background-tasks object, do nothing."""
+        if background_tasks is not None:
+            background_tasks.add_task(func, *args, **kwargs)
+
+    @staticmethod
+    async def send_verification(to_email: str, name: str, token: str, language: Optional[str], valid_hours: float = 0.25) -> None:
+        """The link opens the API's verify-email route, which works without a frontend."""
+        url = f"{settings.API_PUBLIC_URL.rstrip('/')}/v1/auth/verify-email/?token={token}"
+        await EmailService.deliver(to_email, "verification", {"name": name, "action_url": url, "valid_hours": valid_hours}, language)
+
+    @staticmethod
+    async def send_password_reset(to_email: str, name: str, token: str, language: Optional[str], valid_hours: float = 0.25) -> None:
+        """The link opens a reset page on the frontend, which posts the token and the new password to /auth/reset-password/."""
+        url = f"{settings.FRONTEND_URL.rstrip('/')}/reset-password?token={token}"
+        await EmailService.deliver(to_email, "password_reset", {"name": name, "action_url": url, "valid_hours": valid_hours}, language)
+
+    @staticmethod
+    async def send_booking_confirmed(
+        to_email: str, name: str, language: Optional[str], *, booking_id, booking_code: str, hotel_name: str,
+        room_label: str, check_in: date, check_out: date, guests: int, total: int, currency: str,
+    ) -> None:
+        context = {
+            "name": name, "booking_code": booking_code, "hotel_name": hotel_name, "room_label": room_label,
+            "check_in": check_in, "check_out": check_out, "nights": (check_out - check_in).days, "guests": guests,
+            "total": total, "currency": currency,
+            "action_url": f"{settings.FRONTEND_URL.rstrip('/')}/bookings/{booking_id}",
+            "subject_values": {"code": booking_code},
+        }
+        await EmailService.deliver(to_email, "booking_confirmation", context, language)
+
+    @staticmethod
+    async def send_booking_cancelled(
+        to_email: str, name: str, language: Optional[str], *, booking_id, booking_code: str, hotel_name: str,
+        check_in: date, check_out: date, fee: int, refund: int, currency: str,
+    ) -> None:
+        context = {
+            "name": name, "booking_code": booking_code, "hotel_name": hotel_name, "check_in": check_in,
+            "check_out": check_out, "fee": fee, "refund": refund, "currency": currency,
+            "action_url": f"{settings.FRONTEND_URL.rstrip('/')}/bookings/{booking_id}",
+            "subject_values": {"code": booking_code},
+        }
+        await EmailService.deliver(to_email, "booking_cancelled", context, language)

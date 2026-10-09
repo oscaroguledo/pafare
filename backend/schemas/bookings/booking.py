@@ -1,3 +1,4 @@
+from decimal import Decimal
 from pydantic import BaseModel, ConfigDict, Field, AwareDatetime, model_validator
 from typing import Optional
 from datetime import date, datetime
@@ -20,6 +21,8 @@ class BookingCreate(BaseModel):
     def dates_in_order(self):
         if self.check_out <= self.check_in:
             raise ValueError("check_out must be after check_in")
+        if (self.check_out - self.check_in).days > 90:
+            raise ValueError("A stay can be at most 90 nights")
         return self
 
 
@@ -44,6 +47,41 @@ class BookingDiscount(BaseModel):
 
 class BookingStatusChange(BaseModel):
     status: BookingStatus
+
+
+class BookingCancel(BaseModel):
+    """Staff may waive the late-cancellation fee. For a guest's own cancellation this is ignored."""
+    waive_fee: bool = False
+
+
+class NightPrice(BaseModel):
+    night: date
+    price: int
+    rate_name: Optional[str]       # the price rule used, or null for the standard price
+
+
+class BookingQuote(BaseModel):
+    """What a stay costs, night by night. All money is in minor units of `currency`."""
+    room_id: UUID
+    currency: Currency
+    max_guests: int
+    nights: list[NightPrice]
+    base_price: int
+    tax_percent: Decimal
+    tax_amount: int
+    total_price: int
+
+
+class CancellationQuote(BaseModel):
+    """What cancelling a booking would cost and return right now."""
+    booking_id: UUID
+    currency: Currency
+    hours_until_check_in: int
+    free_until: datetime
+    within_free_window: bool
+    paid: int               # net of any refunds so far
+    fee: int                # what the hotel would keep
+    refund: int             # what would be handed back
 
 
 class BookingList(BaseModel):
@@ -76,7 +114,12 @@ class BookingResponse(BaseModel):
     status: BookingStatus
     base_price: int
     discount: int
+    tax_percent: Decimal
+    tax_amount: int
     total_price: int
     currency: Currency
+    cancelled_at: Optional[datetime]
+    cancellation_fee: int
+    refund_amount: int
     created_at: datetime
     updated_at: Optional[datetime]

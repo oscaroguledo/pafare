@@ -3,6 +3,7 @@ from fastapi import BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func, or_, and_
 from sqlalchemy.exc import IntegrityError
+import time
 from typing import Dict
 from uuid import UUID
 from datetime import datetime, timezone
@@ -12,11 +13,15 @@ from models.accounts.role import Role
 from core.exceptions import APIException
 from schemas.accounts.user import UserCreate, UserGet, UserList, UserLogin, UserUpdate
 from core.logging import get_structured_logger
-from core.config import settings
 from core.utils.encryption import PasswordManager, JWTManager, TokenError
+from core.utils.messages.email import EmailService
 from services.accounts.role import RoleService
 
 logger = get_structured_logger(__name__)
+
+# user id -> when a fresh verification link was last sent because they opened an expired one. Kept per process, so with
+# several workers a user can get one per worker; it exists to stop an old expired link being used to flood an inbox.
+_recent_resends: Dict[UUID, float] = {}
 
 
 class UserService:
@@ -67,9 +72,10 @@ class UserService:
 
         # Stateless link token: signed and expiring, so no token column is needed
         verification_token = self.jwt_manager.create_verification_token({"sub": str(new_user.id), "email": new_user.email})
-        # queue(background_tasks, send_verification, new_user.email, new_user.firstname, verification_token, new_user.language)
-        if settings.ENVIRONMENT.lower() != "production":
-            logger.info(f"[dev] Verification link for {new_user.email}: /v1/auth/verify-email/?token={verification_token}")
+        EmailService.queue(
+            background_tasks, EmailService.send_verification, new_user.email, new_user.firstname.title(), verification_token,
+            new_user.language, self.jwt_manager.verification_ttl.total_seconds() / 3600,
+        )
 
         new_user.role_name = role.name
         return new_user
@@ -118,8 +124,19 @@ class UserService:
             user = (await self.db.execute(select(User).where(User.id == payload["sub"]))).scalar_one_or_none()
             
             if user and user.email == payload.get("email") and user.account_status == AccountStatus.INACTIVE:
+                # One fresh link per user per link lifetime, so an old link can't be used to flood their inbox
+                ttl = self.jwt_manager.verification_ttl.total_seconds()
+                now = time.monotonic()
+                for stale in [uid for uid, sent in _recent_resends.items() if now - sent >= ttl]:
+                    del _recent_resends[stale]
+                if user.id in _recent_resends:
+                    raise APIException(status_code=429, message="A new verification link was already sent. Check your email, or try again in a few minutes.")
+                _recent_resends[user.id] = now
                 verification_token = self.jwt_manager.create_verification_token({"sub": str(user.id), "email": user.email})
-                # queue(background_tasks, send_verification, user.email, user.firstname, verification_token, user.language)
+                # Sent now, not queued: background tasks only run after a normal response, and this one ends in an error
+                await EmailService.send_verification(
+                    user.email, user.firstname.title(), verification_token, user.language, ttl / 3600
+                )
                 raise APIException(status_code=400, message="This verification link has expired. A new one has been sent to your email.")
             
             raise APIException(status_code=400, message="Invalid or expired verification token")
@@ -286,15 +303,16 @@ class UserService:
         await self.db.refresh(user)
 
         verification_token = self.jwt_manager.create_verification_token({"sub": str(user.id), "email": user.email})
-        # queue(background_tasks, send_verification, user.email, user.firstname, verification_token, user.language)
-        if settings.ENVIRONMENT.lower() != "production":
-            logger.info(f"[dev] Verification link for {user.email}: /v1/auth/verify-email/?token={verification_token}")
+        EmailService.queue(
+            background_tasks, EmailService.send_verification, user.email, user.firstname.title(), verification_token,
+            user.language, self.jwt_manager.verification_ttl.total_seconds() / 3600,
+        )
 
         user.role_name = role.name
         return user
 
-    async def reset_password(self, user_id: UUID) -> bool:
-        """Start a password reset: build a signed 15-minute link token for the user and email it.
+    async def reset_password(self, user_id: UUID, background_tasks: BackgroundTasks) -> bool:
+        """Start a password reset: build a signed 15-minute link token for the user and email it to them.
         Raises 404 if the user doesn't exist."""
         user = (await self.db.execute(select(User).where(User.id == user_id))).scalar_one_or_none()
         if not user:
@@ -304,8 +322,10 @@ class UserService:
             raise APIException(status_code=403, message="Account suspended. Contact support.")
         
         reset_token = self.jwt_manager.create_password_reset_token({"sub": str(user.id)})
-        # TODO: send the link once the email service exists:
-        # await send_password_reset(user.email, user.firstname, reset_token, user.language, 1)
+        EmailService.queue(
+            background_tasks, EmailService.send_password_reset, user.email, user.firstname.title(), reset_token,
+            user.language, self.jwt_manager.reset_ttl.total_seconds() / 3600,
+        )
 
         return True
 

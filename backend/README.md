@@ -35,3 +35,15 @@ pip install -r requirements.txt
 alembic upgrade head
 uvicorn main:app --reload
 ```
+
+## Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest                      # runs on in-memory SQLite, nothing else needed
+
+# the same tests on PostgreSQL, plus the ones that need real row locking (double-booking races):
+TEST_DATABASE_URL=postgresql://user:password@localhost:5432/pafare_test pytest
+```
+
+The PostgreSQL database named in `TEST_DATABASE_URL` is emptied for every test, so point it at a throwaway one.

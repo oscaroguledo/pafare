@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.docs import errors
 from core.db import get_db
-from core.dependencies import get_current_user, get_optional_user, require_permission, owner_unless_permitted
+from core.dependencies import Access, get_current_user, get_optional_user, hotel_access, guest_or_hotel_access
 from core.exceptions import APIException
 from core.logging import get_structured_logger
 from core.scopes import Scope
@@ -16,6 +16,7 @@ from models.accounts.user import User
 from schemas.bookings.review import ReviewCreate, ReviewUpdate, ReviewModeration, ReviewList, ReviewResponse
 from services.accounts.permission import PermissionService
 from services.bookings.review import ReviewService
+from services.bookings.hotel import HotelService
 
 logger = get_structured_logger(__name__)
 
@@ -74,13 +75,13 @@ async def list_all_reviews(
     user_id: Optional[UUID] = Query(None),
     rating: Optional[int] = Query(None, ge=1, le=5),
     is_approved: Optional[bool] = Query(None),
-    current_user: User = Depends(require_permission(Scope.REVIEWS_VIEW)),
+    access: Access = Depends(hotel_access(Scope.REVIEWS_VIEW)),
     db: AsyncSession = Depends(get_db),
 ):
-    """Every review, approved or not (needs reviews:view). Use is_approved=false for the moderation queue."""
+    """Every review of your hotels, approved or not (needs reviews:view). Use is_approved=false for the moderation queue."""
     try:
         filters = ReviewList(hotel_id=hotel_id, user_id=user_id, rating=rating, is_approved=is_approved)
-        result = await ReviewService(db).list(filters, page, limit)
+        result = await ReviewService(db).list(filters, page, limit, access.hotel_ids)
         reviews = [ReviewResponse.model_validate(r) for r in result["reviews"]]
         return Response.success(data=reviews, pagination=result["pagination"])
     except (APIException, HTTPException, ValidationError):
@@ -115,15 +116,15 @@ async def get_review(
     current_user: Optional[User] = Depends(get_optional_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Anyone can read an approved review. An unapproved one is only visible to its author and to callers with
-    reviews:view; everyone else gets a 404, so its existence isn't revealed."""
+    """Anyone can read an approved review. An unapproved one is only visible to its author and to staff with
+    reviews:view at that hotel; everyone else gets a 404, so its existence isn't revealed."""
     try:
         review = await ReviewService(db).get(review_id)
         if not review.is_approved:
-            allowed = current_user is not None and (
-                review.user_id == current_user.id
-                or await PermissionService(db).has_permission(current_user.role_id, Scope.REVIEWS_VIEW)
-            )
+            allowed = current_user is not None and review.user_id == current_user.id
+            if current_user is not None and not allowed and await PermissionService(db).has_permission(current_user.role_id, Scope.REVIEWS_VIEW):
+                hotel_ids = await HotelService(db).hotel_ids_for(current_user)
+                allowed = hotel_ids is None or review.hotel_id in hotel_ids
             if not allowed:
                 raise APIException(status_code=404, message="Review not found")
         return Response.success(data=ReviewResponse.model_validate(review))
@@ -138,12 +139,12 @@ async def get_review(
 async def update_review(
     review_id: UUID,
     payload: ReviewUpdate,
-    owner: Optional[UUID] = Depends(owner_unless_permitted(Scope.REVIEWS_EDIT)),
+    access: Access = Depends(guest_or_hotel_access(Scope.REVIEWS_EDIT)),
     db: AsyncSession = Depends(get_db),
 ):
-    """Edit your own review (anyone's with reviews:edit). Any edit sends it back for approval."""
+    """Edit your own review (any review of your hotels, with reviews:edit). Any edit sends it back for approval."""
     try:
-        review = await ReviewService(db).update(review_id, payload, owner)
+        review = await ReviewService(db).update(review_id, payload, access.user_id, access.hotel_ids)
         return Response.success(data=ReviewResponse.model_validate(review), message="Review updated; it needs approval again")
     except (APIException, HTTPException, ValidationError):
         raise
@@ -156,13 +157,13 @@ async def update_review(
 async def moderate_review(
     review_id: UUID,
     payload: ReviewModeration,
-    current_user: User = Depends(require_permission(Scope.REVIEWS_MODERATE)),
+    access: Access = Depends(hotel_access(Scope.REVIEWS_MODERATE)),
     db: AsyncSession = Depends(get_db),
 ):
-    """Approve (is_approved=true) or hide (false) a review (needs reviews:moderate)."""
+    """Approve (is_approved=true) or hide (false) a review (needs reviews:moderate, for a hotel you work on)."""
     try:
-        review = await ReviewService(db).moderate(review_id, payload.is_approved)
-        logger.info(f"{current_user.email} {'approved' if payload.is_approved else 'hid'} review {review_id}")
+        review = await ReviewService(db).moderate(review_id, payload.is_approved, access.hotel_ids)
+        logger.info(f"{access.user.email} {'approved' if payload.is_approved else 'hid'} review {review_id}")
         message = "Review approved" if payload.is_approved else "Review hidden"
         return Response.success(data=ReviewResponse.model_validate(review), message=message)
     except (APIException, HTTPException, ValidationError):
@@ -175,12 +176,12 @@ async def moderate_review(
 @router.delete("/{review_id}/", summary="Delete a review", responses=errors(401, 403, 404, 500))
 async def delete_review(
     review_id: UUID,
-    owner: Optional[UUID] = Depends(owner_unless_permitted(Scope.REVIEWS_DELETE)),
+    access: Access = Depends(guest_or_hotel_access(Scope.REVIEWS_DELETE)),
     db: AsyncSession = Depends(get_db),
 ):
-    """Delete your own review (anyone's with reviews:delete)."""
+    """Delete your own review (any review of your hotels, with reviews:delete)."""
     try:
-        await ReviewService(db).delete(review_id, owner)
+        await ReviewService(db).delete(review_id, access.user_id, access.hotel_ids)
         return Response.success(message="Review deleted")
     except (APIException, HTTPException, ValidationError):
         raise
