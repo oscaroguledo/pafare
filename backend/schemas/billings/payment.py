@@ -5,6 +5,7 @@ from uuid import UUID
 
 from models.base import Currency
 from models.billings.payment import PaymentStatus
+from models.bookings.booking import BookingStatus
 
 
 class PaymentCreate(BaseModel):
@@ -37,6 +38,7 @@ class PaymentResponse(BaseModel):
     id: UUID
     booking_id: UUID
     booking_code: Optional[str]
+    booking_status: BookingStatus   # a pending booking becomes confirmed when its payments cover the total
     user_id: UUID
     amount: int
     currency: Currency

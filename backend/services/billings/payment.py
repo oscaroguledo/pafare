@@ -60,7 +60,7 @@ class PaymentService:
         if amount > remaining:
             raise APIException(status_code=400, message=f"Amount is more than what is still owed ({remaining})")
 
-        booking_code, currency = booking.booking_code, booking.currency
+        booking_code, booking_status, currency = booking.booking_code, booking.status, booking.currency
         payment = Payment(
             id=uuid7(), user_id=user_id, booking_id=booking.id, amount=amount,
             currency=currency, status=PaymentStatus.PENDING.value, card_id=data.card_id,
@@ -69,7 +69,7 @@ class PaymentService:
         await self.db.commit()
         await self.db.refresh(payment)
 
-        payment.booking_code = booking_code
+        payment.booking_code, payment.booking_status = booking_code, booking_status
         return payment
 
     async def get(self, payment_id: UUID, user_id: Optional[UUID] = None) -> Payment:
@@ -79,12 +79,14 @@ class PaymentService:
         if user_id is not None:
             conditions.append(Payment.user_id == user_id)
         row = (await self.db.execute(
-            select(Payment, Booking.booking_code).join(Booking, Payment.booking_id == Booking.id).where(*conditions)
+            select(Payment, Booking.booking_code, Booking.status)
+            .join(Booking, Payment.booking_id == Booking.id)
+            .where(*conditions)
         )).first()
         if not row:
             raise APIException(status_code=404, message="Payment not found")
-        payment, booking_code = row
-        payment.booking_code = booking_code
+        payment, booking_code, booking_status = row
+        payment.booking_code, payment.booking_status = booking_code, booking_status
 
         return payment
 
@@ -107,7 +109,7 @@ class PaymentService:
 
         total = (await self.db.execute(select(func.count()).select_from(Payment).where(*conditions))).scalar() or 0
         rows = (await self.db.execute(
-            select(Payment, Booking.booking_code)
+            select(Payment, Booking.booking_code, Booking.status)
             .join(Booking, Payment.booking_id == Booking.id)
             .where(*conditions)
             .order_by(Payment.created_at.desc(), Payment.id.desc())  # id breaks ties so pages never repeat or skip
@@ -116,8 +118,8 @@ class PaymentService:
         )).all()
 
         payments = []
-        for payment, booking_code in rows:
-            payment.booking_code = booking_code
+        for payment, booking_code, booking_status in rows:
+            payment.booking_code, payment.booking_status = booking_code, booking_status
             payments.append(payment)
 
         return {
@@ -159,7 +161,8 @@ class PaymentService:
 
     async def confirm(self, payment_id: UUID, reference: Optional[str] = None) -> Payment:
         """Record that the provider received the money: pending -> succeeded, stamping paid_at. The provider's
-        transaction id can be given here.
+        transaction id can be given here. If the booking's succeeded payments now cover its total and it is still
+        pending, it becomes confirmed, in the same transaction.
         Raises 404 if the payment doesn't exist, 409 if it isn't pending or the reference is already used."""
         payment = await self.get(payment_id)
         if PaymentStatus.SUCCEEDED.value not in TRANSITIONS.get(payment.status, set()):
@@ -171,13 +174,28 @@ class PaymentService:
         if reference:
             payment.reference = reference
         try:
-            await self.db.commit()
+            await self.db.flush()
         except IntegrityError:
             await self.db.rollback()
             raise APIException(status_code=409, message="That provider reference is already used by another payment")
+
+        # Lock the booking, then see whether it is now fully paid
+        booking = (await self.db.execute(
+            select(Booking).where(Booking.id == payment.booking_id).with_for_update()
+        )).scalar_one()
+        paid = (await self.db.execute(
+            select(func.coalesce(func.sum(Payment.amount), 0)).where(
+                Payment.booking_id == booking.id, Payment.status == PaymentStatus.SUCCEEDED.value
+            )
+        )).scalar()
+        if booking.status == BookingStatus.PENDING.value and paid >= booking.total_price:
+            booking.status = BookingStatus.CONFIRMED.value
+        booking_status = booking.status
+
+        await self.db.commit()
         await self.db.refresh(payment)
 
-        payment.booking_code = booking_code
+        payment.booking_code, payment.booking_status = booking_code, booking_status
         return payment
 
     async def fail(self, payment_id: UUID) -> Payment:
@@ -187,12 +205,12 @@ class PaymentService:
         if PaymentStatus.FAILED.value not in TRANSITIONS.get(payment.status, set()):
             raise APIException(status_code=409, message=f"A {payment.status} payment can't become failed")
 
-        booking_code = payment.booking_code
+        booking_code, booking_status = payment.booking_code, payment.booking_status
         payment.status = PaymentStatus.FAILED.value
         await self.db.commit()
         await self.db.refresh(payment)
 
-        payment.booking_code = booking_code
+        payment.booking_code, payment.booking_status = booking_code, booking_status
         return payment
 
     async def refund(self, payment_id: UUID) -> Payment:
@@ -202,10 +220,10 @@ class PaymentService:
         if PaymentStatus.REFUNDED.value not in TRANSITIONS.get(payment.status, set()):
             raise APIException(status_code=409, message=f"A {payment.status} payment can't become refunded")
 
-        booking_code = payment.booking_code
+        booking_code, booking_status = payment.booking_code, payment.booking_status
         payment.status = PaymentStatus.REFUNDED.value
         await self.db.commit()
         await self.db.refresh(payment)
 
-        payment.booking_code = booking_code
+        payment.booking_code, payment.booking_status = booking_code, booking_status
         return payment
