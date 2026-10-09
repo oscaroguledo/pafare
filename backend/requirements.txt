@@ -1,0 +1,22 @@
+# Web framework and server
+fastapi==0.143.0
+starlette==1.7.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.0
+email-validator==2.3.0
+python-dotenv==1.2.4
+
+# Database (asyncpg for the app, psycopg2 for Alembic migrations)
+SQLAlchemy==2.1.4
+asyncpg==0.32.0
+psycopg2-binary==2.9.13
+greenlet==3.5.6
+alembic==1.20.0
+
+# Auth
+python-jose==3.5.0
+passlib==1.7.4
+argon2-cffi==25.1.0
+
+# Cache (optional at runtime: the app works without REDIS_URL)
+redis==8.1.0

@@ -1,0 +1,22 @@
+# Secrets and local environment files: pass configuration as environment variables instead
+.env
+.env.*
+.venv/
+venv/
+
+# Python caches and tooling
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.coverage
+
+# Not needed in the image
+.git/
+.gitignore
+.vscode/
+.idea/
+Dockerfile
+.dockerignore
+*.md
