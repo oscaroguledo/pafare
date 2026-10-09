@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from sqlalchemy.exc import SQLAlchemyError
+from pydantic import ValidationError
 
 from core.db import db_manager, initialize_db
 from core.config import settings
@@ -19,11 +20,16 @@ from core.exceptions import (
     api_exception_handler,
     http_exception_handler,
     validation_exception_handler,
+    pydantic_validation_handler,
     sqlalchemy_exception_handler,
     general_exception_handler
 )
 
-from api import auth_router, user_router, role_router, permission_router, health_router
+from api import (
+    auth_router, user_router, role_router, permission_router,
+    hotel_router, room_type_router, room_router, booking_router, review_router,
+    health_router,
+)
 import models
 from core import redis_cache
 import uvicorn
@@ -94,6 +100,11 @@ v1_router.include_router(auth_router)
 v1_router.include_router(user_router)
 v1_router.include_router(role_router)
 v1_router.include_router(permission_router)
+v1_router.include_router(hotel_router)
+v1_router.include_router(room_type_router)
+v1_router.include_router(room_router)
+v1_router.include_router(booking_router)
+v1_router.include_router(review_router)
 v1_router.include_router(health_router)
 
 app.include_router(v1_router)
@@ -112,6 +123,7 @@ async def read_root():
 app.add_exception_handler(APIException, api_exception_handler)
 app.add_exception_handler(SQLAlchemyError, sqlalchemy_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
+app.add_exception_handler(ValidationError, pydantic_validation_handler)
 app.add_exception_handler(StarletteHTTPException, http_exception_handler)
 app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(Exception, general_exception_handler)

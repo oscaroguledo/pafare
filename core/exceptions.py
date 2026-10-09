@@ -4,6 +4,7 @@ from typing import Any, Dict, Optional
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 import traceback
 
@@ -168,6 +169,23 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         field = ".".join(str(loc)
                          for loc in error["loc"][1:])  # Skip 'body' prefix
         errors[field] = error["msg"]
+
+    return JSONResponse(
+        status_code=422,
+        content={
+            "success": False,
+            "message": "Validation failed",
+            "error_code": "VALIDATION_ERROR",
+            "timestamp": datetime.now().isoformat(),
+            "errors": errors
+        }
+    )
+
+
+async def pydantic_validation_handler(request: Request, exc: ValidationError) -> JSONResponse:
+    """A pydantic model built inside a route (e.g. a list filter) rejected its input: that is the caller's mistake,
+    so answer 422 like a bad request body instead of a 500."""
+    errors = {".".join(str(loc) for loc in error["loc"]) or "request": error["msg"] for error in exc.errors()}
 
     return JSONResponse(
         status_code=422,

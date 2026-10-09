@@ -1,4 +1,7 @@
 """Shared FastAPI dependencies: who is calling, and what they are allowed to do."""
+from typing import Optional
+from uuid import UUID
+
 from fastapi import Depends, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -63,4 +66,28 @@ def require_self_or_permission(scope: str, param: str = "user_id"):
         if not await PermissionService(db).has_permission(user.role_id, scope):
             raise APIException(status_code=403, message=f"Missing permission: {scope}")
         return user
+    return checker
+
+
+async def get_optional_user(
+    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    db: AsyncSession = Depends(get_db),
+) -> Optional[User]:
+    """The signed-in user, or None when no token was sent. A token that is sent must still be valid."""
+    if credentials is None:
+        return None
+    return await get_current_user(credentials, db)
+
+
+def owner_unless_permitted(scope: str):
+    """Dependency factory for records that belong to a guest (bookings, reviews). Returns None when the caller
+    has `scope` (they may act on anyone's), otherwise the caller's own id, to pass to a service as `user_id`
+    so it only touches their records."""
+    async def checker(
+        user: User = Depends(get_current_user),
+        db: AsyncSession = Depends(get_db),
+    ) -> Optional[UUID]:
+        if await PermissionService(db).has_permission(user.role_id, scope):
+            return None
+        return user.id
     return checker

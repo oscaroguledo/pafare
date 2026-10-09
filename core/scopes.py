@@ -35,27 +35,33 @@ class Scope(str, Enum):
     PERMISSIONS_EDIT = "permissions:edit"
     PERMISSIONS_DELETE = "permissions:delete"
 
-    # ---- bookings (routes for these come later) ----
-    HOTELS_VIEW = "hotels:view"
+    # ---- hotels, room types and rooms (reading them is public; these are for changing them) ----
     HOTELS_CREATE = "hotels:create"
     HOTELS_EDIT = "hotels:edit"
     HOTELS_DELETE = "hotels:delete"
-    ROOM_TYPES_VIEW = "room_types:view"
     ROOM_TYPES_CREATE = "room_types:create"
     ROOM_TYPES_EDIT = "room_types:edit"
     ROOM_TYPES_DELETE = "room_types:delete"
-    ROOMS_VIEW = "rooms:view"
     ROOMS_CREATE = "rooms:create"
     ROOMS_EDIT = "rooms:edit"
     ROOMS_DELETE = "rooms:delete"
+
+    # ---- bookings (guests always manage their own; these are for other people's bookings) ----
     BOOKINGS_VIEW = "bookings:view"
-    BOOKINGS_CREATE = "bookings:create"
+    BOOKINGS_CREATE = "bookings:create"            # book on behalf of a guest
     BOOKINGS_EDIT = "bookings:edit"
-    BOOKINGS_DELETE = "bookings:delete"
-    REVIEWS_VIEW = "reviews:view"
-    REVIEWS_CREATE = "reviews:create"
+    BOOKINGS_CANCEL = "bookings:cancel"
+    BOOKINGS_CONFIRM = "bookings:confirm"
+    BOOKINGS_CHECK_IN = "bookings:check_in"
+    BOOKINGS_CHECK_OUT = "bookings:check_out"
+    BOOKINGS_NO_SHOW = "bookings:no_show"
+    BOOKINGS_DISCOUNT = "bookings:discount"
+
+    # ---- reviews (guests write and manage their own; approved ones are public) ----
+    REVIEWS_VIEW = "reviews:view"                  # includes unapproved ones
     REVIEWS_EDIT = "reviews:edit"
     REVIEWS_DELETE = "reviews:delete"
+    REVIEWS_MODERATE = "reviews:moderate"          # approve or hide
 
     def __str__(self) -> str:
         return self.value
@@ -81,6 +87,28 @@ DESCRIPTIONS = {
     Scope.PERMISSIONS_CREATE: "Create permissions",
     Scope.PERMISSIONS_EDIT: "Edit a permission's description",
     Scope.PERMISSIONS_DELETE: "Delete permissions",
+    Scope.HOTELS_CREATE: "Create hotels",
+    Scope.HOTELS_EDIT: "Edit hotels",
+    Scope.HOTELS_DELETE: "Delete hotels",
+    Scope.ROOM_TYPES_CREATE: "Create room types",
+    Scope.ROOM_TYPES_EDIT: "Edit room types",
+    Scope.ROOM_TYPES_DELETE: "Delete room types",
+    Scope.ROOMS_CREATE: "Create rooms",
+    Scope.ROOMS_EDIT: "Edit rooms",
+    Scope.ROOMS_DELETE: "Delete rooms",
+    Scope.BOOKINGS_VIEW: "List and read everyone's bookings",
+    Scope.BOOKINGS_CREATE: "Book a room on behalf of a guest",
+    Scope.BOOKINGS_EDIT: "Reschedule or change other guests' bookings",
+    Scope.BOOKINGS_CANCEL: "Cancel other guests' bookings",
+    Scope.BOOKINGS_CONFIRM: "Confirm a pending booking",
+    Scope.BOOKINGS_CHECK_IN: "Check a guest in",
+    Scope.BOOKINGS_CHECK_OUT: "Check a guest out",
+    Scope.BOOKINGS_NO_SHOW: "Mark a booking as a no-show",
+    Scope.BOOKINGS_DISCOUNT: "Apply a discount to a booking",
+    Scope.REVIEWS_VIEW: "List and read all reviews, including unapproved ones",
+    Scope.REVIEWS_EDIT: "Edit other guests' reviews",
+    Scope.REVIEWS_DELETE: "Delete reviews",
+    Scope.REVIEWS_MODERATE: "Approve or hide reviews",
 }
 
 # Every scope's name, for seeding. Scopes without an entry in DESCRIPTIONS get a generic one.
