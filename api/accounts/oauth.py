@@ -174,7 +174,7 @@ async def find_or_create_user(db: AsyncSession, provider: str, user_info: dict, 
     result = await db.execute(select(User).where(User.email == email))
     user = result.scalar_one()
 
-    user.verification_status = "verified"
+    user.verified = True
     if avatar_url:
         user.avatar_url = avatar_url
     await db.commit()

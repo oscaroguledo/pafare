@@ -242,7 +242,7 @@ class AuthService:
                 detail=f"Account temporarily locked due to too many failed login attempts. Try again in {retry_after_minutes} minute(s).",
             )
 
-        password_verified = self.verify_password(password, user.hashed_password)
+        password_verified = self.verify_password(password, user.passwordhash)
 
         if not password_verified:
             user.failed_login_attempts = (user.failed_login_attempts or 0) + 1
@@ -398,7 +398,7 @@ class AuthService:
             )
         
         # Update password and clear reset token
-        user.hashed_password = self.get_password_hash(new_password)
+        user.passwordhash = self.get_password_hash(new_password)
         user.reset_token = None
         user.reset_token_expires = None
         await self.db.commit()

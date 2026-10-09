@@ -3,7 +3,7 @@ from typing import Optional
 from datetime import datetime
 from uuid import UUID
 
-from models.accounts.user import UserRole, AccountStatus, VerificationStatus
+from models.accounts.user import UserRole, AccountStatus
 
 class AddressBase(BaseModel):
     street: str
@@ -85,7 +85,7 @@ class Response(BaseModel):
     phone: Optional[str] = None
     role: UserRole
     account_status: AccountStatus
-    verification_status: VerificationStatus
+    verified: bool
     verified: bool
     is_active: bool
     date_of_birth: Optional[AwareDatetime] = None

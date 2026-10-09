@@ -13,7 +13,7 @@ from fastapi import HTTPException
 from models.accounts import UserSession, TrafficSource
 from models.system import AnalyticsEvent, ConversionFunnel, EventType
 from models.commerce.orders import Order, OrderStatus
-from models.accounts.user import User, STAFF_ROLES
+from models.accounts.user import User, Role, STAFF_ROLES
 from models.commerce.refunds import Refund, RefundStatus
 from models.commerce.subscriptions import Subscription
 from models.catalog.product import Product, ProductStatus
@@ -531,7 +531,7 @@ class AnalyticsService:
                     and_(
                         User.created_at >= start_date,
                         User.created_at <= end_date,
-                        User.role.notin_(STAFF_ROLE_VALUES)
+                        User.role_id.notin_(select(Role.id).where(Role.name.in_(STAFF_ROLE_VALUES)))
                     )
                 ).group_by(func.date(User.created_at)).order_by(func.date(User.created_at))
             )
@@ -680,7 +680,7 @@ class AnalyticsService:
             total_users = await self.db.scalar(
                 select(func.count(User.id)).where(
                     and_(
-                        User.role.notin_(STAFF_ROLE_VALUES),
+                        User.role_id.notin_(select(Role.id).where(Role.name.in_(STAFF_ROLE_VALUES))),
                         User.created_at >= start_date,
                         User.created_at < end_date_exclusive
                     )
@@ -692,7 +692,7 @@ class AnalyticsService:
                 select(func.count(User.id)).where(
                     and_(
                         User.is_active == True,
-                        User.role.notin_(STAFF_ROLE_VALUES),
+                        User.role_id.notin_(select(Role.id).where(Role.name.in_(STAFF_ROLE_VALUES))),
                         User.created_at >= start_date,
                         User.created_at < end_date_exclusive
                     )
@@ -844,11 +844,11 @@ class AnalyticsService:
 
             # User statistics
             total_users = await self.db.scalar(
-                select(func.count(User.id)).where(User.role.notin_(STAFF_ROLE_VALUES))
+                select(func.count(User.id)).where(User.role_id.notin_(select(Role.id).where(Role.name.in_(STAFF_ROLE_VALUES))))
             ) or 0
             new_users_30d = await self.db.scalar(
                 select(func.count(User.id)).where(
-                    and_(User.created_at >= last_30_days, User.role.notin_(STAFF_ROLE_VALUES))
+                    and_(User.created_at >= last_30_days, User.role_id.notin_(select(Role.id).where(Role.name.in_(STAFF_ROLE_VALUES))))
                 )
             ) or 0
 

@@ -1,6 +1,6 @@
 from core.db import Base
 
-from .accounts import User, Address, UserSession, CustomerLifecycleMetrics, TrafficSource, RevokedToken, Passkey
+from .accounts import User, Role, Address, UserSession, CustomerLifecycleMetrics, TrafficSource, RevokedToken, Passkey
 from .catalog import (
     Category,
     Product, ProductVariant, ProductImage,

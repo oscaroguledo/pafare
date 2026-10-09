@@ -154,17 +154,16 @@ async def me(
             "firstname": current_user.firstname,
             "lastname": current_user.lastname,
             "full_name": f"{current_user.firstname} {current_user.lastname}",
-            "date_of_birth": current_user.date_of_birth.isoformat() if current_user.date_of_birth else None,
+            "date_of_birth": current_user.dob.isoformat() if current_user.dob else None,
             "gender": current_user.gender,
             "country": current_user.country,
             "language": current_user.language,
             "timezone": current_user.timezone,
             "phone": current_user.phone,
-            "phone_verified": current_user.phone_verified,
             "avatar_url": current_user.avatar_url,
             "role": current_user.role.value if hasattr(current_user.role, 'value') else str(current_user.role),
             "account_status": current_user.account_status,
-            "verification_status": current_user.verification_status,
+            "verified": current_user.verified,
             "verified": current_user.verified,
             "is_active": current_user.is_active,
             "last_login": current_user.last_login.isoformat() if current_user.last_login else None,
@@ -369,17 +368,16 @@ async def update(
             "first_name": current_user.firstname,
             "last_name": current_user.lastname,
             "full_name": f"{current_user.firstname} {current_user.lastname}",
-            "date_of_birth": current_user.date_of_birth.isoformat() if current_user.date_of_birth else None,
+            "date_of_birth": current_user.dob.isoformat() if current_user.dob else None,
             "gender": current_user.gender,
             "country": current_user.country,
             "language": current_user.language,
             "timezone": current_user.timezone,
             "phone": current_user.phone,
-            "phone_verified": current_user.phone_verified,
             "avatar_url": current_user.avatar_url,
             "role": current_user.role.value if hasattr(current_user.role, 'value') else str(current_user.role),
             "account_status": current_user.account_status,
-            "verification_status": current_user.verification_status,
+            "verified": current_user.verified,
             "verified": current_user.verified,
             "is_active": current_user.is_active,
             "last_login": current_user.last_login.isoformat() if current_user.last_login else None,
@@ -413,9 +411,9 @@ async def password(
 ):
     """Change the current user's password. Passwords are accepted only in the JSON body."""
     auth_service = AuthService(db)
-    if not auth_service.verify_password(payload.current_password, current_user.hashed_password):
+    if not auth_service.verify_password(payload.current_password, current_user.passwordhash):
         raise APIException(status_code=status.HTTP_400_BAD_REQUEST, message="Current password is incorrect")
-    await UserService(db).update(current_user.id, {"hashed_password": auth_service.get_password_hash(payload.new_password)})
+    await UserService(db).update(current_user.id, {"passwordhash": auth_service.get_password_hash(payload.new_password)})
     return Response.success(message="Password changed successfully")
 
 
@@ -428,7 +426,7 @@ async def delete(
     """Delete the current user's account; the password confirmation is taken from the JSON body."""
     try:
         auth_service = AuthService(db)
-        if not auth_service.verify_password(payload.password, current_user.hashed_password):
+        if not auth_service.verify_password(payload.password, current_user.passwordhash):
             raise APIException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 message="Password is incorrect"

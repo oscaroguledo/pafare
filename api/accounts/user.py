@@ -10,7 +10,7 @@ from services.accounts.user import UserService
 from schemas.accounts.auth import strong_password
 from schemas.accounts.user import Create as UserCreate, Update as UserUpdate, UserRoleUpdate
 from core.dependencies import require_admin, require_auth
-from models.accounts.user import User as AuthUser, UserRole, outranks
+from models.accounts.user import User as AuthUser, UserRole, outranks, get_role_id
 
 logger = get_logger(__name__)
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -26,10 +26,10 @@ def _user_payload(user) -> dict:
         "phone": user.phone,
         "role": user.role.value if hasattr(user.role, "value") else user.role,
         "account_status": user.account_status,
-        "verification_status": user.verification_status,
+        "verified": user.verified,
         "verified": user.verified,
         "is_active": user.is_active,
-        "date_of_birth": user.date_of_birth.isoformat() if user.date_of_birth else None,
+        "date_of_birth": user.dob.isoformat() if user.dob else None,
         "gender": user.gender,
         "country": user.country,
         "timezone": user.timezone,
@@ -274,7 +274,7 @@ async def update_role(
         raise APIException(status_code=status.HTTP_400_BAD_REQUEST, message="You can't change your own role")
     user = await _manageable(db, current_user, user_id)
     _can_give(current_user, payload.role)
-    user.role = payload.role
+    user.role_id = await get_role_id(db, payload.role)
     await db.commit()
     await db.refresh(user)
     return Response.success(data=_user_payload(user), message="Role updated")

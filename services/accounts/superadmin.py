@@ -8,7 +8,7 @@ from core.config import settings
 from core.logging import get_structured_logger
 from core.utils.encryption import PasswordManager
 from core.utils.uuid_utils import uuid7
-from models.accounts.user import AccountStatus, User, UserRole, VerificationStatus
+from models.accounts.user import AccountStatus, User, UserRole, get_role_id
 from schemas.accounts.auth import strong_password
 
 logger = get_structured_logger(__name__)
@@ -35,16 +35,14 @@ async def ensure_superadmin(db: AsyncSession) -> Optional[User]:
 
     user = (await db.execute(select(User).where(func.lower(User.email) == email))).scalar_one_or_none()
     if user is None:
-        user = User(id=uuid7(), email=email, firstname="Store", lastname="Owner",
-                    hashed_password=PasswordManager.hash_password(password))
+        user = User(id=uuid7(), email=email, firstname="Store", lastname="Owner", role_id=await get_role_id(db, UserRole.SUPERADMIN),
+                    passwordhash=PasswordManager.hash_password(password))
         db.add(user)
-    elif not user.hashed_password or not PasswordManager.verify_password(password, user.hashed_password):
-        user.hashed_password = PasswordManager.hash_password(password)
-    user.role = UserRole.SUPERADMIN.value
+    elif not user.passwordhash or not PasswordManager.verify_password(password, user.passwordhash):
+        user.passwordhash = PasswordManager.hash_password(password)
+    user.role_id = await get_role_id(db, UserRole.SUPERADMIN)
     user.account_status = AccountStatus.ACTIVE.value
-    user.verification_status = VerificationStatus.VERIFIED.value
-    user.verification_token = user.token_expiration = None
-    user.failed_login_attempts, user.locked_until = 0, None
+    user.verified = True
     await db.commit()
     logger.info(f"Superadmin account {email} is ready")
     return user

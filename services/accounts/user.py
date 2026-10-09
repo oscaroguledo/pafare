@@ -5,7 +5,7 @@ from sqlalchemy.orm import selectinload
 from typing import List, Optional, Dict, Any
 from uuid import UUID
 from core.utils.uuid_utils import uuid7
-from models.accounts.user import User, AccountStatus, VerificationStatus
+from models.accounts.user import User, Role, AccountStatus, get_role_id
 from models.commerce.orders import Order
 from core.exceptions import APIException
 from schemas.accounts.user import Create as UserCreate
@@ -34,7 +34,7 @@ class UserService:
 
     async def create(self, user_data: UserCreate, background_tasks: BackgroundTasks) -> User:
         """Create a new user with verification email"""
-        hashed_password = self.password_manager.hash_password(
+        passwordhash = self.password_manager.hash_password(
             user_data.password)
         verification_token = secrets.token_urlsafe(32)
         token_expiration = datetime.now(timezone.utc) + timedelta(hours=24)  # Token valid for 24 hours
@@ -44,8 +44,8 @@ class UserService:
             email=user_data.email,
             firstname=user_data.firstname,
             lastname=user_data.lastname,
-            hashed_password=hashed_password,
-            role=user_data.role,
+            passwordhash=passwordhash,
+            role_id=await get_role_id(self.db, user_data.role),
             phone=getattr(user_data, "phone", None),
             verification_token=verification_token,
             token_expiration=token_expiration,
@@ -81,9 +81,7 @@ class UserService:
                 message="Invalid or expired verification token",
             )
 
-        # Set verification status column instead of assigning to the read-only
-        # `verified` property which is computed from `verification_status`.
-        user.verification_status = 'verified'
+        user.verified = True
         user.verification_token = None
         user.token_expiration = None
         await self.db.commit()
@@ -106,14 +104,14 @@ class UserService:
 
         # Apply role filter if provided
         if role:
-            base_query = base_query.where(User.role == role)
+            base_query = base_query.join(Role, User.role_id == Role.id).where(Role.name == role)
 
         # Apply status filter if provided
         if status:
             if status in {v.value for v in AccountStatus}:
                 base_query = base_query.where(User.account_status == status)
             else:
-                base_query = base_query.where(User.verification_status == status)
+                base_query = base_query.where(User.verified == (status == 'verified'))
 
         # Apply search query if provided
         search_condition = None
@@ -129,12 +127,12 @@ class UserService:
         # Get total count
         count_query = select(func.count()).select_from(User)
         if role:
-            count_query = count_query.where(User.role == role)
+            count_query = count_query.join(Role, User.role_id == Role.id).where(Role.name == role)
         if status:
             if status in {v.value for v in AccountStatus}:
                 count_query = count_query.where(User.account_status == status)
             else:
-                count_query = count_query.where(User.verification_status == status)
+                count_query = count_query.where(User.verified == (status == 'verified'))
         if search_condition is not None:
             count_query = count_query.where(search_condition)
         count_result = await self.db.execute(count_query)
@@ -239,7 +237,7 @@ class UserService:
             .limit(limit)
         )
         if role_filter:
-            stmt = stmt.where(User.role == role_filter)
+            stmt = stmt.join(Role, User.role_id == Role.id).where(Role.name == role_filter)
         result = await self.db.execute(stmt)
         users = []
         for user in result.scalars().all():
@@ -276,7 +274,7 @@ class UserService:
         }
         
         if role_filter:
-            base_conditions.append("u.role = :role_filter")
+            base_conditions.append("r.name = :role_filter")
             params["role_filter"] = role_filter
         
         where_clause = " AND ".join(base_conditions)
@@ -287,8 +285,8 @@ class UserService:
                 u.firstname,
                 u.lastname,
                 u.email,
-                u.role,
-                (u.verification_status = 'verified') as verified,
+                r.name as role,
+                u.verified as verified,
                 (
                     -- First name matching
                     CASE WHEN LOWER(u.firstname) = :query THEN :exact_weight
@@ -312,7 +310,7 @@ class UserService:
                          ELSE similarity(LOWER(CONCAT(u.firstname, ' ', u.lastname)), :query) * :fuzzy_weight * 0.9
                     END
                 ) as relevance_score
-            FROM users u
+            FROM accounts.users u JOIN accounts.roles r ON r.id = u.role_id
             WHERE {where_clause}
             AND (
                 LOWER(u.firstname) LIKE CONCAT('%', :query, '%')
@@ -356,7 +354,7 @@ class UserService:
         if not user:
             raise APIException(status_code=404, message="User not found")
 
-        user.verification_status = VerificationStatus.VERIFIED
+        user.verified = True
         await self.db.commit()
         await self.db.refresh(user)
         return user
@@ -458,7 +456,7 @@ class UserService:
         if not user:
             return None
 
-        user.role = new_role
+        user.role_id = await get_role_id(self.db, new_role)
         await self.db.commit()
         await self.db.refresh(user)
         return user
