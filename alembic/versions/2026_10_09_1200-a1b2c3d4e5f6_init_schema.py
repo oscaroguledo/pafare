@@ -18,13 +18,53 @@ down_revision = None
 branch_labels = None
 depends_on = None
 
-ACTIONS = ("view", "create", "edit", "delete")
-MODELS = ['bookings', 'hotels', 'permissions', 'reviews', 'roles', 'room_types', 'rooms', 'users']
-SCOPES = [f"{m}:{a}" for m in MODELS for a in ACTIONS]
+# Snapshot of core/scopes.py at the time of this migration, hardcoded on purpose: a migration must not change
+# when the code does. Later scopes get their own migration.
+SCOPES = {
+    'users:view': 'List and read users',
+    'users:create': 'Create users with any role',
+    'users:edit': "Edit other users' profile fields",
+    'users:change_email': "Change a user's email address",
+    'users:reset_password': 'Send a user a password-reset link',
+    'users:activate': 'Activate an inactive account',
+    'users:deactivate': 'Deactivate an account',
+    'users:suspend': 'Suspend an account',
+    'users:unsuspend': 'Lift an account suspension',
+    'roles:view': 'List and read roles and their permissions',
+    'roles:create': 'Create roles',
+    'roles:edit': 'Rename roles and edit their description',
+    'roles:delete': 'Delete roles',
+    'roles:assign': 'Give a user a different role',
+    'roles:grant': 'Change which permissions a role has',
+    'permissions:view': 'List and read permissions',
+    'permissions:create': 'Create permissions',
+    'permissions:edit': "Edit a permission's description",
+    'permissions:delete': 'Delete permissions',
+    'hotels:view': 'View hotels',
+    'hotels:create': 'Create hotels',
+    'hotels:edit': 'Edit hotels',
+    'hotels:delete': 'Delete hotels',
+    'room_types:view': 'View room types',
+    'room_types:create': 'Create room types',
+    'room_types:edit': 'Edit room types',
+    'room_types:delete': 'Delete room types',
+    'rooms:view': 'View rooms',
+    'rooms:create': 'Create rooms',
+    'rooms:edit': 'Edit rooms',
+    'rooms:delete': 'Delete rooms',
+    'bookings:view': 'View bookings',
+    'bookings:create': 'Create bookings',
+    'bookings:edit': 'Edit bookings',
+    'bookings:delete': 'Delete bookings',
+    'reviews:view': 'View reviews',
+    'reviews:create': 'Create reviews',
+    'reviews:edit': 'Edit reviews',
+    'reviews:delete': 'Delete reviews',
+}
 ROLES = ["guest", "customer", "support", "manager", "admin", "superadmin"]
 
 roles = sa.table("roles", sa.column("id", core.db.GUID()), sa.column("name", sa.String), schema="accounts")
-permissions = sa.table("permissions", sa.column("id", core.db.GUID()), sa.column("name", sa.String), schema="accounts")
+permissions = sa.table("permissions", sa.column("id", core.db.GUID()), sa.column("name", sa.String), sa.column("description", sa.String), schema="accounts")
 
 
 def upgrade():
@@ -236,7 +276,7 @@ def upgrade():
 
     # ---- seed: roles, scopes, and every scope for the superadmin ----
     op.bulk_insert(roles, [{"id": str(uuid.uuid4()), "name": n} for n in ROLES])
-    op.bulk_insert(permissions, [{"id": str(uuid.uuid4()), "name": n} for n in SCOPES])
+    op.bulk_insert(permissions, [{"id": str(uuid.uuid4()), "name": n, "description": d} for n, d in SCOPES.items()])
     op.execute(
         "INSERT INTO accounts.role_permissions (id, role_id, permission_id) "
         "SELECT gen_random_uuid(), r.id, p.id FROM accounts.roles r CROSS JOIN accounts.permissions p "

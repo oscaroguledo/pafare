@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.db import get_db
 from core.dependencies import require_permission
 from core.exceptions import APIException
+from core.scopes import Scope
 from core.utils.response import Response
 from models.accounts.user import User
 from schemas.accounts.permission import PermissionCreate, PermissionUpdate, PermissionResponse
@@ -18,7 +19,7 @@ router = APIRouter(prefix="/permissions", tags=["Permissions"])
 @router.post("/", status_code=status.HTTP_201_CREATED)
 async def create_permission(
     payload: PermissionCreate,
-    current_user: User = Depends(require_permission("permissions:create")),
+    current_user: User = Depends(require_permission(Scope.PERMISSIONS_CREATE)),
     db: AsyncSession = Depends(get_db),
 ):
     permission = await PermissionService(db).create(payload)
@@ -31,7 +32,7 @@ async def create_permission(
 async def list_permissions(
     search: Optional[str] = Query(None, description="Matches name or description"),
     resource: Optional[str] = Query(None, description="The part before the colon, e.g. 'rooms'"),
-    current_user: User = Depends(require_permission("permissions:view")),
+    current_user: User = Depends(require_permission(Scope.PERMISSIONS_VIEW)),
     db: AsyncSession = Depends(get_db),
 ):
     permissions = await PermissionService(db).list_permissions(search, resource)
@@ -41,7 +42,7 @@ async def list_permissions(
 @router.get("/{permission_id}/")
 async def get_permission(
     permission_id: UUID,
-    current_user: User = Depends(require_permission("permissions:view")),
+    current_user: User = Depends(require_permission(Scope.PERMISSIONS_VIEW)),
     db: AsyncSession = Depends(get_db),
 ):
     permission = await PermissionService(db).get_by_id(permission_id)
@@ -54,7 +55,7 @@ async def get_permission(
 async def update_permission(
     permission_id: UUID,
     payload: PermissionUpdate,
-    current_user: User = Depends(require_permission("permissions:edit")),
+    current_user: User = Depends(require_permission(Scope.PERMISSIONS_EDIT)),
     db: AsyncSession = Depends(get_db),
 ):
     permission = await PermissionService(db).update_permission(permission_id, payload)
@@ -64,7 +65,7 @@ async def update_permission(
 @router.delete("/{permission_id}/")
 async def delete_permission(
     permission_id: UUID,
-    current_user: User = Depends(require_permission("permissions:delete")),
+    current_user: User = Depends(require_permission(Scope.PERMISSIONS_DELETE)),
     db: AsyncSession = Depends(get_db),
 ):
     await PermissionService(db).delete_permission(permission_id)
